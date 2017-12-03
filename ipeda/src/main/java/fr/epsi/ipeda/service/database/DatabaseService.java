@@ -2,9 +2,10 @@ package fr.epsi.ipeda.service.database;
 
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.PostLoad;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,7 @@ public class DatabaseService implements IDatabaseService {
 	private ModuleRepository moduleRepository;
 
 	@Override
+	@PostLoad
 	public void initialiserFormations() {
 
 		// ------------------------------------------------
@@ -115,19 +117,19 @@ public class DatabaseService implements IDatabaseService {
 
 		// SEMESTRES
 		// ------------------------------------------------
-//		Semestre semestre = new Semestre();
-//		semestre.setNumeroSemestre(NumeroSemestre.SEMESTRE1);
-//		semestre.setDateDebut(LocalDate.of(2017, 9, 28));
-//		semestre.setDateFin(LocalDate.of(2017, 12, 31));
-//		semestre = semestreRepository.save(semestre);
-//		formation.addSemestre1(semestre);
-//
-//		semestre = new Semestre();
-//		semestre.setNumeroSemestre(NumeroSemestre.SEMESTRE2);
-//		semestre.setDateDebut(LocalDate.of(2018, 1, 1));
-//		semestre.setDateFin(LocalDate.of(2018, 7, 20));
-//		semestre = semestreRepository.save(semestre);
-//		formation.addSemestre2(semestre);
+		Semestre semestre = new Semestre();
+		semestre.setNumeroSemestre(NumeroSemestre.SEMESTRE1);
+		semestre.setDateDebut(LocalDate.of(2017, 9, 28));
+		semestre.setDateFin(LocalDate.of(2017, 12, 31));
+		semestre = semestreRepository.save(semestre);
+		formation.addSemestre1(semestre);
+
+		semestre = new Semestre();
+		semestre.setNumeroSemestre(NumeroSemestre.SEMESTRE2);
+		semestre.setDateDebut(LocalDate.of(2018, 1, 1));
+		semestre.setDateFin(LocalDate.of(2018, 7, 20));
+		semestre = semestreRepository.save(semestre);
+		formation.addSemestre2(semestre);
 
 		// persistance des données
 		// entityManager.getTransaction().begin();
@@ -214,8 +216,8 @@ public class DatabaseService implements IDatabaseService {
 		module.setCode("DEVE539");
 		module.setLibelle("Sécurité Système et Réseaux - les fondamentaux");
 		module.setSemestre(semestre);
-		module.setDureeFFP(Duration.of(18, ChronoUnit.HOURS));
-		module.setDureeTE(Duration.of(2, ChronoUnit.HOURS));
+		module.setDureeFFP(Duration.ofHours(18));
+		module.setDureeTE(Duration.ofHours(2));
 		Intervenant intervenant = intervenantRepository.findByNomAndPrenom("deliessche", "christian");
 		module.setIntervenant(intervenant);
 		moduleRepository.save(module);
@@ -225,7 +227,8 @@ public class DatabaseService implements IDatabaseService {
 		module.setCode("LNGE627");
 		module.setLibelle("Case Study (usual English)");
 		module.setSemestre(semestre);
-		module.setDureeFFP(Duration.of(20, ChronoUnit.HOURS));
+		module.setDureeFFP(Duration.ofHours(20));
+		module.setDureeTE(Duration.ofHours(0));
 		intervenant = intervenantRepository.findByNomAndPrenom("hardstaff", "debra");
 		module.setIntervenant(intervenant);
 		moduleRepository.save(module);

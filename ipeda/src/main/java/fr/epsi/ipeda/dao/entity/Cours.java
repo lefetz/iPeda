@@ -12,6 +12,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
 @Entity
 @Table(name = "cours")
 public class Cours {
@@ -23,6 +25,7 @@ public class Cours {
 	@Basic(optional = false)
 	private LocalDateTime dateDebut;
 
+	@Type(type = "org.hibernate.type.DurationType")
 	@Basic(optional = false)
 	private Duration duree;
 
@@ -48,6 +51,7 @@ public class Cours {
 	}
 
 	public void setDateDebut(LocalDateTime dateDebut) {
+		org.hibernate.type.DurationType dt = null;
 		this.dateDebut = dateDebut;
 	}
 

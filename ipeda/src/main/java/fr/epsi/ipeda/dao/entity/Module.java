@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "module")
@@ -29,17 +29,12 @@ public class Module {
 	private String libelle;
 
 	@Column(name = "duree_ffp")
-	@Basic(optional = false)
+	@Type(type = "org.hibernate.type.DurationType")
 	private Duration dureeFFP;
 
 	@Column(name = "duree_te")
-	@Basic(optional = false)
+	@Type(type = "org.hibernate.type.DurationType")
 	private Duration dureeTE;
-
-	@Column(name = "is_te")
-	@Basic(optional = false)
-	@ColumnDefault("false")
-	private boolean isTE;
 
 	@OneToMany(mappedBy = "module", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<Cours> listeCours;
@@ -69,14 +64,6 @@ public class Module {
 
 	public void setLibelle(String libelle) {
 		this.libelle = libelle;
-	}
-
-	public boolean isTE() {
-		return isTE;
-	}
-
-	public void setTE(boolean isTE) {
-		this.isTE = isTE;
 	}
 
 	public List<Cours> getListeCours() {

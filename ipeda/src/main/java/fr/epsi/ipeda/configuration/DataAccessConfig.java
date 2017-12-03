@@ -58,23 +58,11 @@ public class DataAccessConfig {
 		jpaProperties.put("hibernate.connection.isolation", env.getProperty("hibernate.connection.isolation"));
 		jpaProperties.put("hibernate.connection.autoReconnect", env.getProperty("hibernate.connection.autoReconnect"));
 		jpaProperties.put("hibernate.connection.autoReconnectForPools", env.getProperty("hibernate.connection.autoReconnectForPools"));
+		jpaProperties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
 
 		factory.setJpaProperties(jpaProperties);
 		return factory;
 	}
-
-	// @Bean
-	// public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-	// LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-	// em.setDataSource(dataSource());
-	// em.setPackagesToScan("package.where.your.entites.like.CustSys.are.stored");
-	// return em;
-	// }
-
-	// @Bean(name = "entityManager")
-	// public EntityManager entityManager() {
-	// return entityManagerFactoryBean().getObject().createEntityManager();
-	// }
 
 	@Bean
 	public PlatformTransactionManager transactionManager() {

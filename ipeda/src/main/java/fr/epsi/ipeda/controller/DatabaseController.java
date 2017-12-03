@@ -23,13 +23,13 @@ public class DatabaseController {
 		databaseService.initialiserFormations();
 
 		// initialisation des salles
-//		databaseService.initialiserSalles();
+		databaseService.initialiserSalles();
 
 		// initialisation des intervenants
-//		databaseService.initialiserIntervenants();
+		databaseService.initialiserIntervenants();
 
 		// initialisation des modules
-//		databaseService.initialiserModules();
+		databaseService.initialiserModules();
 
 		return "test/dbinit";
 	}
