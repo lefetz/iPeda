@@ -1,4 +1,4 @@
-package configuration;
+package fr.epsi.ipeda.configuration;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -19,7 +19,7 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("com.thymeleafexamples")
+@ComponentScan("fr.epsi.ipeda")
 public class ThymeleafConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 
 	private ApplicationContext applicationContext;

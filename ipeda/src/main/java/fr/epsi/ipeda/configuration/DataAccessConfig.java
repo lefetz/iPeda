@@ -1,8 +1,7 @@
-package configuration;
+package fr.epsi.ipeda.configuration;
 
 import java.util.Properties;
 
-import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
@@ -22,7 +21,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages = { "dao" })
+@ComponentScan(basePackages = { "fr.epsi.ipeda.dao" })
 @PropertySource({ "classpath:database.properties" })
 public class DataAccessConfig {
 
@@ -39,7 +38,7 @@ public class DataAccessConfig {
 		return dataSource;
 	}
 
-	@Bean
+	@Bean(name = "entityManagerFactory")
 	public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
 		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 		vendorAdapter.setDatabase(Database.POSTGRESQL);
@@ -47,7 +46,7 @@ public class DataAccessConfig {
 		vendorAdapter.setShowSql(Boolean.TRUE);
 
 		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-		factory.setPackagesToScan("model");
+		factory.setPackagesToScan("fr.epsi.ipeda.dao");
 		factory.setJpaVendorAdapter(vendorAdapter);
 		factory.setDataSource(dataSource());
 
@@ -64,10 +63,18 @@ public class DataAccessConfig {
 		return factory;
 	}
 
-	@Bean(name = "entityManager")
-	public EntityManager entityManager() {
-		return entityManagerFactoryBean().getObject().createEntityManager();
-	}
+	// @Bean
+	// public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+	// LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+	// em.setDataSource(dataSource());
+	// em.setPackagesToScan("package.where.your.entites.like.CustSys.are.stored");
+	// return em;
+	// }
+
+	// @Bean(name = "entityManager")
+	// public EntityManager entityManager() {
+	// return entityManagerFactoryBean().getObject().createEntityManager();
+	// }
 
 	@Bean
 	public PlatformTransactionManager transactionManager() {

@@ -1,4 +1,4 @@
-package controller;
+package fr.epsi.ipeda.controller;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -9,8 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import service.utils.TimeUtils;
-import service.utils.TimeUtils.TIMEFIELD;
+import fr.epsi.ipeda.service.utils.TimeUtils;
+import fr.epsi.ipeda.service.utils.TimeUtils.TIMEFIELD;
 
 @Controller
 public class PlanifController {

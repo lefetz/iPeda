@@ -1,8 +1,8 @@
-package service;
+package fr.epsi.ipeda.service;
 
 import java.util.List;
 
-import model.Module;
+import fr.epsi.ipeda.dao.entity.Module;
 
 public interface IModuleService {
 	

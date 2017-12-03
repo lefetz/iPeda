@@ -1,10 +1,13 @@
-package model;
+package fr.epsi.ipeda.dao.entity;
 
-import javax.persistence.Column;
+import java.util.List;
+
+import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -12,11 +15,14 @@ import javax.persistence.Table;
 public class Salle {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue
 	private Long id;
 
-	@Column
+	@Basic(optional = false)
 	private String libelle;
+
+	@ManyToMany(mappedBy = "listeSalles", fetch = FetchType.LAZY)
+	private List<Cours> listeCours;
 
 	public Long getId() {
 		return id;
@@ -32,6 +38,14 @@ public class Salle {
 
 	public void setLibelle(String libelle) {
 		this.libelle = libelle;
+	}
+
+	public List<Cours> getListeCours() {
+		return listeCours;
+	}
+
+	public void setListeCours(List<Cours> listeCours) {
+		this.listeCours = listeCours;
 	}
 
 }

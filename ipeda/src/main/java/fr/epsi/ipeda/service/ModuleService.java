@@ -1,9 +1,12 @@
-package service;
+package fr.epsi.ipeda.service;
 
 import java.util.List;
 
-import model.Module;
+import org.springframework.stereotype.Service;
 
+import fr.epsi.ipeda.dao.entity.Module;
+
+@Service
 public class ModuleService implements IModuleService {
 
 	@Override
