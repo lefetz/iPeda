@@ -5,8 +5,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.PostLoad;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +26,6 @@ import fr.epsi.ipeda.dao.repository.SemestreRepository;
 @Service
 public class DatabaseService implements IDatabaseService {
 
-	// @PersistenceContext
-	// private EntityManager entityManager;
-
 	@Autowired
 	private SemestreRepository semestreRepository;
 
@@ -47,13 +42,34 @@ public class DatabaseService implements IDatabaseService {
 	private ModuleRepository moduleRepository;
 
 	@Override
-	@PostLoad
 	public void initialiserFormations() {
+
+		Formation formation = null;
+
+		// ------------------------------------------------
+		// FORMATION B1
+		// ------------------------------------------------
+		formation = new Formation();
+
+		formation.setTypeFormation(TypeFormation.B1);
+		formation.setLibelle("BACHELOR 1");
+		formation.setDateDebut(LocalDate.of(2017, 9, 28)); // à modifier
+		formation.setDateFin(LocalDate.of(2018, 7, 20)); // à modifier
+
+		// ------------------------------------------------
+		// FORMATION B2
+		// ------------------------------------------------
+		formation = new Formation();
+
+		formation.setTypeFormation(TypeFormation.B2);
+		formation.setLibelle("BACHELOR 2");
+		formation.setDateDebut(LocalDate.of(2017, 9, 28)); // à modifier
+		formation.setDateFin(LocalDate.of(2018, 7, 20)); // à modifier
 
 		// ------------------------------------------------
 		// FORMATION B3
 		// ------------------------------------------------
-		Formation formation = new Formation();
+		formation = new Formation();
 
 		formation.setTypeFormation(TypeFormation.B3);
 		formation.setLibelle("BACHELOR 3");
@@ -132,10 +148,7 @@ public class DatabaseService implements IDatabaseService {
 		formation.addSemestre2(semestre);
 
 		// persistance des données
-		// entityManager.getTransaction().begin();
-		// entityManager.persist(formation);
 		formationRepository.save(formation);
-		// entityManager.getTransaction().commit();
 
 	}
 

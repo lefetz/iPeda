@@ -51,7 +51,6 @@ public class Cours {
 	}
 
 	public void setDateDebut(LocalDateTime dateDebut) {
-		org.hibernate.type.DurationType dt = null;
 		this.dateDebut = dateDebut;
 	}
 
