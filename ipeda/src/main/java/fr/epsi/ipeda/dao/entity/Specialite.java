@@ -32,6 +32,11 @@ public class Specialite {
 	@Enumerated(EnumType.STRING)
 	private TypeParcours typeParcours;
 
+	public Specialite(TypeParcours typeParcours, String libelle) {
+		this.typeParcours = typeParcours;
+		this.libelle = libelle;
+	}
+
 	public Long getId() {
 		return id;
 	}

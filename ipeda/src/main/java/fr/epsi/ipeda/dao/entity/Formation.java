@@ -1,6 +1,6 @@
 package fr.epsi.ipeda.dao.entity;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -34,14 +34,6 @@ public class Formation {
 	@Column(name = "type_formation")
 	private TypeFormation typeFormation;
 
-	@Basic(optional = false)
-	@Column(name = "date_debut")
-	private LocalDate dateDebut;
-
-	@Basic(optional = false)
-	@Column(name = "date_fin")
-	private LocalDate dateFin;
-
 	@OneToOne(mappedBy = "formation", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Semestre semestre1;
 
@@ -50,6 +42,22 @@ public class Formation {
 
 	@OneToMany(mappedBy = "formation", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Specialite> listeSpecialites;
+
+	public Formation(TypeFormation typeFormation, String libelle, Semestre semestre1, Semestre semestre2, List<Specialite> listeSpecialites) {
+		this.typeFormation = typeFormation;
+		this.libelle = libelle;
+
+		for (Specialite specialite : listeSpecialites) {
+			specialite.setFormation(this);
+		}
+		this.listeSpecialites = listeSpecialites;
+
+		semestre1.setFormation(this);
+		this.semestre1 = semestre1;
+
+		semestre2.setFormation(this);
+		this.semestre2 = semestre2;
+	}
 
 	public Long getId() {
 		return id;
@@ -65,22 +73,6 @@ public class Formation {
 
 	public void setLibelle(String libelle) {
 		this.libelle = libelle;
-	}
-
-	public LocalDate getDateDebut() {
-		return dateDebut;
-	}
-
-	public void setDateDebut(LocalDate dateDebut) {
-		this.dateDebut = dateDebut;
-	}
-
-	public LocalDate getDateFin() {
-		return dateFin;
-	}
-
-	public void setDateFin(LocalDate dateFin) {
-		this.dateFin = dateFin;
 	}
 
 	public Semestre getSemestre1() {
@@ -117,6 +109,13 @@ public class Formation {
 
 	public List<Specialite> getListeSpecialites() {
 		return listeSpecialites;
+	}
+
+	public void addSpecialite(Specialite specialite) {
+		if (null == listeSpecialites) {
+			listeSpecialites = new ArrayList<Specialite>();
+		}
+		listeSpecialites.add(specialite);
 	}
 
 	public void setListeSpecialites(List<Specialite> listeSpecialites) {

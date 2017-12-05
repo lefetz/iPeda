@@ -44,207 +44,86 @@ public class DatabaseService implements IDatabaseService {
 	@Override
 	public void initialiserFormations() {
 
-		Formation formation = null;
+		Semestre semestre1 = null;
+		Semestre semestre2 = null;
 
 		// ------------------------------------------------
 		// FORMATION B1
 		// ------------------------------------------------
-		formation = new Formation();
-
-		formation.setTypeFormation(TypeFormation.B1);
-		formation.setLibelle("BACHELOR 1");
-		formation.setDateDebut(LocalDate.of(2017, 9, 28)); // à modifier
-		formation.setDateFin(LocalDate.of(2018, 7, 20)); // à modifier
+		// formation = new Formation();
+		//
+		// formation.setTypeFormation(TypeFormation.B1);
+		// formation.setLibelle("BACHELOR 1");
+		// formation.setDateDebut(LocalDate.of(2017, 9, 28)); // à modifier
+		// formation.setDateFin(LocalDate.of(2018, 7, 20)); // à modifier
 
 		// ------------------------------------------------
 		// FORMATION B2
 		// ------------------------------------------------
-		formation = new Formation();
-
-		formation.setTypeFormation(TypeFormation.B2);
-		formation.setLibelle("BACHELOR 2");
-		formation.setDateDebut(LocalDate.of(2017, 9, 28)); // à modifier
-		formation.setDateFin(LocalDate.of(2018, 7, 20)); // à modifier
+		// formation = new Formation();
+		//
+		// formation.setTypeFormation(TypeFormation.B2);
+		// formation.setLibelle("BACHELOR 2");
+		// formation.setDateDebut(LocalDate.of(2017, 9, 28)); // à modifier
+		// formation.setDateFin(LocalDate.of(2018, 7, 20)); // à modifier
 
 		// ------------------------------------------------
 		// FORMATION B3
 		// ------------------------------------------------
-		formation = new Formation();
 
-		formation.setTypeFormation(TypeFormation.B3);
-		formation.setLibelle("BACHELOR 3");
-		formation.setDateDebut(LocalDate.of(2017, 9, 28));
-		formation.setDateFin(LocalDate.of(2018, 7, 20));
+		// semestres
+		semestre1 = new Semestre(NumeroSemestre.SEMESTRE1, LocalDate.of(2017, 9, 28), LocalDate.of(2017, 12, 31));
+		semestre2 = new Semestre(NumeroSemestre.SEMESTRE2, LocalDate.of(2018, 1, 1), LocalDate.of(2018, 7, 20));
 
-		// SPECIALITES
-		// ------------------------------------------------
+		// spécialités
 		List<Specialite> listeSpecialites = new ArrayList<Specialite>();
+		listeSpecialites.add(new Specialite(TypeParcours.SOCLE, "SOCLE"));
+		listeSpecialites.add(new Specialite(TypeParcours.METIER, "DEV"));
+		listeSpecialites.add(new Specialite(TypeParcours.METIER, "RESEAUX"));
+		listeSpecialites.add(new Specialite(TypeParcours.COMPLEMENTAIRE, "SECU"));
+		listeSpecialites.add(new Specialite(TypeParcours.COMPLEMENTAIRE, "VIRTU"));
+		listeSpecialites.add(new Specialite(TypeParcours.COMPLEMENTAIRE, "DATA"));
+		listeSpecialites.add(new Specialite(TypeParcours.PROFESSIONNEL, "PROFESSIONNEL"));
 
-		// SOCLE
-		Specialite specialite = new Specialite();
-		specialite.setTypeParcours(TypeParcours.SOCLE);
-		specialite.setFormation(formation);
-		specialite.setLibelle("SOCLE");
-		listeSpecialites.add(specialite);
-
-		// M-DEV
-		specialite = new Specialite();
-		specialite.setTypeParcours(TypeParcours.METIER);
-		specialite.setFormation(formation);
-		specialite.setLibelle("DEV");
-		listeSpecialites.add(specialite);
-
-		// M-RESEAUX
-		specialite = new Specialite();
-		specialite.setTypeParcours(TypeParcours.METIER);
-		specialite.setFormation(formation);
-		specialite.setLibelle("RESEAUX");
-		listeSpecialites.add(specialite);
-
-		// C-SECU
-		specialite = new Specialite();
-		specialite.setTypeParcours(TypeParcours.COMPLEMENTAIRE);
-		specialite.setFormation(formation);
-		specialite.setLibelle("SECU");
-		listeSpecialites.add(specialite);
-
-		// C-VIRTU
-		specialite = new Specialite();
-		specialite.setTypeParcours(TypeParcours.COMPLEMENTAIRE);
-		specialite.setFormation(formation);
-		specialite.setLibelle("VIRTU");
-		listeSpecialites.add(specialite);
-
-		// C-DATA
-		specialite = new Specialite();
-		specialite.setTypeParcours(TypeParcours.COMPLEMENTAIRE);
-		specialite.setFormation(formation);
-		specialite.setLibelle("DATA");
-		listeSpecialites.add(specialite);
-
-		// PROFESSIONNEL
-		specialite = new Specialite();
-		specialite.setTypeParcours(TypeParcours.PROFESSIONNEL);
-		specialite.setFormation(formation);
-		specialite.setLibelle("PROFESSIONNEL");
-		listeSpecialites.add(specialite);
-
-		formation.setListeSpecialites(listeSpecialites);
-
-		// SEMESTRES
-		// ------------------------------------------------
-		Semestre semestre = new Semestre();
-		semestre.setNumeroSemestre(NumeroSemestre.SEMESTRE1);
-		semestre.setDateDebut(LocalDate.of(2017, 9, 28));
-		semestre.setDateFin(LocalDate.of(2017, 12, 31));
-		semestre = semestreRepository.save(semestre);
-		formation.addSemestre1(semestre);
-
-		semestre = new Semestre();
-		semestre.setNumeroSemestre(NumeroSemestre.SEMESTRE2);
-		semestre.setDateDebut(LocalDate.of(2018, 1, 1));
-		semestre.setDateFin(LocalDate.of(2018, 7, 20));
-		semestre = semestreRepository.save(semestre);
-		formation.addSemestre2(semestre);
-
-		// persistance des données
-		formationRepository.save(formation);
+		// formation
+		formationRepository.save(new Formation(TypeFormation.B3, "BACHELOR 3", semestre1, semestre2, listeSpecialites));
 
 	}
 
 	@Override
 	public void initialiserSalles() {
-
-		// jaune
-		Salle salle = new Salle();
-		salle.setLibelle("jaune");
-		salleRepository.save(salle);
-
-		// rouge
-		salle = new Salle();
-		salle.setLibelle("rouge");
-		salleRepository.save(salle);
-
-		// verte
-		salle = new Salle();
-		salle.setLibelle("verte");
-		salleRepository.save(salle);
-
-		// grise
-		salle = new Salle();
-		salle.setLibelle("grise");
-		salleRepository.save(salle);
-
-		// tp1
-		salle = new Salle();
-		salle.setLibelle("tp-1");
-		salleRepository.save(salle);
-
-		// bde
-		salle = new Salle();
-		salle.setLibelle("bde");
-		salleRepository.save(salle);
-
-		// tp2
-		salle = new Salle();
-		salle.setLibelle("tp-2");
-		salleRepository.save(salle);
-
-		// conf
-		salle = new Salle();
-		salle.setLibelle("conférence");
-		salleRepository.save(salle);
-
-		// normandie
-		salle = new Salle();
-		salle.setLibelle("normandie");
-		salleRepository.save(salle);
-
+		salleRepository.save(new Salle("jaune"));
+		salleRepository.save(new Salle("rouge"));
+		salleRepository.save(new Salle("verte"));
+		salleRepository.save(new Salle("grise"));
+		salleRepository.save(new Salle("tp-1"));
+		salleRepository.save(new Salle("tp-2"));
+		salleRepository.save(new Salle("bde"));
+		salleRepository.save(new Salle("conférence"));
+		salleRepository.save(new Salle("normandie"));
 	}
 
 	@Override
 	public void initialiserIntervenants() {
-
-		Intervenant intervenant = new Intervenant();
-		intervenant.setNom("deliessche");
-		intervenant.setPrenom("christian");
-		intervenantRepository.save(intervenant);
-
-		intervenant = new Intervenant();
-		intervenant.setNom("hardstaff");
-		intervenant.setPrenom("debra");
-		intervenantRepository.save(intervenant);
-
+		intervenantRepository.save(new Intervenant("deliessche", "christian"));
+		intervenantRepository.save(new Intervenant("hardstaff", "debra"));
 	}
 
 	@Override
 	public void initialiserModules() {
 
+		// récupération des intervenants
+		Intervenant aucun = null;
+		Intervenant deliescche = intervenantRepository.findByNom("deliessche");
+		Intervenant hardstaff = intervenantRepository.findByNom("hardstaff");
+
 		// B3 - Semestre 1
 		Formation formation = formationRepository.findByTypeFormation(TypeFormation.B3);
-		Semestre semestre = semestreRepository.findByFormationAndNumeroSemestre(formation, NumeroSemestre.SEMESTRE1);
+		Semestre semestre1 = semestreRepository.findByFormationAndNumeroSemestre(formation, NumeroSemestre.SEMESTRE1);
 
-		// 539
-		Module module = new Module();
-		module.setCode("DEVE539");
-		module.setLibelle("Sécurité Système et Réseaux - les fondamentaux");
-		module.setSemestre(semestre);
-		module.setDureeFFP(Duration.ofHours(18));
-		module.setDureeTE(Duration.ofHours(2));
-		Intervenant intervenant = intervenantRepository.findByNomAndPrenom("deliessche", "christian");
-		module.setIntervenant(intervenant);
-		moduleRepository.save(module);
-
-		// 627
-		module = new Module();
-		module.setCode("LNGE627");
-		module.setLibelle("Case Study (usual English)");
-		module.setSemestre(semestre);
-		module.setDureeFFP(Duration.ofHours(20));
-		module.setDureeTE(Duration.ofHours(0));
-		intervenant = intervenantRepository.findByNomAndPrenom("hardstaff", "debra");
-		module.setIntervenant(intervenant);
-		moduleRepository.save(module);
+		// modules
+		moduleRepository.save(new Module("DEVE539", "Sécurité Système et Réseaux - les fondamentaux", semestre1, Duration.ofHours(18), Duration.ofHours(2), deliescche));
+		moduleRepository.save(new Module("LNGE627", "Case Study (usual English)", semestre1, Duration.ofHours(20), Duration.ofHours(0), hardstaff));
 
 	}
 

@@ -42,6 +42,15 @@ public class Module {
 	@ManyToOne
 	private Intervenant intervenant;
 
+	public Module(String code, String libelle, Semestre semestre, Duration dureeFFP, Duration dureeTE, Intervenant intervenant) {
+		this.code = code;
+		this.libelle = libelle;
+		this.semestre = semestre;
+		this.dureeFFP = dureeFFP;
+		this.dureeTE = dureeTE;
+		this.intervenant = intervenant;
+	}
+
 	public String getCode() {
 		return code;
 	}

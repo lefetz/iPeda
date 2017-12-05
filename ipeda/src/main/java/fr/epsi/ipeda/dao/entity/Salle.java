@@ -24,6 +24,10 @@ public class Salle {
 	@ManyToMany(mappedBy = "listeSalles", fetch = FetchType.LAZY)
 	private List<Cours> listeCours;
 
+	public Salle(String libelle) {
+		this.libelle = libelle;
+	}
+
 	public Long getId() {
 		return id;
 	}

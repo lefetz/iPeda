@@ -31,6 +31,11 @@ public class Intervenant {
 	@OneToMany(mappedBy = "intervenant", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<Module> listeModules;
 
+	public Intervenant(String nom, String prenom) {
+		this.nom = nom;
+		this.prenom = prenom;
+	}
+
 	public Long getId() {
 		return id;
 	}
