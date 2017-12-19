@@ -9,6 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -17,6 +19,7 @@ import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "module")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Module {
 
 	@Id
@@ -40,7 +43,18 @@ public class Module {
 	private List<Cours> listeCours;
 
 	@ManyToOne
+	@Basic(optional = false)
 	private Intervenant intervenant;
+
+	@ManyToOne
+	private Module moduleParent;
+
+	@OneToMany(mappedBy = "moduleParent", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<Module> listeModulesEnfants;
+
+	@ManyToOne
+	@Basic(optional = false)
+	private UniteEnseignement uniteEnseignement;
 
 	public Module(String code, String libelle, Semestre semestre, Duration dureeFFP, Duration dureeTE, Intervenant intervenant) {
 		this.code = code;
@@ -49,6 +63,36 @@ public class Module {
 		this.dureeFFP = dureeFFP;
 		this.dureeTE = dureeTE;
 		this.intervenant = intervenant;
+	}
+
+	public Module(String code, String libelle, Semestre semestre, Duration dureeFFP, Duration dureeTE, Intervenant intervenant, UniteEnseignement uniteEnseignement) {
+		this.code = code;
+		this.libelle = libelle;
+		this.semestre = semestre;
+		this.dureeFFP = dureeFFP;
+		this.dureeTE = dureeTE;
+		this.intervenant = intervenant;
+		this.uniteEnseignement = uniteEnseignement;
+	}
+
+	public Module(String code, String libelle, Semestre semestre, Duration dureeFFP, Duration dureeTE) {
+		this.code = code;
+		this.libelle = libelle;
+		this.semestre = semestre;
+		this.dureeFFP = dureeFFP;
+		this.dureeTE = dureeTE;
+	}
+
+	public Module(Module moduleParent, String libelle, Duration dureeFFP, Duration dureeTE, Intervenant intervenant) {
+		this.moduleParent = moduleParent;
+		this.libelle = libelle;
+		this.dureeFFP = dureeFFP;
+		this.dureeTE = dureeTE;
+		this.intervenant = intervenant;
+	}
+
+	public Module() {
+
 	}
 
 	public String getCode() {
@@ -105,6 +149,30 @@ public class Module {
 
 	public void setIntervenant(Intervenant intervenant) {
 		this.intervenant = intervenant;
+	}
+
+	public Module getModuleParent() {
+		return moduleParent;
+	}
+
+	public void setModuleParent(Module moduleParent) {
+		this.moduleParent = moduleParent;
+	}
+
+	public List<Module> getListeModulesEnfants() {
+		return listeModulesEnfants;
+	}
+
+	public void setListeModulesEnfants(List<Module> listeModulesEnfants) {
+		this.listeModulesEnfants = listeModulesEnfants;
+	}
+
+	public UniteEnseignement getUniteEnseignement() {
+		return uniteEnseignement;
+	}
+
+	public void setUniteEnseignement(UniteEnseignement uniteEnseignement) {
+		this.uniteEnseignement = uniteEnseignement;
 	}
 
 }

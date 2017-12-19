@@ -41,16 +41,15 @@ public class Formation {
 	private Semestre semestre2;
 
 	@OneToMany(mappedBy = "formation", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Specialite> listeSpecialites;
+	private List<Parcours> listeParcours;
 
-	public Formation(TypeFormation typeFormation, String libelle, Semestre semestre1, Semestre semestre2, List<Specialite> listeSpecialites) {
+	public Formation() {
+		listeParcours = new ArrayList<Parcours>();
+	}
+
+	public Formation(TypeFormation typeFormation, String libelle, Semestre semestre1, Semestre semestre2) {
 		this.typeFormation = typeFormation;
 		this.libelle = libelle;
-
-		for (Specialite specialite : listeSpecialites) {
-			specialite.setFormation(this);
-		}
-		this.listeSpecialites = listeSpecialites;
 
 		semestre1.setFormation(this);
 		this.semestre1 = semestre1;
@@ -107,27 +106,35 @@ public class Formation {
 		}
 	}
 
-	public List<Specialite> getListeSpecialites() {
-		return listeSpecialites;
-	}
-
-	public void addSpecialite(Specialite specialite) {
-		if (null == listeSpecialites) {
-			listeSpecialites = new ArrayList<Specialite>();
-		}
-		listeSpecialites.add(specialite);
-	}
-
-	public void setListeSpecialites(List<Specialite> listeSpecialites) {
-		this.listeSpecialites = listeSpecialites;
-	}
-
 	public TypeFormation getTypeFormation() {
 		return typeFormation;
 	}
 
 	public void setTypeFormation(TypeFormation typeFormation) {
 		this.typeFormation = typeFormation;
+	}
+
+	public List<Parcours> getListeParcours() {
+		return listeParcours;
+	}
+
+	public void setListeParcours(List<Parcours> listeParcours) {
+		this.listeParcours = listeParcours;
+	}
+
+	public void addParcours(Parcours parcours) {
+		if (null != parcours) {
+			listeParcours.add(parcours);
+		}
+
+	}
+
+	public void setSemestre1(Semestre semestre1) {
+		this.semestre1 = semestre1;
+	}
+
+	public void setSemestre2(Semestre semestre2) {
+		this.semestre2 = semestre2;
 	}
 
 }

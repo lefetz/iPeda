@@ -8,6 +8,6 @@ public interface IDatabaseService {
 
 	public void initialiserIntervenants();
 
-	public void initialiserModules();
+	void initialiserModules();
 
 }

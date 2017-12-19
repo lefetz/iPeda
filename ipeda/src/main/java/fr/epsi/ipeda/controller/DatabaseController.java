@@ -19,9 +19,6 @@ public class DatabaseController {
 	@Transactional
 	public String generation(Model model) {
 
-		// initialisation des formations
-		databaseService.initialiserFormations();
-
 		// initialisation des salles
 		databaseService.initialiserSalles();
 
@@ -29,7 +26,19 @@ public class DatabaseController {
 		databaseService.initialiserIntervenants();
 
 		// initialisation des modules
-		databaseService.initialiserModules();
+//		databaseService.initialiserModules();
+
+		// initialiser UE
+//		databaseService.initialiserUE();
+
+		// initialiser blocs de compétences
+//		databaseService.initialiserBlocsCompetences();
+
+		// initialiser parcours
+//		databaseService.initialiserParcours();
+
+		// initialisation des formations
+		databaseService.initialiserFormations();
 
 		return "test/dbinit";
 	}
