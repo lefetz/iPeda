@@ -2,9 +2,7 @@ package fr.epsi.ipeda.service.database;
 
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +69,7 @@ public class DatabaseService implements IDatabaseService {
 
 		Map<NumeroSemestre, Semestre> mapSemestres = null;
 		// List<Specialite> listeSpecialites = null;
-		List<Module> listeModules = new ArrayList<Module>();
+		// List<Module> listeModules = new ArrayList<Module>();
 		UniteEnseignement ue = null;
 		Formation formation = null;
 		Parcours parcours = null;
@@ -124,7 +122,10 @@ public class DatabaseService implements IDatabaseService {
 		//
 		// ================================================================================================
 
-		// semestres
+		// ------------------------------------------------
+		// Semestres
+		// ------------------------------------------------
+
 		mapSemestres = new HashMap<NumeroSemestre, Semestre>() {
 			{
 				put(NumeroSemestre.SEMESTRE1, new Semestre(NumeroSemestre.SEMESTRE1, LocalDate.of(2017, 9, 28), LocalDate.of(2017, 12, 31)));
@@ -132,7 +133,10 @@ public class DatabaseService implements IDatabaseService {
 			}
 		};
 
-		// formation
+		// ------------------------------------------------
+		// Formation
+		// ------------------------------------------------
+
 		formation = formationRepository.save(new Formation(TypeFormation.B3, "BACHELOR 3", mapSemestres.get(NumeroSemestre.SEMESTRE1), mapSemestres.get(NumeroSemestre.SEMESTRE2)));
 
 		// ================================================
@@ -140,11 +144,13 @@ public class DatabaseService implements IDatabaseService {
 		// PARCOURS SOCLE
 		//
 		// ================================================
+
 		parcours = parcoursRepository.save(new Parcours(Parcours.TypeParcours.SOCLE, false, formation));
 
 		// ------------------------------------------------
 		// UE learning
 		// ------------------------------------------------
+
 		ue = uniteEnseignementRepository.save(new UniteEnseignement(null, "Learning by doing", parcours));
 		saveModule("TPTE500", "Workshop 1 - Hackaton / Développement d'une application objet", 30, 0, mapSemestres, intervenantRepository.findByNom("lefetz"), ue);
 		saveModule("TPTE600", "Workshop 2 - Créativité & Innovation / TagCloud : Sécurité - Professionnalisme - Domotique", 30, 0, mapSemestres, intervenantRepository.findByNom("lefetz"), ue);
@@ -152,15 +158,10 @@ public class DatabaseService implements IDatabaseService {
 		// ------------------------------------------------
 		// bloc compétences 1
 		// ------------------------------------------------
+
 		blocCompetences = blocCompetencesRepository.save(new BlocCompetences(parcours, 1, "Développement d'applications informatiques"));
-
-		// projet transversal
 		saveProjetTransversal("TPTE511", "Projet transversal Développement d'une application en langage Java", 40, 0, mapSemestres, intervenantRepository.findByNom("lefetz"), blocCompetences);
-
-		// UE
 		ue = uniteEnseignementRepository.save(new UniteEnseignement(null, "Développement d'applications Objet", blocCompetences));
-
-		// modules
 		saveModule("DEVE501", "Langage Java", 18, 2, mapSemestres, intervenantRepository.findByNomAndPrenom("gaber", "jaafar"), ue);
 		saveModule("DEVE602", "Intégration continue (Java & Jenkins)", 18, 2, mapSemestres, intervenantRepository.findByNom("chinchole"), ue);
 		saveModule("DEVE604", "Langage J2EE", 18, 2, mapSemestres, intervenantRepository.findByNomAndPrenom("gaber", "jaafar"), ue);
@@ -168,14 +169,55 @@ public class DatabaseService implements IDatabaseService {
 		// ................................................
 		// bloc compétences 2
 		// ................................................
+
 		blocCompetences = blocCompetencesRepository.save(new BlocCompetences(parcours, 2, "Administration Infrastructure Système & Réseau"));
 		saveProjetTransversal("TPTE516", "Projet transversal Administration & Sécurité d'une Infrastructure", 40, 0, mapSemestres, intervenantRepository.findByNom("lefetz"), blocCompetences);
-		ue = uniteEnseignementRepository.save(new UniteEnseignement(null, "UE  Réseaux & Systèmes", blocCompetences));
+		ue = uniteEnseignementRepository.save(new UniteEnseignement(null, "Réseaux & Systèmes", blocCompetences));
 		saveModule("DEVE507", "IP, Techno. et Services réseaux sans fil", 18, 2, mapSemestres, intervenantRepository.findByNomAndPrenom("dubois", "julien"), ue);
+		saveModule("DEVE539", "Sécurité Système et Réseaux - les fondamentaux", 18, 2, mapSemestres, intervenantRepository.findByNom("deliessche"), ue);
+		saveModule("DEVE640", "Administration sous windows  : automatisation des tâches", 18, 2, mapSemestres, intervenantRepository.findByNom("rombeaut"), ue);
+
+		// ................................................
+		// bloc compétences 3
+		// ................................................
+
+		blocCompetences = blocCompetencesRepository.save(new BlocCompetences(parcours, 3, "Gestion des Données"));
+		saveProjetTransversal("TPTE621", "Projet transversal Développement & Admnistration d'une BD", 20, 0, mapSemestres, intervenantRepository.findByNomAndPrenom("gaber", "khalid"),
+				blocCompetences);
+		ue = uniteEnseignementRepository.save(new UniteEnseignement(null, "SGBD  Oracle", blocCompetences));
+		saveModule("BDOE505", "Conception et exploitation d'une BD", 18, 2, mapSemestres, intervenantRepository.findByNomAndPrenom("gaber", "khalid"), ue);
+		saveModule("BDOE606", "Administration d'une BD", 18, 2, mapSemestres, intervenantRepository.findByNomAndPrenom("gaber", "khalid"), ue);
+
+		// ................................................
+		// bloc compétences 4
+		// ................................................
+
+		blocCompetences = blocCompetencesRepository.save(new BlocCompetences(parcours, 4, "Méthodes & Projet"));
+		ue = uniteEnseignementRepository.save(new UniteEnseignement(null, "Projet S.I. & Recherche opérationnelle", blocCompetences));
+		saveModule("PROE509", "UML / Autres diagrammes + Utilisation AGL", 18, 2, mapSemestres, intervenantRepository.findByNomAndPrenom("gaber", "khalid"), ue);
+		saveModule("PROE510", "Gestion de Projet via ITIL", 18, 2, mapSemestres, intervenantRepository.findByNom("cerisier"), ue);
+		saveModule("TQGE625", "R.O. : Programmation linéaire", 18, 2, mapSemestres, intervenantRepository.findByNom("maati"), ue);
+		ue = uniteEnseignementRepository.save(new UniteEnseignement(null, "Environnement Juridique & Financier", blocCompetences));
+		saveModule("DRTE522", "Droit de l'Internet", 18, 2, mapSemestres, intervenantRepository.findByNom("quenton"), ue);
+		saveModule("FINE624", "Finance / Business Plan", 18, 2, mapSemestres, intervenantRepository.findByNom("frénéa"), ue);
+
+		// ................................................
+		// bloc compétences 5
+		// ................................................
+
+		blocCompetences = blocCompetencesRepository.save(new BlocCompetences(parcours, 5, "Communication"));
+		ue = uniteEnseignementRepository.save(new UniteEnseignement(null, "Anglais", blocCompetences));
+		saveModule("LNGE627", "Case Study (usual English)", 18, 2, mapSemestres, intervenantRepository.findByNom("hardstaff"), ue);
+		saveModule("LNGE628", "Case Study (technical English)", 18, 2, mapSemestres, intervenantRepository.findByNom("hardstaff"), ue);
+		ue = uniteEnseignementRepository.save(new UniteEnseignement(null, "Techniques d'Expression et Communication", blocCompetences));
+		saveModule("COME629", "Techniques rédactionnelles professionnelles", 18, 2, mapSemestres, intervenantRepository.findByNom("boutonnet"), ue);
+		saveModule("COME630", "Communication professionnelle", 18, 2, mapSemestres, intervenantRepository.findByNom("boutonnet"), ue);
 
 		// ------------------------------------------------
 		// PARCOURS METIER
 		// ------------------------------------------------
+		
+		ici
 
 		// ------------------------------------------------
 		// PARCOURS COMPLEMENTAIRE
@@ -252,23 +294,47 @@ public class DatabaseService implements IDatabaseService {
 
 	@Override
 	public void initialiserIntervenants() {
-		intervenantRepository.save(new Intervenant("deliessche", "christian"));
-		intervenantRepository.save(new Intervenant("hardstaff", "debra"));
-		intervenantRepository.save(new Intervenant("gaber", "khalid"));
-		intervenantRepository.save(new Intervenant("lefetz", "guillaume"));
-		intervenantRepository.save(new Intervenant("frénéa", "marylène"));
-		intervenantRepository.save(new Intervenant("le gales", "julien"));
+		intervenantRepository.save(new Intervenant("alamasset", "eddie"));
 		intervenantRepository.save(new Intervenant("boutonnet", "jean-pierre"));
-		intervenantRepository.save(new Intervenant("labis", "solveig"));
-		intervenantRepository.save(new Intervenant("sintive", "xavier"));
-		intervenantRepository.save(new Intervenant("vassiliou", "poly"));
-		intervenantRepository.save(new Intervenant("duplouich", "audrey"));
 		intervenantRepository.save(new Intervenant("briki", "rachid"));
-		intervenantRepository.save(new Intervenant("dudek", "cédric"));
+		intervenantRepository.save(new Intervenant("cerisier", "grégory"));
+		intervenantRepository.save(new Intervenant("chinchole", "michaël"));
+		intervenantRepository.save(new Intervenant("dal-pra", "annie"));
+		intervenantRepository.save(new Intervenant("decroix", "sébastien"));
 		intervenantRepository.save(new Intervenant("delanoy", "géry"));
+		intervenantRepository.save(new Intervenant("deliessche", "christian"));
+		intervenantRepository.save(new Intervenant("dewaleyne", "freddie"));
+		intervenantRepository.save(new Intervenant("doco", "david"));
 		intervenantRepository.save(new Intervenant("dubois", "julien"));
+		intervenantRepository.save(new Intervenant("dubois", "patrick"));
+		intervenantRepository.save(new Intervenant("dudek", "cédric"));
+		intervenantRepository.save(new Intervenant("duplouich", "audrey"));
+		intervenantRepository.save(new Intervenant("flasque", "sébastien"));
+		intervenantRepository.save(new Intervenant("frenea", "marylène"));
+		intervenantRepository.save(new Intervenant("fritsch", "thomas"));
 		intervenantRepository.save(new Intervenant("gaber", "jaafar"));
-		intervenantRepository.save(new Intervenant("chinchole", "michael"));
+		intervenantRepository.save(new Intervenant("gaber", "khalid"));
+		intervenantRepository.save(new Intervenant("gaber", "oussama"));
+		intervenantRepository.save(new Intervenant("hanot", "jean-jacques"));
+		intervenantRepository.save(new Intervenant("hardstaff", "debra"));
+		intervenantRepository.save(new Intervenant("kaszer", "daishi"));
+		intervenantRepository.save(new Intervenant("labis", "solveig"));
+		intervenantRepository.save(new Intervenant("le gales", "julien"));
+		intervenantRepository.save(new Intervenant("lefetz", "guillaume"));
+		intervenantRepository.save(new Intervenant("lenglet", "julien"));
+		intervenantRepository.save(new Intervenant("lepoutre", "jean-claude"));
+		intervenantRepository.save(new Intervenant("maati", "abderrabi"));
+		intervenantRepository.save(new Intervenant("nakache", "didier"));
+		intervenantRepository.save(new Intervenant("quenton", "amandine"));
+		intervenantRepository.save(new Intervenant("regost", "philippe"));
+		intervenantRepository.save(new Intervenant("rombeaut", "jean-pierre"));
+		intervenantRepository.save(new Intervenant("seifert", "anthony"));
+		intervenantRepository.save(new Intervenant("sintive", "xavier"));
+		intervenantRepository.save(new Intervenant("spella", "michel"));
+		intervenantRepository.save(new Intervenant("vassiliou", "poly"));
+		intervenantRepository.save(new Intervenant("vermersch", "olivier"));
+		intervenantRepository.save(new Intervenant("vigneron", "jean-baptiste"));
+
 	}
 
 	@Override
