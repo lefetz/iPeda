@@ -25,20 +25,13 @@ public class DatabaseController {
 		// initialisation des intervenants
 		databaseService.initialiserIntervenants();
 
-		// initialisation des modules
-//		databaseService.initialiserModules();
-
-		// initialiser UE
-//		databaseService.initialiserUE();
-
-		// initialiser blocs de compétences
-//		databaseService.initialiserBlocsCompetences();
-
-		// initialiser parcours
-//		databaseService.initialiserParcours();
-
 		// initialisation des formations
-		databaseService.initialiserFormations();
+		databaseService.initialiserFormationB3();
+		
+		// insérer cours
+		databaseService.initialiserCoursB3();
+		
+		databaseService.afficheCours();
 
 		return "test/dbinit";
 	}

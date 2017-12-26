@@ -1,10 +1,13 @@
 package fr.epsi.ipeda.dao.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -21,10 +24,19 @@ public class Salle {
 	@Basic(optional = false)
 	private String libelle;
 
-	@ManyToMany(mappedBy = "listeSalles", fetch = FetchType.LAZY)
-	private List<Cours> listeCours;
+	public enum CodeSalle {
+		JAUNE, ROUGE, VERTE, GRISE, TP1, TP2, BDE, CONF, NORMANDIE
+	}
 
-	public Salle(String libelle) {
+	@Column(name = "code_salle")
+	@Enumerated(EnumType.STRING)
+	private CodeSalle codeSalle;
+
+	@ManyToMany
+	private List<Cours> listeCours = new ArrayList<>();
+
+	public Salle(CodeSalle codeSalle, String libelle) {
+		this.codeSalle = codeSalle;
 		this.libelle = libelle;
 	}
 
@@ -50,6 +62,14 @@ public class Salle {
 
 	public void setListeCours(List<Cours> listeCours) {
 		this.listeCours = listeCours;
+	}
+
+	public CodeSalle getCodeSalle() {
+		return codeSalle;
+	}
+
+	public void setCodeSalle(CodeSalle codeSalle) {
+		this.codeSalle = codeSalle;
 	}
 
 }

@@ -33,29 +33,23 @@ public class UniteEnseignement {
 	private BlocCompetences blocCompetences;
 
 	@OneToMany(mappedBy = "uniteEnseignement", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Module> listeModules;
+	private List<Module> listeModules = new ArrayList<Module>();
 
 	public enum TypeUE {
-		DEV, RESEAUX, SECU, DATA, MOBILITE, ERP, CLOUD
+		DEV, RESEAUX, SECU, DATA, MOBILITE, ERP, CLOUD, VIRTU
 	}
 
 	@Column(name = "type_unite_enseignement")
 	@Enumerated(EnumType.STRING)
 	private TypeUE typeUE;
 
-	public UniteEnseignement() {
-		listeModules = new ArrayList<Module>();
-	}
-
 	public UniteEnseignement(TypeUE typeUE, String libelle, Parcours parcours) {
-		this();
 		this.typeUE = typeUE;
 		this.libelle = libelle;
 		this.parcours = parcours;
 	}
 
 	public UniteEnseignement(TypeUE typeUE, String libelle, BlocCompetences blocCompetences) {
-		this();
 		this.typeUE = typeUE;
 		this.libelle = libelle;
 		this.blocCompetences = blocCompetences;

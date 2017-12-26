@@ -9,8 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import fr.epsi.ipeda.service.utils.TimeUtils;
-import fr.epsi.ipeda.service.utils.TimeUtils.TIMEFIELD;
+import fr.epsi.ipeda.helpers.TimeUtils;
+import fr.epsi.ipeda.helpers.TimeUtils.TIMEFIELD;
 
 @Controller
 public class PlanifController {

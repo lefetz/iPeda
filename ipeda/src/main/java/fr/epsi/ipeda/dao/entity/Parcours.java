@@ -38,18 +38,12 @@ public class Parcours {
 	private TypeParcours typeParcours;
 
 	@OneToMany(mappedBy = "parcours", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<UniteEnseignement> listeUnitesEnseignement;
+	private List<UniteEnseignement> listeUnitesEnseignement = new ArrayList<UniteEnseignement>();
 
 	@OneToMany(mappedBy = "parcours", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<BlocCompetences> listeBlocsCompetences;
-
-	public Parcours() {
-		listeUnitesEnseignement = new ArrayList<UniteEnseignement>();
-		listeBlocsCompetences = new ArrayList<BlocCompetences>();
-	}
+	private List<BlocCompetences> listeBlocsCompetences = new ArrayList<BlocCompetences>();
 
 	public Parcours(TypeParcours typeParcours, boolean optionnel, Formation formation) {
-		this();
 		this.optionnel = optionnel;
 		this.formation = formation;
 		this.typeParcours = typeParcours;

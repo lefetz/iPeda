@@ -1,5 +1,6 @@
 package fr.epsi.ipeda.dao.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -31,7 +32,7 @@ public class BlocCompetences {
 	private Parcours parcours;
 
 	@OneToMany(mappedBy = "parcours", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<UniteEnseignement> listeUnitesEnseignement;
+	private List<UniteEnseignement> listeUnitesEnseignement = new ArrayList<UniteEnseignement>();
 
 	@OneToOne(mappedBy = "blocCompetences", cascade = CascadeType.ALL, orphanRemoval = true)
 	private ProjetTransversal projetTransversal;

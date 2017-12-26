@@ -35,7 +35,7 @@ public class NomenclatureService implements INomenclatureService {
 	public Semestre autoselectSemestre(String codeModule, Map<NumeroSemestre, Semestre> mapSemestres) {
 		int tailleMapSemestres = 2;
 		if (isCodeModuleValide(codeModule) && null != mapSemestres && mapSemestres.size() == tailleMapSemestres) {
-			int semestre = Integer.parseInt(codeModule.substring(4, 1));
+			int semestre = Integer.parseInt(codeModule.substring(4, 5));
 			if (semestre % 2 != 0) {
 				return mapSemestres.get(Semestre.NumeroSemestre.SEMESTRE1);
 			} else {

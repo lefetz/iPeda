@@ -41,11 +41,7 @@ public class Formation {
 	private Semestre semestre2;
 
 	@OneToMany(mappedBy = "formation", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Parcours> listeParcours;
-
-	public Formation() {
-		listeParcours = new ArrayList<Parcours>();
-	}
+	private List<Parcours> listeParcours = new ArrayList<Parcours>();
 
 	public Formation(TypeFormation typeFormation, String libelle, Semestre semestre1, Semestre semestre2) {
 		this.typeFormation = typeFormation;

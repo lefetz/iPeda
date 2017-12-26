@@ -1,5 +1,6 @@
 package fr.epsi.ipeda.dao.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -8,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -26,10 +28,10 @@ public class Intervenant {
 	private String prenom;
 
 	@OneToMany(mappedBy = "intervenant", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private List<Cours> listeCours;
+	private List<Cours> listeCours = new ArrayList<Cours>();
 
-	@OneToMany(mappedBy = "intervenant", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private List<Module> listeModules;
+	@ManyToMany
+	private List<Module> listeModules = new ArrayList<Module>();
 
 	public Intervenant(String nom, String prenom) {
 		this.nom = nom;

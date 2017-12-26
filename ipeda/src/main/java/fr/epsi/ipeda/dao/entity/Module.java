@@ -1,6 +1,7 @@
 package fr.epsi.ipeda.dao.entity;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -11,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -40,21 +42,29 @@ public class Module {
 	private Duration dureeTE;
 
 	@OneToMany(mappedBy = "module", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private List<Cours> listeCours;
+	private List<Cours> listeCours = new ArrayList<Cours>();
 
-	@ManyToOne
-	@Basic(optional = false)
-	private Intervenant intervenant;
+	@ManyToMany(mappedBy = "listeModules", fetch = FetchType.LAZY)
+	private List<Intervenant> listeIntervenants = new ArrayList<Intervenant>();
 
 	@ManyToOne
 	private Module moduleParent;
 
 	@OneToMany(mappedBy = "moduleParent", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private List<Module> listeModulesEnfants;
+	private List<Module> listeModulesEnfants = new ArrayList<Module>();
 
 	@ManyToOne
 	@Basic(optional = false)
 	private UniteEnseignement uniteEnseignement;
+
+	public Module(String code, String libelle, Semestre semestre, Duration dureeFFP, Duration dureeTE, List<Intervenant> listeIntervenants) {
+		this.code = code;
+		this.libelle = libelle;
+		this.semestre = semestre;
+		this.dureeFFP = dureeFFP;
+		this.dureeTE = dureeTE;
+		addIntervenant(listeIntervenants);
+	}
 
 	public Module(String code, String libelle, Semestre semestre, Duration dureeFFP, Duration dureeTE, Intervenant intervenant) {
 		this.code = code;
@@ -62,7 +72,17 @@ public class Module {
 		this.semestre = semestre;
 		this.dureeFFP = dureeFFP;
 		this.dureeTE = dureeTE;
-		this.intervenant = intervenant;
+		addIntervenant(intervenant);
+	}
+
+	public Module(String code, String libelle, Semestre semestre, Duration dureeFFP, Duration dureeTE, List<Intervenant> listeIntervenants, UniteEnseignement uniteEnseignement) {
+		this.code = code;
+		this.libelle = libelle;
+		this.semestre = semestre;
+		this.dureeFFP = dureeFFP;
+		this.dureeTE = dureeTE;
+		addIntervenant(listeIntervenants);
+		this.uniteEnseignement = uniteEnseignement;
 	}
 
 	public Module(String code, String libelle, Semestre semestre, Duration dureeFFP, Duration dureeTE, Intervenant intervenant, UniteEnseignement uniteEnseignement) {
@@ -71,7 +91,7 @@ public class Module {
 		this.semestre = semestre;
 		this.dureeFFP = dureeFFP;
 		this.dureeTE = dureeTE;
-		this.intervenant = intervenant;
+		addIntervenant(intervenant);
 		this.uniteEnseignement = uniteEnseignement;
 	}
 
@@ -83,12 +103,20 @@ public class Module {
 		this.dureeTE = dureeTE;
 	}
 
+	public Module(Module moduleParent, String libelle, Duration dureeFFP, Duration dureeTE, List<Intervenant> listeIntervenants) {
+		this.moduleParent = moduleParent;
+		this.libelle = libelle;
+		this.dureeFFP = dureeFFP;
+		this.dureeTE = dureeTE;
+		addIntervenant(listeIntervenants);
+	}
+
 	public Module(Module moduleParent, String libelle, Duration dureeFFP, Duration dureeTE, Intervenant intervenant) {
 		this.moduleParent = moduleParent;
 		this.libelle = libelle;
 		this.dureeFFP = dureeFFP;
 		this.dureeTE = dureeTE;
-		this.intervenant = intervenant;
+		addIntervenant(intervenant);
 	}
 
 	public Module() {
@@ -143,14 +171,6 @@ public class Module {
 		this.dureeTE = dureeTE;
 	}
 
-	public Intervenant getIntervenant() {
-		return intervenant;
-	}
-
-	public void setIntervenant(Intervenant intervenant) {
-		this.intervenant = intervenant;
-	}
-
 	public Module getModuleParent() {
 		return moduleParent;
 	}
@@ -173,6 +193,30 @@ public class Module {
 
 	public void setUniteEnseignement(UniteEnseignement uniteEnseignement) {
 		this.uniteEnseignement = uniteEnseignement;
+	}
+
+	public List<Intervenant> getListeIntervenants() {
+		return listeIntervenants;
+	}
+
+	public void setListeIntervenants(List<Intervenant> listeIntervenants) {
+		this.listeIntervenants = listeIntervenants;
+	}
+
+	public void addIntervenant(Intervenant intervenant) {
+		if (null != listeIntervenants && null != intervenant) {
+			listeIntervenants.add(intervenant);
+			intervenant.getListeModules().add(this);
+		}
+	}
+
+	public void addIntervenant(List<Intervenant> listeIntervenants) {
+		if (null != listeIntervenants) {
+			for (Intervenant intervenant : listeIntervenants) {
+				listeIntervenants.add(intervenant);
+				intervenant.getListeModules().add(this);
+			}
+		}
 	}
 
 }

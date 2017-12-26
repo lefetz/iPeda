@@ -1,6 +1,7 @@
 package fr.epsi.ipeda.dao.entity;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -42,7 +43,7 @@ public class Semestre {
 	private LocalDate dateFin;
 
 	@OneToMany(mappedBy = "semestre", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private List<Module> listeModules;
+	private List<Module> listeModules = new ArrayList<Module>();
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "formation_id")

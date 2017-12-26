@@ -2,6 +2,7 @@ package fr.epsi.ipeda.dao.entity;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -23,14 +24,14 @@ public class Cours {
 	private Long id;
 
 	@Basic(optional = false)
-	private LocalDateTime dateDebut;
+	private LocalDateTime dateHeureDebut;
 
 	@Type(type = "org.hibernate.type.DurationType")
 	@Basic(optional = false)
 	private Duration duree;
 
-	@ManyToMany
-	private List<Salle> listeSalles;
+	@ManyToMany(mappedBy = "listeCours")
+	private List<Salle> listeSalles = new ArrayList<>();
 
 	@ManyToOne
 	private Intervenant intervenant;
@@ -38,20 +39,35 @@ public class Cours {
 	@ManyToOne
 	private Module module;
 
+	public Cours(LocalDateTime dateHeureDebut, Duration duree, Module module, Intervenant intervenant, List<Salle> listeSalles) {
+		this.dateHeureDebut = dateHeureDebut;
+		this.duree = duree;
+		this.module = module;
+		this.intervenant = intervenant;
+		addSalle(listeSalles);
+	}
+
+	public Cours(LocalDateTime dateHeureDebut, Duration duree, Module module, Intervenant intervenant, Salle salle) {
+		this.dateHeureDebut = dateHeureDebut;
+		this.duree = duree;
+		this.module = module;
+		this.intervenant = intervenant;
+		addSalle(salle);
+	}
+
+	public Cours(LocalDateTime dateHeureDebut, Duration duree, Module module, Salle salle) {
+		this.dateHeureDebut = dateHeureDebut;
+		this.duree = duree;
+		this.module = module;
+		addSalle(salle);
+	}
+
 	public Long getId() {
 		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public LocalDateTime getDateDebut() {
-		return dateDebut;
-	}
-
-	public void setDateDebut(LocalDateTime dateDebut) {
-		this.dateDebut = dateDebut;
 	}
 
 	public Duration getDuree() {
@@ -84,6 +100,30 @@ public class Cours {
 
 	public void setModule(Module module) {
 		this.module = module;
+	}
+
+	public LocalDateTime getDateHeureDebut() {
+		return dateHeureDebut;
+	}
+
+	public void setDateHeureDebut(LocalDateTime dateHeureDebut) {
+		this.dateHeureDebut = dateHeureDebut;
+	}
+
+	public void addSalle(Salle salle) {
+		if (null != listeSalles && null != salle) {
+			listeSalles.add(salle);
+			salle.getListeCours().add(this);
+		}
+	}
+
+	public void addSalle(List<Salle> listeSalles) {
+		if (null != listeSalles) {
+			for (Salle salle : listeSalles) {
+				listeSalles.add(salle);
+				salle.getListeCours().add(this);
+			}
+		}
 	}
 
 }
