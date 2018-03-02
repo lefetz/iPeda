@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import fr.epsi.ipeda.dao.entity.Formation;
+import fr.epsi.ipeda.dao.entity.Semaine;
 import fr.epsi.ipeda.service.database.IDatabaseService;
 
 @Controller
@@ -27,11 +29,13 @@ public class DatabaseController {
 
 		// initialisation des formations
 		databaseService.initialiserFormationB3();
-		
+
 		// insérer cours
 		databaseService.initialiserCoursB3();
-		
-		databaseService.afficheCours();
+
+		// databaseService.afficheCours();
+
+		databaseService.getPlanningBySemaine(Formation.TypeFormation.B3, new Semaine(2018, 8));
 
 		return "test/dbinit";
 	}

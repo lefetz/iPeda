@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -28,9 +27,6 @@ public class Intervenant {
 	private String prenom;
 
 	@OneToMany(mappedBy = "intervenant", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private List<Cours> listeCours = new ArrayList<Cours>();
-
-	@ManyToMany
 	private List<Module> listeModules = new ArrayList<Module>();
 
 	public Intervenant(String nom, String prenom) {
@@ -62,20 +58,20 @@ public class Intervenant {
 		this.prenom = prenom;
 	}
 
-	public List<Cours> getListeCours() {
-		return listeCours;
-	}
-
-	public void setListeCours(List<Cours> listeCours) {
-		this.listeCours = listeCours;
-	}
-
 	public List<Module> getListeModules() {
 		return listeModules;
 	}
 
 	public void setListeModules(List<Module> listeModules) {
 		this.listeModules = listeModules;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Intervenant)) {
+			return false;
+		}
+		return this.id == ((Intervenant) obj).id;
 	}
 
 }

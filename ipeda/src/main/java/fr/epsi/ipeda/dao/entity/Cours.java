@@ -34,25 +34,13 @@ public class Cours {
 	private List<Salle> listeSalles = new ArrayList<>();
 
 	@ManyToOne
-	private Intervenant intervenant;
-
-	@ManyToOne
 	private Module module;
 
-	public Cours(LocalDateTime dateHeureDebut, Duration duree, Module module, Intervenant intervenant, List<Salle> listeSalles) {
+	public Cours(LocalDateTime dateHeureDebut, Duration duree, Module module, List<Salle> listeSalles) {
 		this.dateHeureDebut = dateHeureDebut;
 		this.duree = duree;
 		this.module = module;
-		this.intervenant = intervenant;
 		addSalle(listeSalles);
-	}
-
-	public Cours(LocalDateTime dateHeureDebut, Duration duree, Module module, Intervenant intervenant, Salle salle) {
-		this.dateHeureDebut = dateHeureDebut;
-		this.duree = duree;
-		this.module = module;
-		this.intervenant = intervenant;
-		addSalle(salle);
 	}
 
 	public Cours(LocalDateTime dateHeureDebut, Duration duree, Module module, Salle salle) {
@@ -84,14 +72,6 @@ public class Cours {
 
 	public void setListeSalles(List<Salle> listeSalles) {
 		this.listeSalles = listeSalles;
-	}
-
-	public Intervenant getIntervenant() {
-		return intervenant;
-	}
-
-	public void setIntervenant(Intervenant intervenant) {
-		this.intervenant = intervenant;
 	}
 
 	public Module getModule() {

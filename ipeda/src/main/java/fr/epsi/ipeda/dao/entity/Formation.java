@@ -11,6 +11,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -43,6 +44,9 @@ public class Formation {
 	@OneToMany(mappedBy = "formation", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Parcours> listeParcours = new ArrayList<Parcours>();
 
+	@ManyToMany(mappedBy = "listeFormations")
+	private List<Module> listeModules = new ArrayList<Module>(); // cas UDEV
+
 	public Formation(TypeFormation typeFormation, String libelle, Semestre semestre1, Semestre semestre2) {
 		this.typeFormation = typeFormation;
 		this.libelle = libelle;
@@ -52,6 +56,12 @@ public class Formation {
 
 		semestre2.setFormation(this);
 		this.semestre2 = semestre2;
+	}
+
+	public Formation(TypeFormation typeFormation, String libelle, List<Module> listeModules) {
+		this.typeFormation = typeFormation;
+		this.libelle = libelle;
+		addModule(listeModules);
 	}
 
 	public Long getId() {
@@ -122,7 +132,6 @@ public class Formation {
 		if (null != parcours) {
 			listeParcours.add(parcours);
 		}
-
 	}
 
 	public void setSemestre1(Semestre semestre1) {
@@ -131,6 +140,15 @@ public class Formation {
 
 	public void setSemestre2(Semestre semestre2) {
 		this.semestre2 = semestre2;
+	}
+
+	public void addModule(List<Module> listeModules) {
+		if (null != listeModules) {
+			for (Module module : listeModules) {
+				listeModules.add(module);
+				module.getListeFormations().add(this);
+			}
+		}
 	}
 
 }

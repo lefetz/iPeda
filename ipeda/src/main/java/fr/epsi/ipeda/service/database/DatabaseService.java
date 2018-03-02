@@ -1,12 +1,16 @@
 package fr.epsi.ipeda.service.database;
 
+import java.lang.invoke.MethodHandles;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +24,7 @@ import fr.epsi.ipeda.dao.entity.Parcours;
 import fr.epsi.ipeda.dao.entity.ProjetTransversal;
 import fr.epsi.ipeda.dao.entity.Salle;
 import fr.epsi.ipeda.dao.entity.Salle.CodeSalle;
+import fr.epsi.ipeda.dao.entity.Semaine;
 import fr.epsi.ipeda.dao.entity.Semestre;
 import fr.epsi.ipeda.dao.entity.Semestre.NumeroSemestre;
 import fr.epsi.ipeda.dao.entity.UniteEnseignement;
@@ -34,10 +39,12 @@ import fr.epsi.ipeda.dao.repository.ProjetTransversalRepository;
 import fr.epsi.ipeda.dao.repository.SalleRepository;
 import fr.epsi.ipeda.dao.repository.UniteEnseignementRepository;
 import fr.epsi.ipeda.helpers.FormatterUtils;
-import fr.epsi.ipeda.service.businesslogic.INomenclatureService;
+import fr.epsi.ipeda.service.businesslogic.nomenclature.INomenclatureService;
 
 @Service
 public class DatabaseService implements IDatabaseService {
+
+	final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	@Autowired
 	private FormationRepository formationRepository;
@@ -191,9 +198,9 @@ public class DatabaseService implements IDatabaseService {
 		// ................................................
 
 		blocCompetences = blocCompetencesRepository.save(new BlocCompetences(parcours, 6, "Conception de Solutions d'infrastructures"));
-		createProjetTransversal("TPTE615", "Projet transversal Conception, développement et intégration d'une Solution d'Infrastructure - (Kcréa)", 40, 0, mapSemestres,
+		ProjetTransversal kcreaInfra = createProjetTransversal("TPTE615", "Projet transversal Conception, développement et intégration d'une Solution d'Infrastructure - (Kcréa)", 40, 0, mapSemestres,
 				intervenantRepository.findByNom("dal-pra"), blocCompetences);
-		ue = uniteEnseignementRepository.save(new UniteEnseignement(null, "Gestion et Performance de solution d'infrastructure", blocCompetences));
+		ue = uniteEnseignementRepository.save(new UniteEnseignement(TypeUE.RESEAUX, "Gestion et Performance de solution d'infrastructure", blocCompetences));
 		createModule("RESE631", "Conception et optimisation d'une architecture réseaux", 18, 2, mapSemestres, intervenantRepository.findByNom("rombeaut"), ue);
 		createModule("RESE613", "Haute Disponibilité", 18, 2, mapSemestres, intervenantRepository.findByNom("deliessche"), ue);
 		createModule("RESE612", "Routage dynamique : env. et protocoles", 18, 2, mapSemestres, intervenantRepository.findByNom("deliessche"), ue);
@@ -203,12 +210,20 @@ public class DatabaseService implements IDatabaseService {
 		// ................................................
 
 		blocCompetences = blocCompetencesRepository.save(new BlocCompetences(parcours, 7, "Conception de Solutions applicatives"));
-		createProjetTransversal("TPTE620", "Projet transversal Conception, développement et intégration d'une Solution Applicative - (Kcréa)", 40, 0, mapSemestres,
+		ProjetTransversal kcreaDev = createProjetTransversal("TPTE620", "Projet transversal Conception, développement et intégration d'une Solution Applicative - (Kcréa)", 40, 0, mapSemestres,
 				intervenantRepository.findByNom("dal-pra"), blocCompetences);
-		ue = uniteEnseignementRepository.save(new UniteEnseignement(null, "Conception et Développement S.I.", blocCompetences));
+		ue = uniteEnseignementRepository.save(new UniteEnseignement(TypeUE.DEV, "Conception et Développement S.I.", blocCompetences));
 		createModule("DEVE617", "Design Pattern (Java)", 18, 2, mapSemestres, intervenantRepository.findByNom("chinchole"), ue);
 		createModule("DEVE618", "Mapping Objet Relationnel (ORM/Java)", 18, 2, mapSemestres, intervenantRepository.findByNom("chinchole"), ue);
 		createModule("DEVE619", "Architecture logicielle", 18, 2, mapSemestres, intervenantRepository.findByNom("chinchole"), ue);
+
+		// création du module mutualisé KCréa
+		createModuleMutualise("Projet transversal Conception, développement et intégration d'une Solution (Kcréa)", new ArrayList<Module>() {
+			{
+				add(kcreaInfra);
+				add(kcreaDev);
+			}
+		});
 
 		// ------------------------------------------------
 		// PARCOURS COMPLEMENTAIRE
@@ -251,9 +266,7 @@ public class DatabaseService implements IDatabaseService {
 		salleRepository.save(new Salle(CodeSalle.ROUGE, "rouge"));
 		salleRepository.save(new Salle(CodeSalle.VERTE, "verte"));
 		salleRepository.save(new Salle(CodeSalle.GRISE, "grise"));
-		salleRepository.save(new Salle(CodeSalle.TP1, "tp-1"));
 		salleRepository.save(new Salle(CodeSalle.TP2, "tp-2"));
-		salleRepository.save(new Salle(CodeSalle.BDE, "bde"));
 		salleRepository.save(new Salle(CodeSalle.CONF, "conférence"));
 		salleRepository.save(new Salle(CodeSalle.NORMANDIE, "normandie"));
 	}
@@ -320,6 +333,57 @@ public class DatabaseService implements IDatabaseService {
 	}
 
 	/**
+	 * Méthode utilitaire privée, permettant de persister un module mutualisé et d'alléger le code. Un module mutualisé est un module "parent" qui n'a pas de code, et qui est composé de 2 ou plus
+	 * modules enfants. Il doit être dispensé par le même intervenant. Les modules doivent avoir des volumes horaires identiques.
+	 * 
+	 * @param libelle
+	 * @param listeModulesMutualises
+	 */
+	private void createModuleMutualise(String libelle, ArrayList<Module> listeModulesMutualises) {
+
+		int tailleMinimum = 2;
+		boolean isValide = true;
+
+		// vérifications : même intervenant, mêmes heures FFP
+		Module moduleReference = null;
+		if (null != listeModulesMutualises) {
+			if (listeModulesMutualises.size() >= tailleMinimum) {
+
+				// récupération module de référence
+				moduleReference = listeModulesMutualises.get(0);
+				listeModulesMutualises.remove(0);
+
+				for (Module module : listeModulesMutualises) {
+					if (module.getDureeFFP() != moduleReference.getDureeFFP() || module.getDureeTE() != moduleReference.getDureeTE()
+							|| !module.getIntervenant().equals(moduleReference.getIntervenant())) {
+						isValide = false;
+						logger.error("Les modules à mutualiser ne sont pas compatibles, impossible de mutualiser.");
+						break;
+					}
+				}
+
+				if (isValide) {
+					// sauvegarde du module mutualisé
+					Module module = new Module();
+					module.setDureeFFP(moduleReference.getDureeFFP());
+					module.setDureeTE(moduleReference.getDureeTE());
+					module.setIntervenant(moduleReference.getIntervenant());
+					module.setLibelle(libelle);
+					module.setListeModulesMutualises(listeModulesMutualises);
+					module.setSemestre(moduleReference.getSemestre());
+					module.setUniteEnseignement(moduleReference.getUniteEnseignement());
+					moduleRepository.save(module);
+				}
+			} else {
+				logger.error("La taille minimum requise (" + tailleMinimum + ") pour 'listeModulesMutualises' n'est pas atteinte.");
+			}
+		} else {
+			logger.error("'listeModulesMutualises' est NULL.");
+		}
+
+	}
+
+	/**
 	 * Méthode utilitaire privée, permettant de persister un projet transversal et d'alléger le code
 	 * 
 	 * @param codeModule
@@ -329,10 +393,11 @@ public class DatabaseService implements IDatabaseService {
 	 * @param mapSemestres
 	 * @param intervenant
 	 * @param blocCompetences
+	 * @return
 	 */
-	private void createProjetTransversal(String codeModule, String libelle, int dureeFFP, int dureeTE, Map<NumeroSemestre, Semestre> mapSemestres, Intervenant intervenant,
+	private ProjetTransversal createProjetTransversal(String codeModule, String libelle, int dureeFFP, int dureeTE, Map<NumeroSemestre, Semestre> mapSemestres, Intervenant intervenant,
 			BlocCompetences blocCompetences) {
-		projetTransversalRepository.save(new ProjetTransversal(codeModule, libelle, nomenclatureService.autoselectSemestre(codeModule, mapSemestres), Duration.ofHours(dureeFFP),
+		return projetTransversalRepository.save(new ProjetTransversal(codeModule, libelle, nomenclatureService.autoselectSemestre(codeModule, mapSemestres), Duration.ofHours(dureeFFP),
 				Duration.ofHours(dureeTE), intervenant, blocCompetences));
 
 	}
@@ -347,6 +412,28 @@ public class DatabaseService implements IDatabaseService {
 
 		// semaine 2018-16
 		createCours("16/04/2018 08:15", 4, "RESE631", CodeSalle.CONF);
+		createCours("16/04/2018 13:45", 4, "RESE631", CodeSalle.CONF);
+		createCours("17/04/2018 08:15", 4, "RESE631", CodeSalle.CONF);
+		createCours("17/04/2018 13:45", 4, "RESE631", CodeSalle.CONF);
+		createCours("18/04/2018 08:15", 4, "TPTE615", CodeSalle.CONF);
+		createCours("18/04/2018 13:45", 4, "LNGE628", CodeSalle.CONF);
+		createCours("19/04/2018 08:15", 2, "RESE631", CodeSalle.CONF);
+		createCours("19/04/2018 10:15", 2, "SYSE635", CodeSalle.CONF);
+		createCours("19/04/2018 13:45", 4, "PROE509", CodeSalle.CONF);
+		createCours("20/04/2018 08:15", 4, "PROE509", CodeSalle.CONF);
+		createCours("20/04/2018 13:45", 4, "PROE509", CodeSalle.CONF);
+
+		// semaine 2018-17
+		createCours("23/04/2018 08:15", 4, "TQGE625", CodeSalle.CONF);
+		createCours("23/04/2018 13:45", 4, "TQGE625", CodeSalle.CONF);
+		createCours("24/04/2018 08:15", 4, "TQGE625", CodeSalle.CONF);
+		createCours("24/04/2018 13:45", 4, "TQGE625", CodeSalle.CONF);
+		createCours("25/04/2018 08:15", 4, "TQGE625", CodeSalle.CONF);
+		createCours("25/04/2018 13:45", 4, "TQGE625", CodeSalle.CONF);
+		createCours("26/04/2018 08:15", 4, "TQGE625", CodeSalle.CONF);
+		createCours("26/04/2018 13:45", 4, "TQGE625", CodeSalle.CONF);
+		createCours("27/04/2018 08:15", 4, "TQGE625", CodeSalle.CONF);
+		createCours("27/04/2018 13:45", 4, "TQGE625", CodeSalle.CONF);
 	}
 
 	@Override
@@ -354,9 +441,15 @@ public class DatabaseService implements IDatabaseService {
 		List<Cours> listeCours = coursRepository.findByModule(moduleRepository.findByCode("RESE631"));
 		for (Cours cours : listeCours) {
 			System.out.println("cours : " + cours.getModule().getCode() + " - " + cours.getModule().getLibelle() + " - " + cours.getListeSalles().get(0).getLibelle() + " - "
-					+ cours.getModule().getListeIntervenants().get(0).getNom());
-//			System.out.println("cours : " + cours.getModule().getCode() + " - " + cours.getModule().getLibelle() + " - " + cours.getListeSalles().get(0).getLibelle() + " - ");
+					+ cours.getModule().getIntervenant().getNom());
 		}
+	}
+
+	@Override
+	public void getPlanningBySemaine(TypeFormation typeFormation, Semaine semaine) {
+		// LocalDate dateDebut = semaine.getDateDebut();
+		// LocalDate dateFin = semaine.getDateFin();
+
 	}
 
 }

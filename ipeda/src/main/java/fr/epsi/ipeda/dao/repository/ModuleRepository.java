@@ -22,4 +22,8 @@ public interface ModuleRepository extends CrudRepository<Module, Long> {
 
 	List<Module> findBySemestre(Semestre semestre);
 
+	List<Module> findByModuleParentCompose(Module moduleparentcompose);
+
+	List<Module> findByModuleParentMutualise(Module moduleparentmutualise);
+
 }

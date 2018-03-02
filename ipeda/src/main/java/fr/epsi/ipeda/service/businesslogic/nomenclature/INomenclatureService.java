@@ -1,4 +1,4 @@
-package fr.epsi.ipeda.service.businesslogic;
+package fr.epsi.ipeda.service.businesslogic.nomenclature;
 
 import java.util.Map;
 

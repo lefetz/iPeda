@@ -1,4 +1,4 @@
-package fr.epsi.ipeda.service;
+package fr.epsi.ipeda.service.businesslogic.module;
 
 import java.util.List;
 
