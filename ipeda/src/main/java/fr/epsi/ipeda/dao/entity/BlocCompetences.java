@@ -37,6 +37,10 @@ public class BlocCompetences {
 	@OneToOne(mappedBy = "blocCompetences", cascade = CascadeType.ALL, orphanRemoval = true)
 	private ProjetTransversal projetTransversal;
 
+	public BlocCompetences() {
+
+	}
+
 	public BlocCompetences(Parcours parcours, int numero, String libelle) {
 		this.parcours = parcours;
 		this.numero = numero;

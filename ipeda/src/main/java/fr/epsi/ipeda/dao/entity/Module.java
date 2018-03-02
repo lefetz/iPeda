@@ -29,7 +29,6 @@ public class Module {
 	@GeneratedValue
 	private Long id;
 
-	@Basic(optional = false)
 	private String code;
 
 	@ManyToOne
@@ -72,6 +71,9 @@ public class Module {
 	@ManyToMany
 	private List<Formation> listeFormations = new ArrayList<Formation>(); // cas UDEV
 
+	public Module() {
+	}
+
 	public Module(String code, String libelle, Semestre semestre, Duration dureeFFP, Duration dureeTE, Intervenant intervenant) {
 		this.code = code;
 		this.libelle = libelle;
@@ -105,10 +107,6 @@ public class Module {
 		this.dureeFFP = dureeFFP;
 		this.dureeTE = dureeTE;
 		this.intervenant = intervenant;
-	}
-
-	public Module() {
-
 	}
 
 	public String getCode() {

@@ -29,6 +29,9 @@ public class Intervenant {
 	@OneToMany(mappedBy = "intervenant", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<Module> listeModules = new ArrayList<Module>();
 
+	public Intervenant() {
+	}
+
 	public Intervenant(String nom, String prenom) {
 		this.nom = nom;
 		this.prenom = prenom;

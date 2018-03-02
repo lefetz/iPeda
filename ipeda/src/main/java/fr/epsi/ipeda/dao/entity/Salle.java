@@ -35,6 +35,9 @@ public class Salle {
 	@ManyToMany
 	private List<Cours> listeCours = new ArrayList<>();
 
+	public Salle() {
+	}
+
 	public Salle(CodeSalle codeSalle, String libelle) {
 		this.codeSalle = codeSalle;
 		this.libelle = libelle;

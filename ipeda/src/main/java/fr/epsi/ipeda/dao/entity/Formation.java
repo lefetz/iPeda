@@ -47,6 +47,9 @@ public class Formation {
 	@ManyToMany(mappedBy = "listeFormations")
 	private List<Module> listeModules = new ArrayList<Module>(); // cas UDEV
 
+	public Formation() {
+	}
+
 	public Formation(TypeFormation typeFormation, String libelle, Semestre semestre1, Semestre semestre2) {
 		this.typeFormation = typeFormation;
 		this.libelle = libelle;

@@ -49,6 +49,9 @@ public class Semestre {
 	@JoinColumn(name = "formation_id")
 	private Formation formation;
 
+	public Semestre() {
+	}
+
 	public Semestre(NumeroSemestre numeroSemestre, LocalDate dateDebut, LocalDate dateFin) {
 		this.numeroSemestre = numeroSemestre;
 		this.dateDebut = dateDebut;

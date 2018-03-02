@@ -43,6 +43,9 @@ public class UniteEnseignement {
 	@Enumerated(EnumType.STRING)
 	private TypeUE typeUE;
 
+	public UniteEnseignement() {
+	}
+
 	public UniteEnseignement(TypeUE typeUE, String libelle, Parcours parcours) {
 		this.typeUE = typeUE;
 		this.libelle = libelle;

@@ -36,6 +36,9 @@ public class Cours {
 	@ManyToOne
 	private Module module;
 
+	public Cours() {
+	}
+
 	public Cours(LocalDateTime dateHeureDebut, Duration duree, Module module, List<Salle> listeSalles) {
 		this.dateHeureDebut = dateHeureDebut;
 		this.duree = duree;

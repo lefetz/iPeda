@@ -43,6 +43,9 @@ public class Parcours {
 	@OneToMany(mappedBy = "parcours", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<BlocCompetences> listeBlocsCompetences = new ArrayList<BlocCompetences>();
 
+	public Parcours() {
+	}
+
 	public Parcours(TypeParcours typeParcours, boolean optionnel, Formation formation) {
 		this.optionnel = optionnel;
 		this.formation = formation;

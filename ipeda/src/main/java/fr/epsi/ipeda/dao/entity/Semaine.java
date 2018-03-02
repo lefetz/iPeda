@@ -5,6 +5,9 @@ public class Semaine {
 	private int annee;
 	private int numero;
 
+	public Semaine() {
+	}
+
 	public Semaine(int annee, int numero) {
 		this.annee = annee;
 		this.numero = numero;

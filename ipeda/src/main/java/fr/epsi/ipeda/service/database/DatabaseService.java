@@ -354,7 +354,7 @@ public class DatabaseService implements IDatabaseService {
 				listeModulesMutualises.remove(0);
 
 				for (Module module : listeModulesMutualises) {
-					if (module.getDureeFFP() != moduleReference.getDureeFFP() || module.getDureeTE() != moduleReference.getDureeTE()
+					if (!module.getDureeFFP().equals(moduleReference.getDureeFFP()) || !module.getDureeTE().equals(moduleReference.getDureeTE())
 							|| !module.getIntervenant().equals(moduleReference.getIntervenant())) {
 						isValide = false;
 						logger.error("Les modules à mutualiser ne sont pas compatibles, impossible de mutualiser.");
@@ -363,7 +363,8 @@ public class DatabaseService implements IDatabaseService {
 				}
 
 				if (isValide) {
-					// sauvegarde du module mutualisé
+
+					// sauvegarde du module mutualisé parent
 					Module module = new Module();
 					module.setDureeFFP(moduleReference.getDureeFFP());
 					module.setDureeTE(moduleReference.getDureeTE());
@@ -372,7 +373,15 @@ public class DatabaseService implements IDatabaseService {
 					module.setListeModulesMutualises(listeModulesMutualises);
 					module.setSemestre(moduleReference.getSemestre());
 					module.setUniteEnseignement(moduleReference.getUniteEnseignement());
-					moduleRepository.save(module);
+					module = moduleRepository.save(module);
+
+					// ajout des références dans les modules enfants
+					listeModulesMutualises.add(moduleReference);
+					for (Module moduleEnfant : listeModulesMutualises) {
+						moduleEnfant.setModuleParentMutualise(module);
+						moduleRepository.save(moduleEnfant);
+					}
+
 				}
 			} else {
 				logger.error("La taille minimum requise (" + tailleMinimum + ") pour 'listeModulesMutualises' n'est pas atteinte.");
