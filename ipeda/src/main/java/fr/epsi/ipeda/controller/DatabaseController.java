@@ -7,15 +7,25 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import fr.epsi.ipeda.dao.entity.Formation;
-import fr.epsi.ipeda.dao.entity.Semaine;
 import fr.epsi.ipeda.service.database.IDatabaseService;
+import fr.epsi.ipeda.service.database.feeding.B1;
+import fr.epsi.ipeda.service.database.feeding.B2;
+import fr.epsi.ipeda.service.database.feeding.B3;
 
 @Controller
 public class DatabaseController {
 
 	@Autowired
 	private IDatabaseService databaseService;
+
+	@Autowired
+	private B1 b1;
+
+	@Autowired
+	private B2 b2;
+
+	@Autowired
+	private B3 b3;
 
 	@RequestMapping("/db/init")
 	@Transactional
@@ -27,15 +37,14 @@ public class DatabaseController {
 		// initialisation des intervenants
 		databaseService.initialiserIntervenants();
 
-		// initialisation des formations
-		databaseService.initialiserFormationB3();
-
-		// insérer cours
-		databaseService.initialiserCoursB3();
-
 		// databaseService.afficheCours();
 
-		databaseService.getPlanningBySemaine(Formation.TypeFormation.B3, new Semaine(2018, 8));
+		b1.initialiserFormation();
+		b2.initialiserFormation();
+		b3.initialiserFormation();
+		b3.initialiserCours();
+
+		// databaseService.getPlanningBySemaine(Formation.TypeFormation.B3, new Semaine(2018, 8));
 
 		return "test/dbinit";
 	}

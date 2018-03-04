@@ -102,7 +102,6 @@ public class Module {
 	}
 
 	public Module(Module moduleParent, String libelle, Duration dureeFFP, Duration dureeTE, Intervenant intervenant) {
-		this.moduleParentMutualise = moduleParent;
 		this.libelle = libelle;
 		this.dureeFFP = dureeFFP;
 		this.dureeTE = dureeTE;

@@ -30,9 +30,9 @@ public class ProjetTransversal extends Module {
 		super(code, libelle, semestre, dureeFFP, dureeTE);
 	}
 
-	public ProjetTransversal(Module moduleParent, String libelle, Duration dureeFFP, Duration dureeTE, Intervenant intervenant) {
-		super(moduleParent, libelle, dureeFFP, dureeTE, intervenant);
-	}
+	// public ProjetTransversal(Module moduleParent, String libelle, Duration dureeFFP, Duration dureeTE, Intervenant intervenant) {
+	// super(moduleParent, libelle, dureeFFP, dureeTE, intervenant);
+	// }
 
 	public ProjetTransversal(String code, String libelle, Semestre semestre, Duration dureeFFP, Duration dureeTE, Intervenant intervenant, BlocCompetences blocCompetences) {
 		super(code, libelle, semestre, dureeFFP, dureeTE, intervenant);
