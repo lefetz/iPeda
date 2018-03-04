@@ -35,6 +35,9 @@ public class UniteEnseignement {
 	@OneToMany(mappedBy = "uniteEnseignement", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Module> listeModules = new ArrayList<Module>();
 
+	@Column(name = "ferme")
+	private boolean isFerme;
+
 	public enum TypeUE {
 		DEV, RESEAUX, SECU, DATA, MOBILITE, ERP, CLOUD, VIRTU
 	}
@@ -56,6 +59,13 @@ public class UniteEnseignement {
 		this.typeUE = typeUE;
 		this.libelle = libelle;
 		this.blocCompetences = blocCompetences;
+	}
+
+	public UniteEnseignement(TypeUE typeUE, String libelle, BlocCompetences blocCompetences, boolean isFerme) {
+		this.typeUE = typeUE;
+		this.libelle = libelle;
+		this.blocCompetences = blocCompetences;
+		this.isFerme = isFerme;
 	}
 
 	public Long getId() {
@@ -110,6 +120,14 @@ public class UniteEnseignement {
 		if (null != listeModules) {
 			listeModules.add(module);
 		}
+	}
+
+	public boolean isFerme() {
+		return isFerme;
+	}
+
+	public void setFerme(boolean isFerme) {
+		this.isFerme = isFerme;
 	}
 
 }
