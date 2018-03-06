@@ -1,4 +1,4 @@
-package fr.epsi.ipeda.service.database.feeding;
+package fr.epsi.ipeda.service.database.feeding.an1718;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -7,6 +7,7 @@ import java.util.HashMap;
 import org.springframework.stereotype.Component;
 
 import fr.epsi.ipeda.dao.entity.BlocCompetences;
+import fr.epsi.ipeda.dao.entity.BlocCompetences.TypeBloc;
 import fr.epsi.ipeda.dao.entity.Formation;
 import fr.epsi.ipeda.dao.entity.Formation.TypeFormation;
 import fr.epsi.ipeda.dao.entity.Module;
@@ -17,6 +18,7 @@ import fr.epsi.ipeda.dao.entity.Semestre;
 import fr.epsi.ipeda.dao.entity.Semestre.NumeroSemestre;
 import fr.epsi.ipeda.dao.entity.UniteEnseignement;
 import fr.epsi.ipeda.dao.entity.UniteEnseignement.TypeUE;
+import fr.epsi.ipeda.service.database.feeding.Feeding;
 
 @Component
 public class B3 extends Feeding {
@@ -127,10 +129,10 @@ public class B3 extends Feeding {
 		// bloc compétences 6
 		// ················································
 
-		blocCompetences = blocCompetencesRepository.save(new BlocCompetences(parcours, 6, "Conception de Solutions d'infrastructures"));
+		blocCompetences = blocCompetencesRepository.save(new BlocCompetences(TypeBloc.RESEAUX, parcours, 6, "Conception de Solutions d'infrastructures"));
 		ProjetTransversal kcreaInfra = databaseService.createProjetTransversal("TPTE615", "Projet transversal Conception, développement et intégration d'une Solution d'Infrastructure - (Kcréa)", 40,
 				0, mapSemestres, intervenantRepository.findByNom("dal-pra"), blocCompetences);
-		ue = uniteEnseignementRepository.save(new UniteEnseignement(TypeUE.RESEAUX, "Gestion et Performance de solution d'infrastructure", blocCompetences));
+		ue = uniteEnseignementRepository.save(new UniteEnseignement(null, "Gestion et Performance de solution d'infrastructure", blocCompetences));
 		databaseService.createModule("RESE631", "Conception et optimisation d'une architecture réseaux", 18, 2, mapSemestres, intervenantRepository.findByNom("rombeaut"), ue);
 		databaseService.createModule("RESE613", "Haute Disponibilité", 18, 2, mapSemestres, intervenantRepository.findByNom("deliessche"), ue);
 		databaseService.createModule("RESE612", "Routage dynamique : env. et protocoles", 18, 2, mapSemestres, intervenantRepository.findByNom("deliessche"), ue);
@@ -139,10 +141,10 @@ public class B3 extends Feeding {
 		// bloc compétences 7
 		// ················································
 
-		blocCompetences = blocCompetencesRepository.save(new BlocCompetences(parcours, 7, "Conception de Solutions applicatives"));
+		blocCompetences = blocCompetencesRepository.save(new BlocCompetences(TypeBloc.DEV, parcours, 7, "Conception de Solutions applicatives"));
 		ProjetTransversal kcreaDev = databaseService.createProjetTransversal("TPTE620", "Projet transversal Conception, développement et intégration d'une Solution Applicative - (Kcréa)", 40, 0,
 				mapSemestres, intervenantRepository.findByNom("dal-pra"), blocCompetences);
-		ue = uniteEnseignementRepository.save(new UniteEnseignement(TypeUE.DEV, "Conception et Développement S.I.", blocCompetences));
+		ue = uniteEnseignementRepository.save(new UniteEnseignement(null, "Conception et Développement S.I.", blocCompetences));
 		databaseService.createModule("DEVE617", "Design Pattern (Java)", 18, 2, mapSemestres, intervenantRepository.findByNom("chinchole"), ue);
 		databaseService.createModule("DEVE618", "Mapping Objet Relationnel (ORM/Java)", 18, 2, mapSemestres, intervenantRepository.findByNom("chinchole"), ue);
 		databaseService.createModule("DEVE619", "Architecture logicielle", 18, 2, mapSemestres, intervenantRepository.findByNom("chinchole"), ue);

@@ -1,4 +1,4 @@
-package fr.epsi.ipeda.service.database.feeding;
+package fr.epsi.ipeda.service.database.feeding.an1718;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -12,6 +12,7 @@ import fr.epsi.ipeda.dao.entity.Module;
 import fr.epsi.ipeda.dao.entity.Parcours;
 import fr.epsi.ipeda.dao.entity.Semestre;
 import fr.epsi.ipeda.dao.entity.Semestre.NumeroSemestre;
+import fr.epsi.ipeda.service.database.feeding.Feeding;
 import fr.epsi.ipeda.dao.entity.UniteEnseignement;
 
 @Component

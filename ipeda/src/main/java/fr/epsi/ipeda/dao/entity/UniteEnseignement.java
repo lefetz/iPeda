@@ -39,7 +39,7 @@ public class UniteEnseignement {
 	private boolean isFerme;
 
 	public enum TypeUE {
-		DEV, RESEAUX, SECU, DATA, MOBILITE, ERP, CLOUD, VIRTU
+		RESEAUX, SECU, DATA, MOBILITE, ERP, CLOUD, VIRTU
 	}
 
 	@Column(name = "type_unite_enseignement")

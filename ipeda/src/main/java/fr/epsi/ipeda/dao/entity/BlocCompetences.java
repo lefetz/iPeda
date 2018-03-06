@@ -5,7 +5,10 @@ import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -37,6 +40,17 @@ public class BlocCompetences {
 	@OneToOne(mappedBy = "blocCompetences", cascade = CascadeType.ALL, orphanRemoval = true)
 	private ProjetTransversal projetTransversal;
 
+	@Column(name = "ferme")
+	private boolean isFerme;
+
+	public enum TypeBloc {
+		DEV, RESEAUX, ERP
+	}
+
+	@Column(name = "type_bloc")
+	@Enumerated(EnumType.STRING)
+	private TypeBloc TypeBloc;
+
 	public BlocCompetences() {
 
 	}
@@ -45,6 +59,21 @@ public class BlocCompetences {
 		this.parcours = parcours;
 		this.numero = numero;
 		this.libelle = libelle;
+	}
+
+	public BlocCompetences(TypeBloc typeBloc, Parcours parcours, int numero, String libelle) {
+		this.TypeBloc = typeBloc;
+		this.parcours = parcours;
+		this.numero = numero;
+		this.libelle = libelle;
+	}
+
+	public BlocCompetences(TypeBloc typeBloc, Parcours parcours, int numero, String libelle, boolean isFerme) {
+		this.TypeBloc = typeBloc;
+		this.parcours = parcours;
+		this.numero = numero;
+		this.libelle = libelle;
+		this.isFerme = isFerme;
 	}
 
 	public Long getId() {
@@ -93,6 +122,22 @@ public class BlocCompetences {
 
 	public void setProjetTransversal(ProjetTransversal projetTransversal) {
 		this.projetTransversal = projetTransversal;
+	}
+
+	public TypeBloc getTypeBloc() {
+		return TypeBloc;
+	}
+
+	public void setTypeBloc(TypeBloc typeBloc) {
+		TypeBloc = typeBloc;
+	}
+
+	public boolean isFerme() {
+		return isFerme;
+	}
+
+	public void setFerme(boolean isFerme) {
+		this.isFerme = isFerme;
 	}
 
 }
