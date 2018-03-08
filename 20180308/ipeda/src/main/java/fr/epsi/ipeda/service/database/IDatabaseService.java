@@ -37,6 +37,4 @@ public interface IDatabaseService {
 	ProjetTransversal createProjetTransversal(String codeModule, String libelle, double dureeFFP, double dureeTE, Map<NumeroSemestre, Semestre> mapSemestres, Intervenant intervenant,
 			BlocCompetences blocCompetences);
 
-	void createCours(String dateHeureDebut, int duree, String codeModule, CodeSalle codeSalle);
-
 }

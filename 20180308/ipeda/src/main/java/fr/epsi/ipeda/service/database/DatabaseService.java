@@ -124,7 +124,6 @@ public class DatabaseService implements IDatabaseService {
 	 * @return Le module créé
 	 */
 	@Override
-
 	public Module createModule(String codeModule, String libelle, double dureeFFP, double dureeTE, Map<NumeroSemestre, Semestre> mapSemestres, Intervenant intervenant, UniteEnseignement ue) {
 		return moduleRepository.save(new Module(codeModule, libelle, nomenclatureService.autoselectSemestre(codeModule, mapSemestres), Duration.ofMinutes((long) (dureeFFP * 60)),
 				Duration.ofMinutes((long) (dureeTE * 60)), intervenant, ue));
@@ -146,12 +145,6 @@ public class DatabaseService implements IDatabaseService {
 	public Module createModule(Module moduleParent, String libelle, double dureeFFP, double dureeTE, Intervenant intervenant) {
 		return moduleRepository.save(new Module(moduleParent.getCode(), libelle, moduleParent.getSemestre(), Duration.ofMinutes((long) (dureeFFP * 60)), Duration.ofMinutes((long) (dureeTE * 60)),
 				intervenant, moduleParent.getUniteEnseignement()));
-	}
-
-	public Module createModule(String codeModule, String libelle, int dureeFFP, int dureeTE, Map<NumeroSemestre, Semestre> mapSemestres, Intervenant intervenant, UniteEnseignement ue) {
-		return moduleRepository
-				.save(new Module(codeModule, libelle, nomenclatureService.autoselectSemestre(codeModule, mapSemestres), Duration.ofHours(dureeFFP), Duration.ofHours(dureeTE), intervenant, ue));
-
 	}
 
 	/**
@@ -252,19 +245,12 @@ public class DatabaseService implements IDatabaseService {
 	}
 
 	@Override
-	public void createCours(String dateHeureDebut, int duree, String codeModule, CodeSalle codeSalle) {
-		coursRepository.save(new Cours(LocalDateTime.parse(dateHeureDebut, FormatterUtils.getDateTimeFormatterFR()), Duration.ofHours(duree), moduleRepository.findByCode(codeModule),
-				salleRepository.findByCodeSalle(codeSalle)));
-	}
-
-	@Override
 	public void createCours(String dateHeureDebut, double duree, String codeModule, CodeSalle codeSalle) {
 		coursRepository.save(new Cours(LocalDateTime.parse(dateHeureDebut, FormatterUtils.getDateTimeFormatterFR()), Duration.ofMinutes((long) (duree * 60)), moduleRepository.findByCode(codeModule),
 				salleRepository.findByCodeSalle(codeSalle)));
 	}
 
 	@Override
-
 	public void afficheCours() {
 		List<Cours> listeCours = coursRepository.findByModule(moduleRepository.findByCode("RESE631"));
 		for (Cours cours : listeCours) {
