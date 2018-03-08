@@ -28,13 +28,15 @@ public interface IDatabaseService {
 
 	void createModuleCompose(Module moduleParent, Module... modules);
 
-	ProjetTransversal createProjetTransversal(String codeModule, String libelle, double dureeFFP, double dureeTE, Map<NumeroSemestre, Semestre> mapSemestres, Intervenant intervenant,
-			BlocCompetences blocCompetences);
-
 	void createCours(String dateHeureDebut, double duree, String codeModule, CodeSalle codeSalle);
 
 	void createModuleMutualise(String libelle, ArrayList<Module> listeModulesMutualises);
 
 	public Module createModule(Module moduleParent, String libelle, double dureeFFP, double dureeTE, Intervenant intervenant);
+
+	ProjetTransversal createProjetTransversal(String codeModule, String libelle, double dureeFFP, double dureeTE, Map<NumeroSemestre, Semestre> mapSemestres, Intervenant intervenant,
+			BlocCompetences blocCompetences);
+
+	void createCours(String dateHeureDebut, int duree, String codeModule, CodeSalle codeSalle);
 
 }
