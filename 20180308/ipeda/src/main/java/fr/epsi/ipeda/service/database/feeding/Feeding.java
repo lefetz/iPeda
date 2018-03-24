@@ -16,6 +16,8 @@ import fr.epsi.ipeda.dao.repository.FormationRepository;
 import fr.epsi.ipeda.dao.repository.IntervenantRepository;
 import fr.epsi.ipeda.dao.repository.ParcoursRepository;
 import fr.epsi.ipeda.dao.repository.UniteEnseignementRepository;
+import fr.epsi.ipeda.service.businesslogic.formation.IFormationService;
+import fr.epsi.ipeda.service.businesslogic.planning.IPlanningService;
 import fr.epsi.ipeda.service.database.IDatabaseService;
 
 @Component
@@ -38,6 +40,12 @@ public abstract class Feeding implements IFeeding {
 
 	@Autowired
 	protected IDatabaseService databaseService;
+
+	@Autowired
+	protected IPlanningService planningService;
+
+	@Autowired
+	protected IFormationService formationService;
 
 	protected Map<NumeroSemestre, Semestre> mapSemestres = null;
 	protected UniteEnseignement ue = null;
