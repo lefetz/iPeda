@@ -1,8 +1,11 @@
 package fr.epsi.ipeda.service.businesslogic.formation;
 
+import org.springframework.stereotype.Service;
+
 import fr.epsi.ipeda.dao.entity.Formation;
 import fr.epsi.ipeda.dao.entity.Formation.TypeFormation;
 
+@Service
 public class FormationService implements IFormationService {
 
 	@Override

@@ -30,14 +30,14 @@ public class PlanifController {
 		}
 		model.addAttribute("listeSemainesSuivantes", listeSemainesSuivantes);
 
-		return "edt/landing";
+		return "pages/landing";
 	}
 	
 	@RequestMapping("/edt/generation")
 	public String generation(Model model) {
 
 
-		return "edt/generation";
+		return "pages/generation";
 	}
 
 }

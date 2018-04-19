@@ -4,10 +4,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.springframework.data.history.Revision;
 import org.springframework.stereotype.Component;
 
 import fr.epsi.ipeda.dao.entity.BlocCompetences;
 import fr.epsi.ipeda.dao.entity.BlocCompetences.TypeBloc;
+import fr.epsi.ipeda.dao.entity.Cours;
 import fr.epsi.ipeda.dao.entity.Formation;
 import fr.epsi.ipeda.dao.entity.Formation.TypeFormation;
 import fr.epsi.ipeda.dao.entity.Module;
@@ -195,30 +197,49 @@ public class B3 extends Feeding {
 	@Override
 	public void initialiserCours() {
 
-		// semaine 2018-16
-		databaseService.createCours("16/04/2018 08:15", 4, "RESE631", CodeSalle.CONF);
-		databaseService.createCours("16/04/2018 13:45", 4, "RESE631", CodeSalle.CONF);
-		databaseService.createCours("17/04/2018 08:15", 4, "RESE631", CodeSalle.CONF);
-		databaseService.createCours("17/04/2018 13:45", 4, "RESE631", CodeSalle.CONF);
-		databaseService.createCours("18/04/2018 08:15", 4, "TPTE615", CodeSalle.CONF);
-		databaseService.createCours("18/04/2018 13:45", 4, "LNGE628", CodeSalle.CONF);
-		databaseService.createCours("19/04/2018 08:15", 2, "RESE631", CodeSalle.CONF);
-		databaseService.createCours("19/04/2018 10:15", 2, "SYSE635", CodeSalle.CONF);
-		databaseService.createCours("19/04/2018 13:45", 4, "PROE509", CodeSalle.CONF);
-		databaseService.createCours("20/04/2018 08:15", 4, "PROE509", CodeSalle.CONF);
-		databaseService.createCours("20/04/2018 13:45", 4, "PROE509", CodeSalle.CONF);
+		// // semaine 2018-16
+		// databaseService.createCours("16/04/2018 08:15", 4, "RESE631", CodeSalle.CONF);
+		// databaseService.createCours("16/04/2018 13:45", 4, "RESE631", CodeSalle.CONF);
+		// databaseService.createCours("17/04/2018 08:15", 4, "RESE631", CodeSalle.CONF);
+		// databaseService.createCours("17/04/2018 13:45", 4, "RESE631", CodeSalle.CONF);
+		// databaseService.createCours("18/04/2018 08:15", 4, "TPTE615", CodeSalle.CONF);
+		// databaseService.createCours("18/04/2018 13:45", 4, "LNGE628", CodeSalle.CONF);
+		// databaseService.createCours("19/04/2018 08:15", 2, "RESE631", CodeSalle.CONF);
+		// databaseService.createCours("19/04/2018 10:15", 2, "SYSE635", CodeSalle.CONF);
+		// databaseService.createCours("19/04/2018 13:45", 4, "PROE509", CodeSalle.CONF);
+		// databaseService.createCours("20/04/2018 08:15", 4, "PROE509", CodeSalle.CONF);
+		// databaseService.createCours("20/04/2018 13:45", 4, "PROE509", CodeSalle.CONF);
+		//
+		// // semaine 2018-17
+		// databaseService.createCours("23/04/2018 08:15", 4, "TQGE625", CodeSalle.CONF);
+		// databaseService.createCours("23/04/2018 13:45", 4, "TQGE625", CodeSalle.CONF);
+		// databaseService.createCours("24/04/2018 08:15", 4, "TQGE625", CodeSalle.CONF);
+		// databaseService.createCours("24/04/2018 13:45", 4, "TQGE625", CodeSalle.CONF);
+		// databaseService.createCours("25/04/2018 08:15", 4, "TQGE625", CodeSalle.CONF);
+		// databaseService.createCours("25/04/2018 13:45", 4, "TQGE625", CodeSalle.CONF);
+		// databaseService.createCours("26/04/2018 08:15", 4, "TQGE625", CodeSalle.CONF);
+		// databaseService.createCours("26/04/2018 13:45", 4, "TQGE625", CodeSalle.CONF);
+		// databaseService.createCours("27/04/2018 08:15", 4, "TQGE625", CodeSalle.CONF);
+		// databaseService.createCours("27/04/2018 13:45", 4, "TQGE625", CodeSalle.CONF);
 
-		// semaine 2018-17
-		databaseService.createCours("23/04/2018 08:15", 4, "TQGE625", CodeSalle.CONF);
-		databaseService.createCours("23/04/2018 13:45", 4, "TQGE625", CodeSalle.CONF);
-		databaseService.createCours("24/04/2018 08:15", 4, "TQGE625", CodeSalle.CONF);
-		databaseService.createCours("24/04/2018 13:45", 4, "TQGE625", CodeSalle.CONF);
-		databaseService.createCours("25/04/2018 08:15", 4, "TQGE625", CodeSalle.CONF);
-		databaseService.createCours("25/04/2018 13:45", 4, "TQGE625", CodeSalle.CONF);
-		databaseService.createCours("26/04/2018 08:15", 4, "TQGE625", CodeSalle.CONF);
-		databaseService.createCours("26/04/2018 13:45", 4, "TQGE625", CodeSalle.CONF);
-		databaseService.createCours("27/04/2018 08:15", 4, "TQGE625", CodeSalle.CONF);
-		databaseService.createCours("27/04/2018 13:45", 4, "TQGE625", CodeSalle.CONF);
+//		// périodes
+//		planningService.createPeriode(new SemaineEntreprise("b1", "2018-14"));
+//		planningService.createPeriode(new Stage("b1", "23/04/2018", "23/05/2018"));
+//		planningService.createPeriode(new Fermeture("23/04/2018"));
+//		planningService.createPeriode(new Rattrapage("b3.1516", "23/04/2018", "28/04/2018"));
+//		planningService.createPeriode(new Revision("b2", "23/04/2018", "23/05/2018"));
+//		planningService.createPeriode(new BtsBlanc("b2", "23/04/2018", "23/05/2018"));
+//		planningService.createPeriode(new Bts("b2", "23/04/2018", "23/05/2018"));
+//		planningService.createPeriode(new SalonEtudiant("b2", "23/04/2018", "23/05/2018"));
+//		planningService.createPeriode(new Vacances("b2", "23/04/2018", "23/05/2018"));
+//
+//		// événements (vient se glisser dans une période ou pas => alerte possible)
+//		planningService.createEvenement(new Cours("23/04/2018 08:15", 4, TypeUE.RESEAUX, "TQGE625", CodeSalle.CONF));
+//		planningService.createEvenement(new JourFerie("23/04/2018"));
+//		planningService.createEvenement(new Evaluation("23/04/2018 08:15", 4, TypeUE.RESEAUX, "TQGE625", CodeSalle.CONF));
+//		planningService.createEvenement(new Rattrapage(formationService.getFormation("b1"), "17/18", "23/04/2018 08:15", 4, TypeUE.RESEAUX, "TQGE625", CodeSalle.CONF));
+//		planningService.createEvenement(new NonPlanifiable("23/04/2018"));
+
 	}
 
 }
