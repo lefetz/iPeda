@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorate="~{layout}">
+<head>
+<title>Gestion des salles</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+	<div layout:fragment="content">
+
+
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+
+			$(document).ready(function() {
+				$('#example').DataTable({
+					serverSide : true,
+					ajax : '/rest/salles',
+					"columns": [
+			            { "data": "id" },
+			            { "data": "codeSalle" },
+			            { "data": "libelle" }
+			        ]
+				});
+			});
+
+			/*]]>*/
+		</script>
+
+		<table id="example" class="table table-striped table-bordered" style="width: 100%">
+			<thead>
+				<tr>
+					<th>id</th>
+					<th>codeSalle</th>
+					<th>libelle</th>
+				</tr>
+			</thead>
+			<tfoot>
+				<tr>
+					<th>id</th>
+					<th>codeSalle</th>
+					<th>libelle</th>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+
+</body>
+</html>
