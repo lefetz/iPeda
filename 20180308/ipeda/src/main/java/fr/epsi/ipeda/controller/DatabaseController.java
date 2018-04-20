@@ -7,12 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import fr.epsi.ipeda.service.database.IDatabaseService;
-import fr.epsi.ipeda.service.database.feeding.an1718.B1;
-import fr.epsi.ipeda.service.database.feeding.an1718.B2;
-import fr.epsi.ipeda.service.database.feeding.an1718.B3;
-import fr.epsi.ipeda.service.database.feeding.an1718.I4;
-import fr.epsi.ipeda.service.database.feeding.an1718.I5;
+import fr.epsi.ipeda.dal.service.IDatabaseService;
+import fr.epsi.ipeda.dal.service.feeding.an1718.B1;
+import fr.epsi.ipeda.dal.service.feeding.an1718.B2;
+import fr.epsi.ipeda.dal.service.feeding.an1718.B3;
+import fr.epsi.ipeda.dal.service.feeding.an1718.I4;
+import fr.epsi.ipeda.dal.service.feeding.an1718.I5;
 
 @Controller
 public class DatabaseController {

@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication(scanBasePackages = "fr.epsi.ipeda")
 @ComponentScan(basePackages = "fr.epsi.ipeda")
-@EntityScan(basePackages = "fr.epsi.ipeda.dao.entity")
-@EnableJpaRepositories(basePackages = "fr.epsi.ipeda.dao.repository")
+@EntityScan("fr.epsi.ipeda.dal.entity")
+@EnableJpaRepositories(basePackages = "fr.epsi.ipeda.dal.repository")
 public class Application {
 
 	public static void main(String[] args) {

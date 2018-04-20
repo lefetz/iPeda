@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages = { "fr.epsi.ipeda.dao" })
+@ComponentScan(basePackages = { "fr.epsi.ipeda.dal" })
 @PropertySource({ "classpath:database.properties" })
 public class DataAccessConfig {
 
@@ -46,7 +46,7 @@ public class DataAccessConfig {
 		vendorAdapter.setShowSql(Boolean.TRUE);
 
 		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-		factory.setPackagesToScan("fr.epsi.ipeda.dao");
+		factory.setPackagesToScan("fr.epsi.ipeda.dal");
 		factory.setJpaVendorAdapter(vendorAdapter);
 		factory.setDataSource(dataSource());
 
