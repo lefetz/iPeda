@@ -1,29 +1,42 @@
 package fr.epsi.ipeda.configuration;
 
+import java.lang.annotation.Annotation;
+import java.lang.invoke.MethodHandles;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Properties;
 
 import javax.sql.DataSource;
 
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.util.Assert;
 
 @Configuration
 @EnableTransactionManagement
 @ComponentScan(basePackages = { "fr.epsi.ipeda.dal" })
+@EntityScan("fr.epsi.ipeda.dal.entity")
+@EnableJpaRepositories(basePackages = "fr.epsi.ipeda.dal.repository")
 @PropertySource({ "classpath:database.properties" })
 public class DataAccessConfig {
+
+	final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	@Autowired
 	private Environment env;
@@ -46,7 +59,33 @@ public class DataAccessConfig {
 		vendorAdapter.setShowSql(Boolean.TRUE);
 
 		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-		factory.setPackagesToScan("fr.epsi.ipeda.dal");
+
+		// introspection pour assigner la valeur de setPackagesToScan() en fonction de la valeur de @ComponentScan()
+		String[] packagesToScan = null;
+		for (Annotation annotation : DataAccessConfig.class.getAnnotations()) {
+			Class<? extends Annotation> type = annotation.annotationType();
+			if (type.getName().equals("org.springframework.context.annotation.ComponentScan")) {
+				for (Method method : type.getDeclaredMethods()) {
+					if (method.getName().equals("basePackages")) {
+						try {
+							packagesToScan = (String[]) method.invoke(annotation, (Object[]) null);
+						} catch (IllegalAccessException e) {
+							logger.error("Erreur lors de l'invocation de la méthode dynamique '" + method.getName() + "'");
+							e.printStackTrace();
+						} catch (IllegalArgumentException e) {
+							logger.error("Erreur lors de l'invocation de la méthode dynamique '" + method.getName() + "'");
+							e.printStackTrace();
+						} catch (InvocationTargetException e) {
+							logger.error("Erreur lors de l'invocation de la méthode dynamique '" + method.getName() + "'");
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}
+		Assert.notNull(packagesToScan, "'packagesToScan' should not be null");
+		factory.setPackagesToScan(packagesToScan);
+
 		factory.setJpaVendorAdapter(vendorAdapter);
 		factory.setDataSource(dataSource());
 
