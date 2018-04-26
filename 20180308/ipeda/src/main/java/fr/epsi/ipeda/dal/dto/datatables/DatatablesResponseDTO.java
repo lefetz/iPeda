@@ -1,10 +1,19 @@
-package fr.epsi.ipeda.dal.dto;
+package fr.epsi.ipeda.dal.dto.datatables;
 
-public class DatatablesWrapper {
+public class DatatablesResponseDTO {
 
+	private int draw;
 	private Object data;
 	private int recordsTotal;
 	private int recordsFiltered;
+
+	public DatatablesResponseDTO(DatatablesRequestDTO datatablesRequestDTO) {
+		prepareDataTableResponse(datatablesRequestDTO);
+	}
+
+	private void prepareDataTableResponse(DatatablesRequestDTO datatablesRequestDTO) {
+		this.setDraw(Integer.parseInt(datatablesRequestDTO.getDraw()));
+	}
 
 	public Object getData() {
 		return data;
@@ -28,6 +37,14 @@ public class DatatablesWrapper {
 
 	public void setRecordsFiltered(int recordsFiltered) {
 		this.recordsFiltered = recordsFiltered;
+	}
+
+	public int getDraw() {
+		return draw;
+	}
+
+	public void setDraw(int draw) {
+		this.draw = draw;
 	}
 
 }

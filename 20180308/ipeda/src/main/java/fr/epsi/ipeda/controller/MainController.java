@@ -7,14 +7,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class MainController {
 
-	@RequestMapping("/salles")
-	public String genererSalles(Model model) {
+	@RequestMapping("/salle/create.html")
+	public String createSalle(Model model) {
 		model.addAttribute("cssActive_salles", "active");
-		return "pages/salles";
+		return "pages/salle/create";
+	}
+	
+	@RequestMapping("/salle/read.html")
+	public String readSalle(Model model) {
+		model.addAttribute("cssActive_salles", "active");
+		return "pages/salle/read";
+	}
+	
+	@RequestMapping("/salle/update.html")
+	public String updateSalle(Model model) {
+		model.addAttribute("cssActive_salles", "active");
+		return "pages/salle/update";
+	}
+	
+	@RequestMapping("/salle/delete.html")
+	public String deleteSalle(Model model) {
+		model.addAttribute("cssActive_salles", "active");
+		return "pages/salle/read";
 	}
 
 	@RequestMapping("/dashboard")
-	public String genererDashboard(Model model) {
+	public String readDashboard(Model model) {
 		model.addAttribute("cssActive_dashboard", "active");
 		return "dashboard";
 	}

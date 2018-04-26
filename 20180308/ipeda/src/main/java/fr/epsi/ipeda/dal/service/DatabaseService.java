@@ -14,15 +14,15 @@ import org.springframework.stereotype.Service;
 
 import fr.epsi.ipeda.dal.entity.BlocCompetences;
 import fr.epsi.ipeda.dal.entity.Cours;
+import fr.epsi.ipeda.dal.entity.Formation.TypeFormation;
 import fr.epsi.ipeda.dal.entity.Intervenant;
 import fr.epsi.ipeda.dal.entity.Module;
 import fr.epsi.ipeda.dal.entity.ProjetTransversal;
 import fr.epsi.ipeda.dal.entity.Salle;
 import fr.epsi.ipeda.dal.entity.Semaine;
 import fr.epsi.ipeda.dal.entity.Semestre;
-import fr.epsi.ipeda.dal.entity.UniteEnseignement;
-import fr.epsi.ipeda.dal.entity.Formation.TypeFormation;
 import fr.epsi.ipeda.dal.entity.Semestre.NumeroSemestre;
+import fr.epsi.ipeda.dal.entity.UniteEnseignement;
 import fr.epsi.ipeda.dal.repository.CoursRepository;
 import fr.epsi.ipeda.dal.repository.IntervenantRepository;
 import fr.epsi.ipeda.dal.repository.ModuleRepository;

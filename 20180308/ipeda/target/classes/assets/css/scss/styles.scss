@@ -1,3 +1,13 @@
-@icon-font-path: "/fonts";
+table.dataTable.hover tbody tr:hover,table.dataTable.display tbody tr:hover{background-color:#ffffcc}
 
-.colonne-modifier {  }
+.toolbar {
+    float: left;
+    vertical-align: middle;
+    display: inline-block;
+    line-height: 50px;
+}
+
+.dataTables_filter label {
+	line-height: 50px;
+}
+.dataTables_filter input {line-height: normal;}
