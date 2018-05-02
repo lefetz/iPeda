@@ -67,5 +67,10 @@ public class RestRequestController {
 
 		return wrapper;
 	}
+	
+	@RequestMapping("/rest/salles/add")
+	public String addSalle() {
+		return "modal/normal :: modalContents";
+	}
 
 }

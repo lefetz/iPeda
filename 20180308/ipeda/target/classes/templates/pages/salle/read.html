@@ -3,6 +3,7 @@
 <head>
 <title>Lister les salles</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script type="text/javascript" th:src="@{/assets/js/metier/salle.js}"></script>
 </head>
 <body>
 
@@ -52,7 +53,7 @@
 				        }
 			        ]
 				});
-				$("div.toolbar").html('<a href="/salle/create.html" class="btn btn-outline-success"><span class="fas fa-plus-square"></span> Ajouter une salle</a>');
+				$("div.toolbar").html('<a href="#" onclick="javascript:openSalleModal();" class="btn btn-outline-success"><span class="fas fa-plus-square"></span> Ajouter une salle</a>');
 			});
 
 			/*]]>*/
