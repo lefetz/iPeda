@@ -67,7 +67,7 @@ public class RestRequestController {
 
 		return wrapper;
 	}
-	
+
 	@RequestMapping("/rest/salles/add")
 	public String addSalle() {
 		return "fragments/modal/normal :: salle";

@@ -2,9 +2,11 @@ package fr.epsi.ipeda.configuration;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -27,6 +29,16 @@ public class ThymeleafConfig extends WebMvcConfigurerAdapter implements Applicat
 
 	public void setApplicationContext(ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
+	}
+
+	@Bean
+	public MessageSource messageSource() {
+		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+		messageSource.setBasenames("classpath:messages/messages");
+		messageSource.setUseCodeAsDefaultMessage(true);
+		messageSource.setDefaultEncoding("UTF-8");
+		messageSource.setCacheSeconds(0);
+		return messageSource;
 	}
 
 	@Bean

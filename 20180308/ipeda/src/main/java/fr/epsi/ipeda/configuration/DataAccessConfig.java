@@ -30,7 +30,7 @@ import org.springframework.util.Assert;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages = { "fr.epsi.ipeda.dal" })
+@ComponentScan(basePackages = { "fr.epsi.ipeda" })
 @EntityScan("fr.epsi.ipeda.dal.entity")
 @EnableJpaRepositories(basePackages = "fr.epsi.ipeda.dal.repository")
 @PropertySource({ "classpath:database.properties" })
