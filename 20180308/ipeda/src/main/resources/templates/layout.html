@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">iPeda</title>
 <link rel="shortcut icon" th:href="@{/assets/images/favicon.ico}">
@@ -21,6 +21,6 @@
 		<div layout:fragment="content"></div>
 	</div>
 	<div th:replace="fragments/footer :: footer"></div>
-	<div th:replace="modal/normal :: modalContents"></div>
+<!-- 	<div th:replace="fragments/modal/normal :: salle"></div> -->
 </body>
 </html>

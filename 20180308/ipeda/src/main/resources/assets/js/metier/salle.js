@@ -4,7 +4,7 @@ function openSalleModal() {
 		url: "/rest/salles/add",
 		success: function(data) {
 			$("#salleModalHolder").html(data),
-			$("#salleModal").modal("show");
+			$("#salleModal-container").modal("show");
 		}
 	});
 	

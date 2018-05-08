@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorate="~{layout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 <head>
 <title>Lister les salles</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -77,6 +77,11 @@
 				</tr>
 			</tfoot>
 		</table>
+
+		<div layout:insert="fragments/modal :: modal(modalId='salleModal', modalHeader='Salur les amis !')" th:remove="tag">
+			<p layout:fragment="modal-content">Message goes here!</p>
+		</div>
+
 	</div>
 
 </body>

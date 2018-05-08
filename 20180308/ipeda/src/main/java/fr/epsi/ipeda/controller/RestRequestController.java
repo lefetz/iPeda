@@ -70,7 +70,7 @@ public class RestRequestController {
 	
 	@RequestMapping("/rest/salles/add")
 	public String addSalle() {
-		return "modal/normal :: modalContents";
+		return "fragments/modal/normal :: salle";
 	}
 
 }
