@@ -26,8 +26,14 @@ public class SalleService implements ISalleService {
 		return salleRepository.findAll(pageRequest);
 	}
 
+	@Override
 	public Page<Salle> getSallesByLibelle(String libelle, PageRequest pageRequest) {
 		return salleRepository.findByLibelleContainingIgnoreCase(libelle, pageRequest);
+	}
+
+	@Override
+	public Salle save(Salle salle) {
+		return salleRepository.save(salle);
 	}
 
 }

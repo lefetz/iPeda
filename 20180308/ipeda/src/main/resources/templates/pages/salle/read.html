@@ -9,8 +9,7 @@
 
 	<div layout:fragment="content">
 
-
-		<script th:inline="none">
+		<script th:inline="javascript">
 			/*<![CDATA[*/
 
 			$(document).ready(function() {
@@ -19,7 +18,7 @@
 					"processing": true,
 					"serverSide" : true,
 					"ordering": true,
-					"order" : [[ 1, "asc" ]],
+					"order" : [ [ 1, "asc" ] ], /* mettre des espaces pour éviter collision avec Thymeleaf */
 					"pageLength": 10,
 					"searchDelay": 0,
 					"ajax": {
@@ -53,7 +52,26 @@
 				        }
 			        ]
 				});
-				$("div.toolbar").html('<a href="#" onclick="javascript:openSalleModal();" class="btn btn-outline-success"><span class="fas fa-plus-square"></span> Ajouter une salle</a>');
+				$("div.toolbar").html('<a href="#" onclick="javascript:openSalleModal();" class="btn btn-outline-success"><span class="fas fa-plus-square"></span> ' + [[#{msg.0000}]] + '</a>');
+				
+				$('#modal-form').submit(function(e) {
+				    $.ajax({
+						type: "POST",
+						url: $(this).attr('action'),
+						data: $(this).serialize(),
+						success: function(response) {
+							if(response.status == 'ERROR') {
+								$.each(response.listError, function(k, v) {
+								    $("#" + v.field).next().remove();
+								    $("#" + v.field).after("<small>" + v.defaultMessage + "</small>");
+								});
+							} else {
+								window.location.replace(response.returnUrl);
+							}
+						}
+					});
+				    e.preventDefault();
+				});
 			});
 
 			/*]]>*/
@@ -62,39 +80,28 @@
 		<table id="example" class="table table-striped table-bordered hover" style="width: 100%">
 			<thead>
 				<tr>
-					<th>ID</th>
-					<th>Libelle</th>
-					<th>Modifier</th>
-					<th>Supprimer</th>
+					<th>[[#{msg.0006}]]</th>
+					<th>[[#{msg.0003}]]</th>
+					<th>[[#{msg.0007}]]</th>
+					<th>[[#{msg.0008}]]</th>
 				</tr>
 			</thead>
 			<tfoot>
 				<tr>
-					<th>ID</th>
-					<th>Libelle</th>
-					<th>Modifier</th>
-					<th>Supprimer</th>
+					<th>[[#{msg.0006}]]</th>
+					<th>[[#{msg.0003}]]</th>
+					<th>[[#{msg.0007}]]</th>
+					<th>[[#{msg.0008}]]</th>
 				</tr>
 			</tfoot>
 		</table>
 
-		<div layout:insert="fragments/modal :: modal(modalId='salleModal', modalHeader='msg.0000', modalButton='cancel|msg.0001,submit|msg.0002')" th:remove="tag">
-			<form layout:fragment="modal-content" action="#" th:action="@{/seedstartermng}" th:object="${seedStarter}" method="post">
-<!-- 				<div class="form-group"> -->
-<!-- 					<label for="exampleInputEmail1">Email address</label> <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"> <small -->
-<!-- 						id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
-<!-- 				</div> -->
-<!-- 				<div class="form-group"> -->
-<!-- 					<label for="exampleInputPassword1">Password</label> <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"> -->
-<!-- 				</div> -->
-<!-- 				<div class="form-check"> -->
-<!-- 					<input type="checkbox" class="form-check-input" id="exampleCheck1"> <label class="form-check-label" for="exampleCheck1">Check me out</label> -->
-<!-- 				</div> -->
-
+		<div layout:insert="fragments/modal :: modal(modalHeader='msg.0000', modalButton='cancel|msg.0001,submit|msg.0002')" th:remove="tag">
+			<form id="modal-form" layout:fragment="modal-content" action="#" th:action="@{/rest/salles/save}" th:object="${salle}" method="post">
 				<div class="form-group">
 					<label for="libelle" th:text="#{msg.0003}"></label> 
-					<input type="text" class="form-control" id="libelle" aria-describedby="libelleHelp" th:placeholder="#{msg.0004}">
-					<small id="libelleHelp" class="form-text text-muted" th:text="#{msg.0005}"></small>
+					<input type="text" class="form-control" th:field="*{libelle}" th:placeholder="#{msg.0004}" />
+					<small th:if="${#fields.hasErrors('libelle')}" th:errors="*{libelle}">Name Error</small>
 				</div>
 			</form>
 		</div>

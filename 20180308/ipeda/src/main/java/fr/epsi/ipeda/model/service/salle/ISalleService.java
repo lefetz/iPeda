@@ -13,4 +13,8 @@ public interface ISalleService {
 
 	Page<Salle> getAllSalles(PageRequest pageRequest);
 
+	Page<Salle> getSallesByLibelle(String libelle, PageRequest pageRequest);
+
+	Salle save(Salle salle);
+
 }

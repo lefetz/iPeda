@@ -1,5 +1,5 @@
 function openSalleModal() {
-	$("#salleModal-container").modal("show");
+	$("#modal-container").modal("show");
 }
 
 function saveSalleModal() {
@@ -18,8 +18,8 @@ function openSalleModalUpdate() {
 	$.ajax({
 		url: "/rest/salles/update",
 		success: function(data) {
-			$("#salleModalHolder").html(data),
-			$("#salleModal-container").modal("show");
+			$("#modalHolder").html(data),
+			$("#modal-container").modal("show");
 		}
 	});
 	

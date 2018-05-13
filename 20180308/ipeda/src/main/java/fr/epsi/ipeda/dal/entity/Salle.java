@@ -3,12 +3,13 @@ package fr.epsi.ipeda.dal.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "salle")
@@ -18,7 +19,8 @@ public class Salle {
 	@GeneratedValue
 	private Long id;
 
-	@Basic(optional = false)
+	@NotNull
+	@Size(min = 1, max = 255)
 	private String libelle;
 
 	@ManyToMany

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -12,10 +13,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.epsi.ipeda.dal.dto.SalleDTO;
+import fr.epsi.ipeda.dal.dto.ajax.AjaxResponse;
 import fr.epsi.ipeda.dal.dto.datatables.DatatablesRequestDTO;
 import fr.epsi.ipeda.dal.dto.datatables.DatatablesResponseDTO;
 import fr.epsi.ipeda.dal.dto.modelmapper.ModelMapperManager;
@@ -71,6 +75,28 @@ public class RestRequestController {
 	@RequestMapping("/rest/salles/add")
 	public String addSalle() {
 		return "fragments/modal/normal :: salle";
+	}
+
+	@RequestMapping("/rest/salles/save")
+	public AjaxResponse updateSalle(@Valid @ModelAttribute Salle salle, BindingResult bindingResult) {
+
+		// init
+		AjaxResponse ajaxResponse = new AjaxResponse(AjaxResponse.STATUS.SUCCESS);
+
+		// erreur ?
+		if (bindingResult.hasErrors()) {
+			ajaxResponse.setStatus(AjaxResponse.STATUS.ERROR);
+			ajaxResponse.setListError(bindingResult);
+		}
+
+		// ok
+		else {
+			salleService.save(salle);
+			ajaxResponse.setReturnUrl("/salle/read.html");
+		}
+
+		// retourne l'objet de réponse ajax
+		return ajaxResponse;
 	}
 
 }
