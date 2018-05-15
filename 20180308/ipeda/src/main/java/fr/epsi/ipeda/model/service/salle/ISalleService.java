@@ -17,4 +17,6 @@ public interface ISalleService {
 
 	Salle save(Salle salle);
 
+	Salle getSallesById(String id);
+
 }

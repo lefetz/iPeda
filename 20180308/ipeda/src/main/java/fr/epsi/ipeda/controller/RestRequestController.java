@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.epsi.ipeda.dal.dto.SalleDTO;
@@ -72,13 +73,8 @@ public class RestRequestController {
 		return wrapper;
 	}
 
-	@RequestMapping("/rest/salles/add")
-	public String addSalle() {
-		return "fragments/modal/normal :: salle";
-	}
-
 	@RequestMapping("/rest/salles/save")
-	public AjaxResponse updateSalle(@Valid @ModelAttribute Salle salle, BindingResult bindingResult) {
+	public AjaxResponse saveSalle(@Valid @ModelAttribute Salle salle, BindingResult bindingResult) {
 
 		// init
 		AjaxResponse ajaxResponse = new AjaxResponse(AjaxResponse.STATUS.SUCCESS);
@@ -97,6 +93,11 @@ public class RestRequestController {
 
 		// retourne l'objet de réponse ajax
 		return ajaxResponse;
+	}
+
+	@RequestMapping("/rest/salles/update")
+	public Salle updateSalle(@RequestParam String id) {
+		return salleService.getSallesById(id);
 	}
 
 }

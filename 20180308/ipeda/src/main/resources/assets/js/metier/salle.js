@@ -2,25 +2,22 @@ function openSalleModal() {
 	$("#modal-container").modal("show");
 }
 
-function saveSalleModal() {
+function openSalleModalUpdate(id) {
 
 	$.ajax({
-		url: "/rest/salles/save",
+		url: "/rest/salles/update",
+		data: { id : id },
 		success: function(data) {
-
+			$("#id").val(data.id);
+			$("#libelle").val(data.libelle);
+			$("#modal-container").modal("show");
 		}
 	});
 	
 }
 
-function openSalleModalUpdate() {
+function openSalleModalDelete(id) {
 
-	$.ajax({
-		url: "/rest/salles/update",
-		success: function(data) {
-			$("#modalHolder").html(data),
-			$("#modal-container").modal("show");
-		}
-	});
+
 	
 }

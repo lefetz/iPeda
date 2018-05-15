@@ -36,4 +36,9 @@ public class SalleService implements ISalleService {
 		return salleRepository.save(salle);
 	}
 
+	@Override
+	public Salle getSallesById(String id) {
+		return salleRepository.findById(Long.valueOf(id));
+	}
+
 }

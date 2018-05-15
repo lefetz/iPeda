@@ -37,7 +37,7 @@
 				            data:           null,
 				            width: '100px',
 				            render: function ( data, type, row ) {
-				                return "<a href=\"/salle/update.html?id=" + data.id + "\"><span class=\"fas fa-edit btn btn-primary\"></span></a>";
+				                return "<a href=\"#\" onclick=\"javascript:openSalleModalUpdate(" + data.id + ");\"><span class=\"fas fa-edit btn btn-primary\"></span></a>";
 				            }
 				        },
 						{
@@ -47,7 +47,7 @@
 				            data:           null,
 				            width: '100px',
 				            render: function ( data, type, row ) {
-				                return "<a href=\"/salle/delete.html?id=" + data.id + "\"><span class=\"fas fa-trash-alt btn btn-danger\"></span></a>";
+				                return "<a href=\"#\" onclick=\"javascript:openSalleModalDelete(" + data.id + ");\"><span class=\"fas fa-trash-alt btn btn-danger\"></span></a>";
 				            }
 				        }
 			        ]
@@ -100,6 +100,7 @@
 			<form id="modal-form" layout:fragment="modal-content" action="#" th:action="@{/rest/salles/save}" th:object="${salle}" method="post">
 				<div class="form-group">
 					<label for="libelle" th:text="#{msg.0003}"></label> 
+					<input type="hidden" th:field="*{id}" />
 					<input type="text" class="form-control" th:field="*{libelle}" th:placeholder="#{msg.0004}" />
 					<small th:if="${#fields.hasErrors('libelle')}" th:errors="*{libelle}">Name Error</small>
 				</div>
