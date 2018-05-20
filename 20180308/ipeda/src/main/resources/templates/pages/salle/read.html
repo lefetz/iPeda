@@ -82,6 +82,25 @@
 				$('#modal-container-salleDelete').on('hidden.bs.modal', function (e) {
 					$(this).find("#message").html(storedMessage);
 				});
+				
+				$('#modal-form-salleDelete').submit(function(e) {
+					var diz = $(this);
+				    $.ajax({
+						type: "POST",
+						url: diz.attr('action'),
+						data: diz.serialize(),
+						success: function(response) {
+							if(response.status == 'ERROR') {
+								$.each(response.listError, function(k, v) {
+									diz.parent().find("#message").html(v.defaultMessage);
+								});
+							} else {
+								window.location.replace(response.returnUrl);
+							}
+						}
+					});
+				    e.preventDefault();
+				});
 
 			});
 
@@ -132,6 +151,7 @@
 		<div layout:insert="fragments/modal :: modal(modalId='salleDelete', modalHeader='msg.0009', modalButton='cancel|msg.0001,submitDanger|msg.0008')" th:remove="tag">
 			<form id="modal-form-salleDelete" layout:fragment="modal-content" action="#" th:action="@{/rest/salles/delete}" th:object="${salle}" method="post">
 				<input type="hidden" th:field="*{id}" />
+				<input type="hidden" th:field="*{libelle}" />
 				<p id="message" class="text-center" th:utext="#{msg.0011}"></p>
 			</form>
 		</div>

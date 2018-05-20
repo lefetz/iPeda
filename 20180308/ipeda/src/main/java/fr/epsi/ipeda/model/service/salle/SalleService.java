@@ -41,4 +41,9 @@ public class SalleService implements ISalleService {
 		return salleRepository.findById(Long.valueOf(id));
 	}
 
+	@Override
+	public void deleteSalleById(Salle salle) {
+		salleRepository.delete(salle);
+	}
+
 }

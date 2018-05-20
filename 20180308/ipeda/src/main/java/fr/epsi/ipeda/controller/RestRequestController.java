@@ -16,7 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.epsi.ipeda.dal.dto.SalleDTO;
@@ -95,9 +94,12 @@ public class RestRequestController {
 		return ajaxResponse;
 	}
 
-	@RequestMapping("/rest/salles/update")
-	public Salle updateSalle(@RequestParam String id) {
-		return salleService.getSallesById(id);
+	@RequestMapping("/rest/salles/delete")
+	public AjaxResponse updateSalle(@ModelAttribute Salle salle, BindingResult bindingResult) {
+		AjaxResponse ajaxResponse = new AjaxResponse(AjaxResponse.STATUS.SUCCESS);
+		salleService.deleteSalleById(salle);
+		ajaxResponse.setReturnUrl("/salle/read.html");
+		return ajaxResponse;
 	}
 
 }
