@@ -42,7 +42,7 @@ public class SalleService implements ISalleService {
 	}
 
 	@Override
-	public void deleteSalleById(Salle salle) {
+	public void delete(Salle salle) {
 		salleRepository.delete(salle);
 	}
 

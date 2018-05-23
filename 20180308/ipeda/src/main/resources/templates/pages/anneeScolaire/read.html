@@ -1,0 +1,193 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+<title>Lister les années scolaires</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script type="text/javascript" th:src="@{/assets/js/metier/anneeScolaire.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/datatables/datetime.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/moment-with-locales.js}"></script>
+</head>
+<body>
+
+	<div layout:fragment="content">
+
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+				
+			var storedMessage = ""; 
+
+			$(document).ready(function() {
+				$('#example').DataTable({
+					"dom": '<"toolbar">rtip',
+					"processing": true,
+					"serverSide" : true,
+					"ordering": true,
+					"order" : [ [ 2, "asc" ] ], /* mettre des espaces pour éviter collision avec Thymeleaf */
+					"pageLength": 10,
+					"searchDelay": 0,
+					"ajax": {
+		                "url": "/rest/anneesScolaires"
+		            },
+					"columns": [
+			            {	data: "id",
+			            	searchable: false,
+			            	width: "30px"
+			            },
+			            {	data: null,
+			            	"render": function ( data, type, row, meta ) {
+		            	    	return moment(row.dateDebut, 'YYYY-MM-DD').format('YYYY') + '/' + moment(row.dateFin, 'YYYY-MM-DD').format('YYYY');
+		            	    }
+			            },
+			            {	data: "dateDebut",
+			            	render: $.fn.dataTable.render.moment( 'DD/MM/YYYY' )
+			            },
+			            {	data: "dateFin",
+			            	render: $.fn.dataTable.render.moment( 'DD/MM/YYYY' )
+			            },
+						{
+				            className:      "colonne-modifier dt-center",
+				            orderable:      false,
+				            searchable:     false,
+				            data:           null,
+				            width: '100px',
+				            render: function ( data, type, row ) {
+				                return "<a href=\"#\" onclick=\"javascript:openModalUpdate('anneeScolaireUpdate', " + data.id + ");\"><span class=\"fas fa-edit btn btn-primary\"></span></a>";
+				            }
+				        },
+						{
+				            className:      "colonne-supprimer dt-center",
+				            orderable:      false,
+				            searchable:     false,
+				            data:           null,
+				            width: '100px',
+				            render: function ( data, type, row ) {
+				                return "<a href=\"#\" onclick=\"javascript:openModalDelete('anneeScolaireDelete', " + data.id + ");\"><span class=\"fas fa-trash-alt btn btn-danger\"></span></a>";
+				            }
+				        }
+			        ]
+				});
+				$("div.toolbar").html('<a href="#" onclick="javascript:openModalCreate(\'anneeScolaireCreate\');" class="btn btn-outline-success"><span class="fas fa-plus-square"></span> ' + [[#{msg.0023}]] + '</a>');
+				
+				$('#modal-form-anneeScolaireCreate, #modal-form-anneeScolaireUpdate').submit(function(e) {
+					var diz = $(this);
+				    $.ajax({
+						type: "POST",
+						url: diz.attr('action'),
+						data: diz.serialize(),
+						success: function(response) {
+							if(response.status == 'ERROR') {
+								$.each(response.listError, function(k, v) {
+									diz.parent().find("#" + v.field).next().remove();
+									diz.parent().find("#" + v.field).after("<small>" + v.defaultMessage + "</small>");
+								});
+							} else {
+								window.location.replace(response.returnUrl);
+							}
+						}
+					});
+				    e.preventDefault();
+				});
+				
+			
+				var storedMessage = $("#modal-container-anneeScolaireDelete #message").html();
+				
+				$('#modal-container-anneeScolaireDelete').on('hidden.bs.modal', function (e) {
+					$(this).find("#message").html(storedMessage);
+				});
+				
+				$('#modal-form-anneeScolaireDelete').submit(function(e) {
+					var diz = $(this);
+				    $.ajax({
+						type: "POST",
+						url: diz.attr('action'),
+						data: diz.serialize(),
+						success: function(response) {
+							if(response.status == 'ERROR') {
+								$.each(response.listError, function(k, v) {
+									diz.parent().find("#message").html(v.defaultMessage);
+								});
+							} else {
+								window.location.replace(response.returnUrl);
+							}
+						}
+					});
+				    e.preventDefault();
+				});
+
+			});
+
+			/*]]>*/
+		</script>
+
+		<table id="example" class="table table-striped table-bordered hover" style="width: 100%">
+			<thead>
+				<tr>
+					<th>[[#{msg.0006}]]</th>
+					<th>Année scolaire</th>
+					<th>[[#{msg.0014}]]</th>
+					<th>[[#{msg.0015}]]</th>
+					<th>[[#{msg.0007}]]</th>
+					<th>[[#{msg.0008}]]</th>
+				</tr>
+			</thead>
+			<tfoot>
+				<tr>
+					<th>[[#{msg.0006}]]</th>
+					<th>Année scolaire</th>
+					<th>[[#{msg.0014}]]</th>
+					<th>[[#{msg.0015}]]</th>
+					<th>[[#{msg.0007}]]</th>
+					<th>[[#{msg.0008}]]</th>
+				</tr>
+			</tfoot>
+		</table>
+
+		<div layout:insert="fragments/modal :: modal(modalId='anneeScolaireCreate', modalHeader='msg.0018', modalButton='cancel|msg.0001,submit|msg.0002')" th:remove="tag">
+			<form id="modal-form-anneeScolaireCreate" layout:fragment="modal-content" action="#" th:action="@{/rest/anneesScolaires/save}" th:object="${anneeScolaire}" method="post">
+				<div class="form-group">
+				
+					<input type="hidden" th:field="*{id}" />
+					
+					<label for="dateDebut" th:text="#{msg.0014}"></label> 
+					<input type="text" class="form-control" th:field="*{dateDebut}" th:placeholder="#{msg.0016}" />
+					<small th:if="${#fields.hasErrors('dateDebut')}" th:errors="*{dateDebut}">Name Error</small>
+					
+					<label for="dateFin" th:text="#{msg.0015}"></label> 
+					<input type="text" class="form-control" th:field="*{dateFin}" th:placeholder="#{msg.0017}" />
+					<small th:if="${#fields.hasErrors('dateFin')}" th:errors="*{dateFin}">Name Error</small>
+					
+				</div>
+			</form>
+		</div>
+		
+		<div layout:insert="fragments/modal :: modal(modalId='anneeScolaireUpdate', modalHeader='msg.0019', modalButton='cancel|msg.0001,submit|msg.0007')" th:remove="tag">
+			<form id="modal-form-anneeScolaireUpdate" layout:fragment="modal-content" action="#" th:action="@{/rest/anneesScolaires/save}" th:object="${anneeScolaire}" method="post">
+				<div class="form-group">
+				
+					<input type="hidden" th:field="*{id}" />
+					
+					<label for="dateDebut" th:text="#{msg.0014}"></label> 
+					<input type="text" class="form-control" th:field="*{dateDebut}" th:placeholder="#{msg.0016}" />
+					<small th:if="${#fields.hasErrors('dateDebut')}" th:errors="*{dateDebut}">Name Error</small>
+					
+					<label for="dateFin" th:text="#{msg.0015}"></label> 
+					<input type="text" class="form-control" th:field="*{dateFin}" th:placeholder="#{msg.0017}" />
+					<small th:if="${#fields.hasErrors('dateFin')}" th:errors="*{dateFin}">Name Error</small>
+					
+				</div>
+			</form>
+		</div>
+		
+		<div layout:insert="fragments/modal :: modal(modalId='anneeScolaireDelete', modalHeader='msg.0020', modalButton='cancel|msg.0001,submitDanger|msg.0008')" th:remove="tag">
+			<form id="modal-form-anneeScolaireDelete" layout:fragment="modal-content" action="#" th:action="@{/rest/anneesScolaires/delete}" th:object="${anneeScolaire}" method="post">
+				<input type="hidden" th:field="*{id}" />
+				<input type="hidden" th:field="*{dateDebut}" />
+				<input type="hidden" th:field="*{dateFin}" />
+				<p id="message" class="text-center" th:utext="#{msg.0021}"></p>
+			</form>
+		</div>
+
+	</div>
+
+</body>
+</html>

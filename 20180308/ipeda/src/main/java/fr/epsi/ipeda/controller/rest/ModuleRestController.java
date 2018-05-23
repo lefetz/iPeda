@@ -1,4 +1,4 @@
-package fr.epsi.ipeda.controller;
+package fr.epsi.ipeda.controller.rest;
 
 import java.util.List;
 
@@ -18,26 +18,26 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.epsi.ipeda.dal.dto.SalleDTO;
+import fr.epsi.ipeda.dal.dto.ModuleDTO;
 import fr.epsi.ipeda.dal.dto.ajax.AjaxResponse;
 import fr.epsi.ipeda.dal.dto.datatables.DatatablesRequestDTO;
 import fr.epsi.ipeda.dal.dto.datatables.DatatablesResponseDTO;
 import fr.epsi.ipeda.dal.dto.modelmapper.ModelMapperManager;
-import fr.epsi.ipeda.dal.entity.Salle;
+import fr.epsi.ipeda.dal.entity.Module;
 import fr.epsi.ipeda.helpers.EmptyUtils;
-import fr.epsi.ipeda.model.service.salle.SalleService;
+import fr.epsi.ipeda.model.service.module.ModuleService;
 
 @RestController
-public class RestRequestController {
+public class ModuleRestController {
 
 	@Autowired
-	private SalleService salleService;
+	private ModuleService moduleService;
 
 	@Autowired
 	private ModelMapperManager modelMapperManager;
 
-	@RequestMapping("/rest/salles")
-	public DatatablesResponseDTO getAllSalles(HttpServletRequest request, HttpServletResponse response, Model model) {
+	@RequestMapping("/rest/modules")
+	public DatatablesResponseDTO getAllModules(HttpServletRequest request, HttpServletResponse response, Model model) {
 
 		// init
 		DatatablesRequestDTO datatablesRequestDTO = new DatatablesRequestDTO(request);
@@ -47,33 +47,33 @@ public class RestRequestController {
 		int startIndex = (int) (Math.ceil((datatablesRequestDTO.getStart() + 1) / pageLength));
 		Direction direction = datatablesRequestDTO.getOrder().getSortDir().equals("asc") ? Direction.ASC : Direction.DESC;
 
-		// récupère la liste des salles
-		List<Salle> listeTotaleSalles = salleService.getAllSalles();
-		Page<Salle> listeSalles = null;
+		// récupère la liste des modules
+		List<Module> listeTotaleModules = moduleService.getAllModules();
+		Page<Module> listeModules = null;
 		PageRequest pageRequest = new PageRequest(startIndex, pageLength, direction, datatablesRequestDTO.getOrder().getData());
 		if (!EmptyUtils.isObjectEmpty(datatablesRequestDTO.getSearch())) {
-			listeSalles = salleService.getSallesByLibelle(datatablesRequestDTO.getSearch(), pageRequest);
-			wrapper.setRecordsFiltered((int) listeSalles.getTotalElements());
+			listeModules = moduleService.getModulesByLibelle(datatablesRequestDTO.getSearch(), pageRequest);
+			wrapper.setRecordsFiltered((int) listeModules.getTotalElements());
 		} else {
-			listeSalles = salleService.getAllSalles(pageRequest);
-			wrapper.setRecordsFiltered(listeTotaleSalles.size());
+			listeModules = moduleService.getAllModules(pageRequest);
+			wrapper.setRecordsFiltered(listeTotaleModules.size());
 		}
 
 		// map la liste en liste de DTO
-		java.lang.reflect.Type targetListType = new TypeToken<List<SalleDTO>>() {
+		java.lang.reflect.Type targetListType = new TypeToken<List<ModuleDTO>>() {
 		}.getType();
-		List<SalleDTO> listeSallesDTO = modelMapper.map(listeSalles.getContent(), targetListType);
+		List<ModuleDTO> listeModulesDTO = modelMapper.map(listeModules.getContent(), targetListType);
 		modelMapper.validate();
 
 		// set les données dans le wrapper
-		wrapper.setData(listeSallesDTO);
-		wrapper.setRecordsTotal(listeTotaleSalles.size());
+		wrapper.setData(listeModulesDTO);
+		wrapper.setRecordsTotal(listeTotaleModules.size());
 
 		return wrapper;
 	}
 
-	@RequestMapping("/rest/salles/save")
-	public AjaxResponse saveSalle(@Valid @ModelAttribute Salle salle, BindingResult bindingResult) {
+	@RequestMapping("/rest/modules/save")
+	public AjaxResponse saveModule(@Valid @ModelAttribute Module module, BindingResult bindingResult) {
 
 		// init
 		AjaxResponse ajaxResponse = new AjaxResponse(AjaxResponse.STATUS.SUCCESS);
@@ -86,18 +86,18 @@ public class RestRequestController {
 
 		// ok
 		else {
-			salleService.save(salle);
-			ajaxResponse.setReturnUrl("/salle/read.html");
+			moduleService.save(module);
+			ajaxResponse.setReturnUrl("/module/read.html");
 		}
 
 		// retourne l'objet de réponse ajax
 		return ajaxResponse;
 	}
 
-	@RequestMapping("/rest/salles/delete")
-	public AjaxResponse updateSalle(@ModelAttribute Salle salle, BindingResult bindingResult) {
+	@RequestMapping("/rest/modules/delete")
+	public AjaxResponse deleteModule(@ModelAttribute Module module, BindingResult bindingResult) {
 		AjaxResponse ajaxResponse = new AjaxResponse(AjaxResponse.STATUS.SUCCESS);
-		salleService.deleteSalleById(salle);
+		moduleService.delete(module);
 		ajaxResponse.setReturnUrl("/salle/read.html");
 		return ajaxResponse;
 	}

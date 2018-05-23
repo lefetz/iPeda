@@ -19,6 +19,6 @@ public interface ISalleService {
 
 	Salle getSallesById(String id);
 
-	void deleteSalleById(Salle salle);
+	void delete(Salle salle);
 
 }
