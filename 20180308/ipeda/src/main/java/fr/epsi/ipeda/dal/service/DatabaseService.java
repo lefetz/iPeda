@@ -296,11 +296,11 @@ public class DatabaseService implements IDatabaseService {
 		AnneeScolaire anneeScolaire = anneeScolaireRepository.findByDateDebut(LocalDate.of(2018, 9, 1));
 		LocalDate dateFinSemestre1 = LocalDate.of(2019, 2, 1);
 
-		formationRepository.save(new Formation("BACHELOR 1 18/19", anneeScolaire, dateFinSemestre1));
-		formationRepository.save(new Formation("BACHELOR 2 18/19", anneeScolaire, dateFinSemestre1));
-		formationRepository.save(new Formation("BACHELOR 3 18/19", anneeScolaire, dateFinSemestre1));
-		formationRepository.save(new Formation("INGENIERIE 4 18/19", anneeScolaire, dateFinSemestre1));
-		formationRepository.save(new Formation("INGENIERIE 5 18/19", anneeScolaire, dateFinSemestre1));
+		formationRepository.save(new Formation("BACHELOR 1 18/19", "B1 18/19", anneeScolaire, dateFinSemestre1));
+		formationRepository.save(new Formation("BACHELOR 2 18/19", "B2 18/19", anneeScolaire, dateFinSemestre1));
+		formationRepository.save(new Formation("BACHELOR 3 18/19", "B3 18/19", anneeScolaire, dateFinSemestre1));
+		formationRepository.save(new Formation("INGENIERIE 4 18/19", "I4 18/19", anneeScolaire, dateFinSemestre1));
+		formationRepository.save(new Formation("INGENIERIE 5 18/19", "I5 18/19", anneeScolaire, dateFinSemestre1));
 
 	}
 

@@ -16,3 +16,19 @@ table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
 .dataTables_filter input {
   line-height: normal;
 }
+
+#planif > thead > tr > th {
+  font-size: 12px;
+  padding: 2px;
+}
+
+#planif > tbody > tr > td {
+  font-size: 12px;
+  padding: 2px;
+  line-height: normal;
+  vertical-align: middle;
+}
+
+#planif .weekend td {
+  background-color: #CCCCCC;
+}

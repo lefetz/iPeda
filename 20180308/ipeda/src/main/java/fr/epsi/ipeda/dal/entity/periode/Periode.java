@@ -1,6 +1,6 @@
 package fr.epsi.ipeda.dal.entity.periode;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,9 +18,9 @@ public class Periode {
 	private Long id;
 
 	@NotNull
-	private LocalDate dateDebut;
+	private LocalDateTime dateHeureDebut;
 
-	private LocalDate dateFin;
+	private LocalDateTime dateHeureFin;
 
 	@ManyToOne
 	private PeriodeType periodeType;
@@ -28,15 +28,15 @@ public class Periode {
 	public Periode() {
 	}
 
-	public Periode(PeriodeType periodeType, LocalDate dateDebut) {
+	public Periode(PeriodeType periodeType, LocalDateTime dateHeureDebut) {
 		this.periodeType = periodeType;
-		this.dateDebut = dateDebut;
+		this.dateHeureDebut = dateHeureDebut;
 	}
 
-	public Periode(PeriodeType periodeType, LocalDate dateDebut, LocalDate dateFin) {
+	public Periode(PeriodeType periodeType, LocalDateTime dateHeureDebut, LocalDateTime dateHeureFin) {
 		this.periodeType = periodeType;
-		this.dateDebut = dateDebut;
-		this.dateFin = dateFin;
+		this.dateHeureDebut = dateHeureDebut;
+		this.dateHeureFin = dateHeureFin;
 	}
 
 	public Long getId() {
@@ -47,28 +47,28 @@ public class Periode {
 		this.id = id;
 	}
 
-	public LocalDate getDateDebut() {
-		return dateDebut;
-	}
-
-	public void setDateDebut(LocalDate dateDebut) {
-		this.dateDebut = dateDebut;
-	}
-
-	public LocalDate getDateFin() {
-		return dateFin;
-	}
-
-	public void setDateFin(LocalDate dateFin) {
-		this.dateFin = dateFin;
-	}
-
 	public PeriodeType getPeriodeType() {
 		return periodeType;
 	}
 
 	public void setPeriodeType(PeriodeType periodeType) {
 		this.periodeType = periodeType;
+	}
+
+	public LocalDateTime getDateHeureDebut() {
+		return dateHeureDebut;
+	}
+
+	public void setDateHeureDebut(LocalDateTime dateHeureDebut) {
+		this.dateHeureDebut = dateHeureDebut;
+	}
+
+	public LocalDateTime getDateHeureFin() {
+		return dateHeureFin;
+	}
+
+	public void setDateHeureFin(LocalDateTime dateHeureFin) {
+		this.dateHeureFin = dateHeureFin;
 	}
 
 }

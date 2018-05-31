@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import fr.epsi.ipeda.dal.entity.AnneeScolaire;
 import fr.epsi.ipeda.dal.entity.Formation;
 import fr.epsi.ipeda.dal.repository.FormationRepository;
 
@@ -34,6 +35,10 @@ public class FormationService implements IFormationService {
 	@Override
 	public void delete(Formation object) {
 		formationRepository.delete(object);
+	}
+
+	public Formation findByLibelleContainingAndAnneeScolaire(String libelle, AnneeScolaire anneeScolaire) {
+		return formationRepository.findByLibelleContainingAndAnneeScolaire(libelle, anneeScolaire);
 	}
 
 }

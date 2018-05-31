@@ -47,4 +47,8 @@ public class AnneeScolaireService implements IAnneeScolaireService {
 		anneeScolaireRepository.delete(object);
 	}
 
+	public AnneeScolaire findByDateDebut(LocalDate dateDebut) {
+		return anneeScolaireRepository.findByDateDebut(dateDebut);
+	}
+
 }

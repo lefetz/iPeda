@@ -1,6 +1,7 @@
 package fr.epsi.ipeda.dal.service.feeding.an1718;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Component;
 
@@ -41,7 +42,7 @@ public class B1 extends Feeding {
 		AnneeScolaire anneeScolaire = anneeScolaireRepository.findByDateDebut(LocalDate.of(2018, 9, 1));
 		LocalDate dateFinSemestre1 = LocalDate.of(2019, 2, 1);
 
-		formation = formationRepository.save(new Formation("BACHELOR 1 18/19", anneeScolaire, dateFinSemestre1));
+		formation = formationRepository.save(new Formation("BACHELOR 1 18/19", "B1 18/19", anneeScolaire, dateFinSemestre1));
 
 		// ================================================
 		// PARCOURS SOCLE
@@ -189,43 +190,44 @@ public class B1 extends Feeding {
 
 		// périodes
 		PeriodeType periodeType = periodeTypeRepository.findByLibelle("JOUR_FERIE");
-		planning.addPeriode(new Periode(periodeType, LocalDate.of(2018, 11, 1)));
-		planning.addPeriode(new Periode(periodeType, LocalDate.of(2018, 12, 25)));
-		planning.addPeriode(new Periode(periodeType, LocalDate.of(2019, 1, 1)));
-		planning.addPeriode(new Periode(periodeType, LocalDate.of(2019, 4, 22)));
-		planning.addPeriode(new Periode(periodeType, LocalDate.of(2019, 5, 1)));
-		planning.addPeriode(new Periode(periodeType, LocalDate.of(2019, 5, 8)));
-		planning.addPeriode(new Periode(periodeType, LocalDate.of(2019, 4, 30)));
-		planning.addPeriode(new Periode(periodeType, LocalDate.of(2019, 6, 10)));
-		planning.addPeriode(new Periode(periodeType, LocalDate.of(2019, 8, 15)));
+		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2018, 11, 1, 0, 0, 0)));
+		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2018, 12, 25, 0, 0, 0)));
+		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2019, 1, 1, 0, 0, 0)));
+		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2019, 4, 22, 0, 0, 0)));
+		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2019, 5, 1, 0, 0, 0)));
+		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2019, 5, 8, 0, 0, 0)));
+		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2019, 4, 30, 0, 0, 0)));
+		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2019, 6, 10, 0, 0, 0)));
+		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2019, 8, 15, 0, 0, 0)));
 
 		periodeType = periodeTypeRepository.findByLibelle("VACANCES");
-		planning.addPeriode(new Periode(periodeType, LocalDate.of(2018, 10, 22), LocalDate.of(2018, 11, 2)));
-		planning.addPeriode(new Periode(periodeType, LocalDate.of(2019, 2, 11), LocalDate.of(2019, 2, 22)));
-		planning.addPeriode(new Periode(periodeType, LocalDate.of(2019, 4, 8), LocalDate.of(2019, 4, 19)));
+		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2018, 10, 22, 0, 0, 0), LocalDateTime.of(2018, 11, 2, 23, 59, 59)));
+		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2019, 2, 11, 0, 0, 0), LocalDateTime.of(2019, 2, 22, 23, 59, 59)));
+		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2019, 4, 8, 0, 0, 0), LocalDateTime.of(2019, 4, 19, 23, 59, 59)));
 
 		periodeType = periodeTypeRepository.findByLibelle("FERMETURE");
-		planning.addPeriode(new Periode(periodeType, LocalDate.of(2018, 12, 24), LocalDate.of(2019, 1, 4)));
-		planning.addPeriode(new Periode(periodeType, LocalDate.of(2019, 8, 1), LocalDate.of(2019, 8, 31)));
+		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2018, 12, 24, 0, 0, 0), LocalDateTime.of(2019, 1, 4, 23, 59, 59)));
+		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2019, 8, 1, 0, 0, 0), LocalDateTime.of(2019, 8, 31, 23, 59, 59)));
 
 		periodeType = periodeTypeRepository.findByLibelle("RATTRAPAGES");
-		planning.addPeriode(new Periode(periodeType, LocalDate.of(2019, 1, 7), LocalDate.of(2019, 1, 8)));
-		planning.addPeriode(new Periode(periodeType, LocalDate.of(2019, 7, 8), LocalDate.of(2019, 7, 9)));
+		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2019, 1, 7, 0, 0, 0), LocalDateTime.of(2019, 1, 8, 23, 59, 59)));
+		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2019, 7, 8, 0, 0, 0), LocalDateTime.of(2019, 7, 9, 23, 59, 59)));
 
 		periodeType = periodeTypeRepository.findByLibelle("SALON_ETUDIANT");
-		planning.addPeriode(new Periode(periodeType, LocalDate.of(2019, 1, 10), LocalDate.of(2019, 1, 11)));
+		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2019, 1, 10, 0, 0, 0), LocalDateTime.of(2019, 1, 11, 23, 59, 59)));
 
 		periodeType = periodeTypeRepository.findByLibelle("NON_PLANIFIABLE");
-		planning.addPeriode(new Periode(periodeType, LocalDate.of(2019, 1, 14), LocalDate.of(2019, 1, 18)));
-		planning.addPeriode(new Periode(periodeType, LocalDate.of(2019, 3, 18), LocalDate.of(2019, 3, 22)));
-		planning.addPeriode(new Periode(periodeType, LocalDate.of(2019, 6, 17), LocalDate.of(2019, 6, 21)));
-		planning.addPeriode(new Periode(periodeType, LocalDate.of(2019, 7, 10), LocalDate.of(2019, 7, 31)));
+		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2018, 9, 17, 0, 0, 0), LocalDateTime.of(2018, 9, 17, 13, 59, 59)));
+		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2019, 1, 14, 0, 0, 0), LocalDateTime.of(2019, 1, 18, 23, 59, 59)));
+		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2019, 3, 18, 0, 0, 0), LocalDateTime.of(2019, 3, 22, 23, 59, 59)));
+		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2019, 6, 17, 0, 0, 0), LocalDateTime.of(2019, 6, 21, 23, 59, 59)));
+		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2019, 7, 10, 0, 0, 0), LocalDateTime.of(2019, 7, 31, 23, 59, 59)));
 
 		periodeType = periodeTypeRepository.findByLibelle("STAGE");
-		planning.addPeriode(new Periode(periodeType, LocalDate.of(2019, 4, 23), LocalDate.of(2019, 6, 14)));
+		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2019, 4, 23, 0, 0, 0), LocalDateTime.of(2019, 6, 14, 23, 59, 59)));
 
 		periodeType = periodeTypeRepository.findByLibelle("SOUTENANCES");
-		planning.addPeriode(new Periode(periodeType, LocalDate.of(2019, 6, 24), LocalDate.of(2019, 6, 25)));
+		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2019, 6, 24, 0, 0, 0), LocalDateTime.of(2019, 6, 25, 23, 59, 59)));
 
 		periodeRepository.save(planning.getListPeriode());
 

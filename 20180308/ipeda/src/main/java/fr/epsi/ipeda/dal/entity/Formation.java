@@ -26,6 +26,9 @@ public class Formation {
 	@NotNull
 	private String libelle;
 
+	@NotNull
+	private String libelleCourt;
+
 	private LocalDate dateFinSemestre1;
 
 	@NotNull
@@ -54,8 +57,9 @@ public class Formation {
 		addModule(listeModules);
 	}
 
-	public Formation(String libelle, AnneeScolaire anneeScolaire, LocalDate dateFinSemestre1) {
+	public Formation(String libelle, String libelleCourt, AnneeScolaire anneeScolaire, LocalDate dateFinSemestre1) {
 		this.libelle = libelle;
+		this.libelleCourt = libelleCourt;
 		this.anneeScolaire = anneeScolaire;
 		this.dateFinSemestre1 = dateFinSemestre1;
 	}
@@ -121,6 +125,14 @@ public class Formation {
 
 	public void setPlanning(Planning planning) {
 		this.planning = planning;
+	}
+
+	public String getLibelleCourt() {
+		return libelleCourt;
+	}
+
+	public void setLibelleCourt(String libelleCourt) {
+		this.libelleCourt = libelleCourt;
 	}
 
 }

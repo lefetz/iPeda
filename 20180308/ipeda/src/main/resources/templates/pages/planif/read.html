@@ -12,7 +12,7 @@
 			
 		</div>
 
-		<table id="example" class="table table-striped table-bordered hover" style="width: 100%">
+		<table id="planif" class="table table-striped table-bordered hover">
 			<thead>
 				<tr>
 					<th>Groupe</th>
@@ -30,6 +30,21 @@
 					<th>Remarque</th>
 				</tr>
 			</thead>
+			<tr th:each="creneau : ${creneaux}" th:class="${creneau.weekEnd}? 'weekend'">
+				<td th:text="${creneau.groupe}">B1</td>
+				<td th:text="${creneau.semaine}">2018-24</td>
+				<td th:text="${creneau.date}">01/02/2018</td>
+				<td th:text="${creneau.jour}">lun</td>
+				<td th:text="${creneau.heureDebut}">08h15</td>
+				<td th:text="${creneau.heureFin}">12h15</td>
+				<td th:text="${creneau.dureePrevue}">04h00</td>
+				<td th:text="${creneau.dureeModule}">20h00</td>
+				<td th:text="${creneau.specialite}">20h00</td>
+				<td th:text="${creneau.libelleModule}">AZZE123 - Super module</td>
+				<td th:text="${creneau.intervenant}">GABER Khalid</td>
+				<td th:text="${creneau.salle}">Jaune</td>
+				<td th:text="${creneau.remarque}">Remarque</td>
+			</tr>
 			<tfoot>
 				<tr>
 					<th>Groupe</th>
