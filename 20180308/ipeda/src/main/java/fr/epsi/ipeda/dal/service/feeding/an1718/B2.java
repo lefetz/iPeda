@@ -10,9 +10,8 @@ import fr.epsi.ipeda.dal.entity.Formation;
 import fr.epsi.ipeda.dal.entity.Module;
 import fr.epsi.ipeda.dal.entity.Parcours;
 import fr.epsi.ipeda.dal.entity.Semestre;
-import fr.epsi.ipeda.dal.entity.UniteEnseignement;
-import fr.epsi.ipeda.dal.entity.Formation.TypeFormation;
 import fr.epsi.ipeda.dal.entity.Semestre.NumeroSemestre;
+import fr.epsi.ipeda.dal.entity.UniteEnseignement;
 import fr.epsi.ipeda.dal.service.feeding.Feeding;
 
 @Component
@@ -37,7 +36,7 @@ public class B2 extends Feeding {
 		// Formation
 		// ················································
 
-		formation = formationRepository.save(new Formation(TypeFormation.B2, "BACHELOR 2", mapSemestres.get(NumeroSemestre.SEMESTRE1), mapSemestres.get(NumeroSemestre.SEMESTRE2)));
+		formation = formationRepository.save(new Formation("BACHELOR 2", mapSemestres.get(NumeroSemestre.SEMESTRE1), mapSemestres.get(NumeroSemestre.SEMESTRE2)));
 
 		// ================================================
 		// PARCOURS SOCLE

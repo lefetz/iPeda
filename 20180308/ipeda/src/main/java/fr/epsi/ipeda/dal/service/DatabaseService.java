@@ -2,34 +2,40 @@ package fr.epsi.ipeda.dal.service;
 
 import java.lang.invoke.MethodHandles;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.epsi.ipeda.dal.entity.AnneeScolaire;
 import fr.epsi.ipeda.dal.entity.BlocCompetences;
 import fr.epsi.ipeda.dal.entity.Cours;
-import fr.epsi.ipeda.dal.entity.Formation.TypeFormation;
+import fr.epsi.ipeda.dal.entity.Formation;
 import fr.epsi.ipeda.dal.entity.Intervenant;
 import fr.epsi.ipeda.dal.entity.Module;
+import fr.epsi.ipeda.dal.entity.Parcours;
 import fr.epsi.ipeda.dal.entity.ProjetTransversal;
 import fr.epsi.ipeda.dal.entity.Salle;
-import fr.epsi.ipeda.dal.entity.Semaine;
-import fr.epsi.ipeda.dal.entity.Semestre;
-import fr.epsi.ipeda.dal.entity.Semestre.NumeroSemestre;
+import fr.epsi.ipeda.dal.entity.Specificite;
 import fr.epsi.ipeda.dal.entity.UniteEnseignement;
+import fr.epsi.ipeda.dal.entity.periode.PeriodeType;
+import fr.epsi.ipeda.dal.repository.AnneeScolaireRepository;
+import fr.epsi.ipeda.dal.repository.BlocCompetencesRepository;
 import fr.epsi.ipeda.dal.repository.CoursRepository;
+import fr.epsi.ipeda.dal.repository.FormationRepository;
 import fr.epsi.ipeda.dal.repository.IntervenantRepository;
 import fr.epsi.ipeda.dal.repository.ModuleRepository;
+import fr.epsi.ipeda.dal.repository.ParcoursRepository;
 import fr.epsi.ipeda.dal.repository.ProjetTransversalRepository;
 import fr.epsi.ipeda.dal.repository.SalleRepository;
+import fr.epsi.ipeda.dal.repository.SpecificiteRepository;
+import fr.epsi.ipeda.dal.repository.periode.PeriodeTypeRepository;
 import fr.epsi.ipeda.helpers.FormatterUtils;
-import fr.epsi.ipeda.model.service.nomenclature.INomenclatureService;
 
 @Service
 public class DatabaseService implements IDatabaseService {
@@ -52,7 +58,22 @@ public class DatabaseService implements IDatabaseService {
 	private CoursRepository coursRepository;
 
 	@Autowired
-	private INomenclatureService nomenclatureService;
+	private AnneeScolaireRepository anneeScolaireRepository;
+
+	@Autowired
+	private SpecificiteRepository specificiteRepository;
+
+	@Autowired
+	private FormationRepository formationRepository;
+
+	@Autowired
+	private ParcoursRepository parcoursRepository;
+
+	@Autowired
+	private BlocCompetencesRepository blocCompetencesRepository;
+
+	@Autowired
+	private PeriodeTypeRepository periodeTypeRepository;
 
 	@Override
 	public void initialiserSalles() {
@@ -123,9 +144,8 @@ public class DatabaseService implements IDatabaseService {
 	 * @return Le module créé
 	 */
 	@Override
-	public Module createModule(String codeModule, String libelle, double dureeFFP, double dureeTE, Map<NumeroSemestre, Semestre> mapSemestres, Intervenant intervenant, UniteEnseignement ue) {
-		return moduleRepository.save(new Module(codeModule, libelle, nomenclatureService.autoselectSemestre(codeModule, mapSemestres), Duration.ofMinutes((long) (dureeFFP * 60)),
-				Duration.ofMinutes((long) (dureeTE * 60)), intervenant, ue));
+	public Module createModule(String codeModule, String libelle, double dureeFFP, double dureeTE, Intervenant intervenant, UniteEnseignement ue) {
+		return moduleRepository.save(new Module(codeModule, libelle, Duration.ofMinutes((long) (dureeFFP * 60)), Duration.ofMinutes((long) (dureeTE * 60)), intervenant, ue));
 	}
 
 	/**
@@ -142,8 +162,8 @@ public class DatabaseService implements IDatabaseService {
 	 */
 	@Override
 	public Module createModule(Module moduleParent, String libelle, double dureeFFP, double dureeTE, Intervenant intervenant) {
-		return moduleRepository.save(new Module(moduleParent.getCode(), libelle, moduleParent.getSemestre(), Duration.ofMinutes((long) (dureeFFP * 60)), Duration.ofMinutes((long) (dureeTE * 60)),
-				intervenant, moduleParent.getUniteEnseignement()));
+		return moduleRepository.save(
+				new Module(moduleParent.getCode(), libelle, Duration.ofMinutes((long) (dureeFFP * 60)), Duration.ofMinutes((long) (dureeTE * 60)), intervenant, moduleParent.getUniteEnseignement()));
 	}
 
 	/**
@@ -202,7 +222,6 @@ public class DatabaseService implements IDatabaseService {
 					module.setIntervenant(moduleReference.getIntervenant());
 					module.setLibelle(libelle);
 					module.setListeModulesMutualises(listeModulesMutualises);
-					module.setSemestre(moduleReference.getSemestre());
 					module.setUniteEnseignement(moduleReference.getUniteEnseignement());
 					module = moduleRepository.save(module);
 
@@ -236,10 +255,9 @@ public class DatabaseService implements IDatabaseService {
 	 * @return
 	 */
 	@Override
-	public ProjetTransversal createProjetTransversal(String codeModule, String libelle, double dureeFFP, double dureeTE, Map<NumeroSemestre, Semestre> mapSemestres, Intervenant intervenant,
-			BlocCompetences blocCompetences) {
-		return projetTransversalRepository.save(new ProjetTransversal(codeModule, libelle, nomenclatureService.autoselectSemestre(codeModule, mapSemestres), Duration.ofMinutes((long) (dureeFFP * 60)),
-				Duration.ofMinutes((long) (dureeTE * 60)), intervenant, blocCompetences));
+	public ProjetTransversal createProjetTransversal(String codeModule, String libelle, double dureeFFP, double dureeTE, Intervenant intervenant, BlocCompetences blocCompetences) {
+		return projetTransversalRepository
+				.save(new ProjetTransversal(codeModule, libelle, Duration.ofMinutes((long) (dureeFFP * 60)), Duration.ofMinutes((long) (dureeTE * 60)), intervenant, blocCompetences));
 
 	}
 
@@ -259,10 +277,191 @@ public class DatabaseService implements IDatabaseService {
 	}
 
 	@Override
-	public void getPlanningBySemaine(TypeFormation typeFormation, Semaine semaine) {
-		// LocalDate dateDebut = semaine.getDateDebut();
-		// LocalDate dateFin = semaine.getDateFin();
+	public void initialiserAnneeScolaire() {
+		AnneeScolaire anneeScolaire = new AnneeScolaire();
+		anneeScolaire.setDateDebut(LocalDate.of(2017, 9, 1));
+		anneeScolaire.setDateFin(LocalDate.of(2018, 8, 31));
+		anneeScolaireRepository.save(anneeScolaire);
+
+		anneeScolaire = new AnneeScolaire();
+		anneeScolaire.setDateDebut(LocalDate.of(2018, 9, 1));
+		anneeScolaire.setDateFin(LocalDate.of(2019, 8, 31));
+		anneeScolaireRepository.save(anneeScolaire);
 
 	}
+
+	@Override
+	public void initialiserFormation() {
+
+		AnneeScolaire anneeScolaire = anneeScolaireRepository.findByDateDebut(LocalDate.of(2018, 9, 1));
+		LocalDate dateFinSemestre1 = LocalDate.of(2019, 2, 1);
+
+		formationRepository.save(new Formation("BACHELOR 1 18/19", anneeScolaire, dateFinSemestre1));
+		formationRepository.save(new Formation("BACHELOR 2 18/19", anneeScolaire, dateFinSemestre1));
+		formationRepository.save(new Formation("BACHELOR 3 18/19", anneeScolaire, dateFinSemestre1));
+		formationRepository.save(new Formation("INGENIERIE 4 18/19", anneeScolaire, dateFinSemestre1));
+		formationRepository.save(new Formation("INGENIERIE 5 18/19", anneeScolaire, dateFinSemestre1));
+
+	}
+
+	@Override
+	public void initialiserSpecificite() {
+
+		Specificite specificite = new Specificite();
+		specificite.setLibelle("BTS");
+		specificiteRepository.save(specificite);
+
+		specificite = new Specificite();
+		specificite.setLibelle("BTS_SLAM");
+		specificiteRepository.save(specificite);
+
+		specificite = new Specificite();
+		specificite.setLibelle("BTS_SISR");
+		specificiteRepository.save(specificite);
+
+		specificite = new Specificite();
+		specificite.setLibelle("M-DEV");
+		specificiteRepository.save(specificite);
+
+		specificite = new Specificite();
+		specificite.setLibelle("M-RES");
+		specificiteRepository.save(specificite);
+
+		specificite = new Specificite();
+		specificite.setLibelle("M-ERP");
+		specificiteRepository.save(specificite);
+
+		specificite = new Specificite();
+		specificite.setLibelle("S-DATA");
+		specificiteRepository.save(specificite);
+
+		specificite = new Specificite();
+		specificite.setLibelle("S-SECU");
+		specificiteRepository.save(specificite);
+
+		specificite = new Specificite();
+		specificite.setLibelle("C-DATA");
+		specificiteRepository.save(specificite);
+
+		specificite = new Specificite();
+		specificite.setLibelle("C-SECU");
+		specificiteRepository.save(specificite);
+
+		specificite = new Specificite();
+		specificite.setLibelle("C-MOB");
+		specificiteRepository.save(specificite);
+
+		specificite = new Specificite();
+		specificite.setLibelle("C-IOT");
+		specificiteRepository.save(specificite);
+
+		specificite = new Specificite();
+		specificite.setLibelle("C-CLOUD");
+		specificiteRepository.save(specificite);
+
+	}
+
+	@Override
+	public void initialiserParcours() {
+
+		AnneeScolaire anneeScolaire = anneeScolaireRepository.findByDateDebut(LocalDate.of(2018, 9, 1));
+
+		// b1
+		Formation formation = formationRepository.findByLibelleContainingAndAnneeScolaire("BACHELOR 1", anneeScolaire);
+		parcoursRepository.save(new Parcours(formation, "SOCLE DEVOPS"));
+		parcoursRepository.save(new Parcours(formation, "PROFESSIONNEL"));
+		parcoursRepository.save(new Parcours(formation, "BTS SIO", specificiteRepository.findByLibelle("BTS")));
+
+		// b2
+		formation = formationRepository.findByLibelleContainingAndAnneeScolaire("BACHELOR 2", anneeScolaire);
+		parcoursRepository.save(new Parcours(formation, "SOCLE DEVOPS"));
+		parcoursRepository.save(new Parcours(formation, "PROFESSIONNEL"));
+		parcoursRepository.save(new Parcours(formation, "BTS SIO", specificiteRepository.findByLibelle("BTS")));
+
+		// b3
+		formation = formationRepository.findByLibelleContainingAndAnneeScolaire("BACHELOR 3", anneeScolaire);
+		parcoursRepository.save(new Parcours(formation, "SOCLE DEVOPS"));
+		parcoursRepository.save(new Parcours(formation, "METIER - RESEAU", specificiteRepository.findByLibelle("M-RES"), true));
+		parcoursRepository.save(new Parcours(formation, "METIER - DEVELOPPEMENT", specificiteRepository.findByLibelle("M-DEV"), true));
+		parcoursRepository.save(new Parcours(formation, "COMPLEMENTAIRE"));
+		parcoursRepository.save(new Parcours(formation, "PROFESSIONNEL"));
+
+		// i4
+		formation = formationRepository.findByLibelleContainingAndAnneeScolaire("INGENIERIE 4", anneeScolaire);
+		parcoursRepository.save(new Parcours(formation, "SOCLE EXPERTISE INFORMATIQUE & SYSTEME D'INFORMATION"));
+		parcoursRepository.save(new Parcours(formation, "SPECIALITE - SECURITE", specificiteRepository.findByLibelle("S-SECU"), true));
+		parcoursRepository.save(new Parcours(formation, "SPECIALITE - DATA", specificiteRepository.findByLibelle("S-DATA"), true));
+		parcoursRepository.save(new Parcours(formation, "PROFESSIONNEL"));
+
+		// i5
+		formation = formationRepository.findByLibelleContainingAndAnneeScolaire("INGENIERIE 5", anneeScolaire);
+		parcoursRepository.save(new Parcours(formation, "SOCLE EXPERTISE INFORMATIQUE & SYSTEME D'INFORMATION"));
+		parcoursRepository.save(new Parcours(formation, "METIER"));
+		parcoursRepository.save(new Parcours(formation, "COMPLEMENTAIRE"));
+		parcoursRepository.save(new Parcours(formation, "PROFESSIONNEL"));
+
+	}
+
+	@Override
+	public void initialiserBlocDeCompetence() {
+
+		AnneeScolaire anneeScolaire = anneeScolaireRepository.findByDateDebut(LocalDate.of(2018, 9, 1));
+
+		// b1
+		Formation formation = formationRepository.findByLibelleContainingAndAnneeScolaire("BACHELOR 1", anneeScolaire);
+
+		Parcours parcours = parcoursRepository.findByFormationAndLibelleContaining(formation, "SOCLE DEVOPS");
+		BlocCompetences bloc = new BlocCompetences();
+		bloc.setParcours(parcours);
+		bloc.setNumero(0);
+		bloc.setLibelle("Développement personnel & professionnel - Ateliers / Workshops");
+		// bloc.setSpecificite(specificite);
+		blocCompetencesRepository.save(bloc);
+
+		bloc = new BlocCompetences();
+		bloc.setParcours(parcours);
+		bloc.setNumero(1);
+		bloc.setLibelle("Développement d’applications informatiques");
+		blocCompetencesRepository.save(bloc);
+
+	}
+
+	@Override
+	public void initialiserPeriodeType() {
+
+		periodeTypeRepository.save(new PeriodeType("NON_PLANIFIABLE"));
+		periodeTypeRepository.save(new PeriodeType("JOUR_FERIE"));
+		periodeTypeRepository.save(new PeriodeType("FERMETURE"));
+		periodeTypeRepository.save(new PeriodeType("STAGE"));
+		periodeTypeRepository.save(new PeriodeType("SEMAINE_ECOLE"));
+		periodeTypeRepository.save(new PeriodeType("SEMAINE_ENTREPRISE"));
+		periodeTypeRepository.save(new PeriodeType("RATTRAPAGES"));
+		periodeTypeRepository.save(new PeriodeType("REVISIONS"));
+		periodeTypeRepository.save(new PeriodeType("BTS_BLANC"));
+		periodeTypeRepository.save(new PeriodeType("BTS_REEL"));
+		periodeTypeRepository.save(new PeriodeType("SALON_ETUDIANT"));
+		periodeTypeRepository.save(new PeriodeType("VACANCES"));
+		periodeTypeRepository.save(new PeriodeType("SOUTENANCES"));
+
+	}
+
+	// @Override
+	// public void initialiserUniteEnseignement() {
+	//
+	// AnneeScolaire anneeScolaire = anneeScolaireRepository.findByDateDebut(LocalDate.of(2018, 9, 1));
+	//
+	// // b1
+	// Formation formation = formationRepository.findByLibelleContainingAndAnneeScolaire("BACHELOR 1", anneeScolaire);
+	//
+	// Parcours parcours = parcoursRepository.findByFormationAndLibelleContaining(formation, "SOCLE DEVOPS");
+	// BlocCompetences bloc = blocCompetencesRepository.findByParcoursAndNumero(parcours, 1);
+	//
+	// UniteEnseignement ue = new UniteEnseignement();
+	// ue.setBlocCompetences(bloc);
+	// ue.setLibelle("Apprendre à développer");
+	// // ue.setParcours(parcours);
+	// // ue.setSpecificite(specificite);
+	// uniteEnseignementRepository.save(new UniteEnseignement("Apprendre à développer", bloc));
+	// }
 
 }

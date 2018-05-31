@@ -7,8 +7,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -38,34 +36,39 @@ public class UniteEnseignement {
 	@Column(name = "ferme")
 	private boolean isFerme;
 
-	public enum TypeUE {
-		RESEAUX, SECU, DATA, MOBILITE, ERP, CLOUD, VIRTU
-	}
-
-	@Column(name = "type_unite_enseignement")
-	@Enumerated(EnumType.STRING)
-	private TypeUE typeUE;
+	@ManyToOne
+	private Specificite specificite;
 
 	public UniteEnseignement() {
 	}
 
-	public UniteEnseignement(TypeUE typeUE, String libelle, Parcours parcours) {
-		this.typeUE = typeUE;
+	public UniteEnseignement(String libelle, Parcours parcours, Specificite specificite) {
+		this.specificite = specificite;
+		this.libelle = libelle;
+		this.parcours = parcours;
+	}
+	
+	public UniteEnseignement(String libelle, Parcours parcours) {
 		this.libelle = libelle;
 		this.parcours = parcours;
 	}
 
-	public UniteEnseignement(TypeUE typeUE, String libelle, BlocCompetences blocCompetences) {
-		this.typeUE = typeUE;
+	public UniteEnseignement(String libelle, BlocCompetences blocCompetences, Specificite specificite) {
+		this.specificite = specificite;
 		this.libelle = libelle;
 		this.blocCompetences = blocCompetences;
 	}
 
-	public UniteEnseignement(TypeUE typeUE, String libelle, BlocCompetences blocCompetences, boolean isFerme) {
-		this.typeUE = typeUE;
+	public UniteEnseignement(String libelle, BlocCompetences blocCompetences, Specificite specificite, boolean isFerme) {
+		this.specificite = specificite;
 		this.libelle = libelle;
 		this.blocCompetences = blocCompetences;
 		this.isFerme = isFerme;
+	}
+
+	public UniteEnseignement(String libelle, BlocCompetences blocCompetences) {
+		this.libelle = libelle;
+		this.blocCompetences = blocCompetences;
 	}
 
 	public Long getId() {
@@ -108,14 +111,6 @@ public class UniteEnseignement {
 		this.listeModules = listeModules;
 	}
 
-	public TypeUE getTypeUE() {
-		return typeUE;
-	}
-
-	public void setTypeUE(TypeUE typeUE) {
-		this.typeUE = typeUE;
-	}
-
 	public void addModule(Module module) {
 		if (null != listeModules) {
 			listeModules.add(module);
@@ -128,6 +123,14 @@ public class UniteEnseignement {
 
 	public void setFerme(boolean isFerme) {
 		this.isFerme = isFerme;
+	}
+
+	public Specificite getSpecificite() {
+		return specificite;
+	}
+
+	public void setSpecificite(Specificite specificite) {
+		this.specificite = specificite;
 	}
 
 }

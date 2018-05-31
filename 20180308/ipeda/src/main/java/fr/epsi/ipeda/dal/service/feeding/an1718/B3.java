@@ -7,15 +7,14 @@ import java.util.HashMap;
 import org.springframework.stereotype.Component;
 
 import fr.epsi.ipeda.dal.entity.BlocCompetences;
+import fr.epsi.ipeda.dal.entity.BlocCompetences.TypeBloc;
 import fr.epsi.ipeda.dal.entity.Formation;
 import fr.epsi.ipeda.dal.entity.Module;
 import fr.epsi.ipeda.dal.entity.Parcours;
 import fr.epsi.ipeda.dal.entity.ProjetTransversal;
 import fr.epsi.ipeda.dal.entity.Semestre;
-import fr.epsi.ipeda.dal.entity.UniteEnseignement;
-import fr.epsi.ipeda.dal.entity.BlocCompetences.TypeBloc;
-import fr.epsi.ipeda.dal.entity.Formation.TypeFormation;
 import fr.epsi.ipeda.dal.entity.Semestre.NumeroSemestre;
+import fr.epsi.ipeda.dal.entity.UniteEnseignement;
 import fr.epsi.ipeda.dal.entity.UniteEnseignement.TypeUE;
 import fr.epsi.ipeda.dal.service.feeding.Feeding;
 
@@ -41,7 +40,7 @@ public class B3 extends Feeding {
 		// Formation
 		// ················································
 
-		formation = formationRepository.save(new Formation(TypeFormation.B3, "BACHELOR 3", mapSemestres.get(NumeroSemestre.SEMESTRE1), mapSemestres.get(NumeroSemestre.SEMESTRE2)));
+		formation = formationRepository.save(new Formation("BACHELOR 3", mapSemestres.get(NumeroSemestre.SEMESTRE1), mapSemestres.get(NumeroSemestre.SEMESTRE2)));
 
 		// ================================================
 		// PARCOURS SOCLE

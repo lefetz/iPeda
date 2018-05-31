@@ -1,10 +1,5 @@
 package fr.epsi.ipeda.model.service.nomenclature;
 
-import java.util.Map;
-
-import fr.epsi.ipeda.dal.entity.Semestre;
-import fr.epsi.ipeda.dal.entity.Semestre.NumeroSemestre;
-
 public interface INomenclatureService {
 
 	/**
@@ -16,6 +11,6 @@ public interface INomenclatureService {
 	 *            Map contenant les semestres de la formation concernée par le module.
 	 * @return Le semestre sélectionné.
 	 */
-	Semestre autoselectSemestre(String codeModule, Map<NumeroSemestre, Semestre> mapSemestres);
+	// Semestre autoselectSemestre(String codeModule, Map<NumeroSemestre, Semestre> mapSemestres);
 
 }

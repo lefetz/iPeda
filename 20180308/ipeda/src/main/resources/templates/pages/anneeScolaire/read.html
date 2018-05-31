@@ -1,11 +1,17 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 <head>
-<title>Lister les années scolaires</title>
+<title>Années scolaires</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<link rel="stylesheet" type="text/css" media="all" th:href="@{/assets/css/bootstrap-datepicker3.min.css}">
+
 <script type="text/javascript" th:src="@{/assets/js/metier/anneeScolaire.js}"></script>
 <script type="text/javascript" th:src="@{/assets/js/datatables/datetime.js}"></script>
 <script type="text/javascript" th:src="@{/assets/js/moment-with-locales.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/datepicker/bootstrap-datepicker.min.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/datepicker/bootstrap-datepicker.fr.min.js}"></script>
+
 </head>
 <body>
 
@@ -78,7 +84,7 @@
 							if(response.status == 'ERROR') {
 								$.each(response.listError, function(k, v) {
 									diz.parent().find("#" + v.field).next().remove();
-									diz.parent().find("#" + v.field).after("<small>" + v.defaultMessage + "</small>");
+									diz.parent().find("#" + v.field).after("<small class=\"text-danger\">" + v.defaultMessage + "</small>");
 								});
 							} else {
 								window.location.replace(response.returnUrl);
@@ -113,6 +119,46 @@
 					});
 				    e.preventDefault();
 				});
+				
+				$('#modal-form-anneeScolaireCreate #dateDebut').datepicker({
+				    format: "dd/mm/yyyy",
+				    todayBtn: "linked",
+				    language: "fr",
+				    daysOfWeekHighlighted: "0,6",
+				    calendarWeeks: true,
+				    autoclose: true,
+				    todayHighlight: true
+				});
+				
+				$('#modal-form-anneeScolaireCreate #dateFin').datepicker({
+				    format: "dd/mm/yyyy",
+				    todayBtn: "linked",
+				    language: "fr",
+				    daysOfWeekHighlighted: "0,6",
+				    calendarWeeks: true,
+				    autoclose: true,
+				    todayHighlight: true
+				});
+				
+				$('#modal-form-anneeScolaireUpdate #dateDebut').datepicker({
+				    format: "dd/mm/yyyy",
+				    todayBtn: "linked",
+				    language: "fr",
+				    daysOfWeekHighlighted: "0,6",
+				    calendarWeeks: true,
+				    autoclose: true,
+				    todayHighlight: true
+				});
+				
+				$('#modal-form-anneeScolaireUpdate #dateFin').datepicker({
+				    format: "dd/mm/yyyy",
+				    todayBtn: "linked",
+				    language: "fr",
+				    daysOfWeekHighlighted: "0,6",
+				    calendarWeeks: true,
+				    autoclose: true,
+				    todayHighlight: true
+				});
 
 			});
 
@@ -143,21 +189,29 @@
 		</table>
 
 		<div layout:insert="fragments/modal :: modal(modalId='anneeScolaireCreate', modalHeader='msg.0018', modalButton='cancel|msg.0001,submit|msg.0002')" th:remove="tag">
+		<div class="container">
 			<form id="modal-form-anneeScolaireCreate" layout:fragment="modal-content" action="#" th:action="@{/rest/anneesScolaires/save}" th:object="${anneeScolaire}" method="post">
-				<div class="form-group">
-				
-					<input type="hidden" th:field="*{id}" />
-					
-					<label for="dateDebut" th:text="#{msg.0014}"></label> 
-					<input type="text" class="form-control" th:field="*{dateDebut}" th:placeholder="#{msg.0016}" />
-					<small th:if="${#fields.hasErrors('dateDebut')}" th:errors="*{dateDebut}">Name Error</small>
-					
-					<label for="dateFin" th:text="#{msg.0015}"></label> 
-					<input type="text" class="form-control" th:field="*{dateFin}" th:placeholder="#{msg.0017}" />
-					<small th:if="${#fields.hasErrors('dateFin')}" th:errors="*{dateFin}">Name Error</small>
-					
+			
+				<input type="hidden" th:field="*{id}" />
+
+				<div class="form-group row">
+					<label for="dateDebut" th:text="#{msg.0014}" class="col-sm-3 col-form-label col-form-label-sm" ></label>
+					<div class="col-sm-9">
+						<input type="text" th:field="*{dateDebut}" th:placeholder="#{msg.0016}" class="form-control form-control-sm" />
+						<small th:if="${#fields.hasErrors('dateDebut')}" th:errors="*{dateDebut}" class="text-muted"></small>
+					</div>
 				</div>
+				
+				<div class="form-group row">
+					<label for="dateFin" th:text="#{msg.0015}" class="col-sm-3 col-form-label col-form-label-sm" ></label>
+					<div class="col-sm-9">
+						<input type="text" th:field="*{dateFin}" th:placeholder="#{msg.0017}" class="form-control form-control-sm" />
+						<small th:if="${#fields.hasErrors('dateFin')}" th:errors="*{dateFin}" class="text-muted"></small>
+					</div>
+				</div>
+
 			</form>
+		</div>
 		</div>
 		
 		<div layout:insert="fragments/modal :: modal(modalId='anneeScolaireUpdate', modalHeader='msg.0019', modalButton='cancel|msg.0001,submit|msg.0007')" th:remove="tag">
@@ -165,15 +219,23 @@
 				<div class="form-group">
 				
 					<input type="hidden" th:field="*{id}" />
-					
-					<label for="dateDebut" th:text="#{msg.0014}"></label> 
-					<input type="text" class="form-control" th:field="*{dateDebut}" th:placeholder="#{msg.0016}" />
-					<small th:if="${#fields.hasErrors('dateDebut')}" th:errors="*{dateDebut}">Name Error</small>
-					
-					<label for="dateFin" th:text="#{msg.0015}"></label> 
-					<input type="text" class="form-control" th:field="*{dateFin}" th:placeholder="#{msg.0017}" />
-					<small th:if="${#fields.hasErrors('dateFin')}" th:errors="*{dateFin}">Name Error</small>
-					
+
+					<div class="form-group row">
+						<label for="dateDebut" th:text="#{msg.0014}" class="col-sm-3 col-form-label col-form-label-sm"></label>
+						<div class="col-sm-9">
+							<input type="text" th:field="*{dateDebut}" th:placeholder="#{msg.0016}" class="form-control form-control-sm" />
+							<small th:if="${#fields.hasErrors('dateDebut')}" th:errors="*{dateDebut}" class="text-muted"></small>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="dateFin" th:text="#{msg.0015}" class="col-sm-3 col-form-label col-form-label-sm"></label>
+						<div class="col-sm-9">
+							<input type="text" th:field="*{dateFin}" th:placeholder="#{msg.0017}" class="form-control form-control-sm" />
+							<small th:if="${#fields.hasErrors('dateFin')}" th:errors="*{dateFin}" class="text-muted"></small>
+						</div>
+					</div>
+
 				</div>
 			</form>
 		</div>

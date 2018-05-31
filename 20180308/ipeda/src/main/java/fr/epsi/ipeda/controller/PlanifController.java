@@ -15,7 +15,7 @@ import fr.epsi.ipeda.helpers.TimeUtils.TIMEFIELD;
 @Controller
 public class PlanifController {
 
-	@RequestMapping("/edt")
+	@RequestMapping("/planif/test")
 	public String edt(Model model) {
 		
 		LocalDate aujourdhui = LocalDate.now();
@@ -33,11 +33,13 @@ public class PlanifController {
 		return "pages/landing";
 	}
 	
-	@RequestMapping("/edt/generation")
-	public String generation(Model model) {
+	@RequestMapping("/planif")
+	public String planif(Model model) {
+		
 
 
-		return "pages/generation";
+
+		return "pages/planif/read";
 	}
 
 }

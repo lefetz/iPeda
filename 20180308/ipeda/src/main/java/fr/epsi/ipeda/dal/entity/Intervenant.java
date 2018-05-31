@@ -1,15 +1,9 @@
 package fr.epsi.ipeda.dal.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -25,9 +19,6 @@ public class Intervenant {
 
 	@Basic(optional = false)
 	private String prenom;
-
-	@OneToMany(mappedBy = "intervenant", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private List<Module> listeModules = new ArrayList<Module>();
 
 	public Intervenant() {
 	}
@@ -59,14 +50,6 @@ public class Intervenant {
 
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
-	}
-
-	public List<Module> getListeModules() {
-		return listeModules;
-	}
-
-	public void setListeModules(List<Module> listeModules) {
-		this.listeModules = listeModules;
 	}
 
 	@Override

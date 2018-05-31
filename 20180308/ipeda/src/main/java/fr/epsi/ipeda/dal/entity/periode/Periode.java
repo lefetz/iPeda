@@ -1,35 +1,42 @@
-package fr.epsi.ipeda.dal.entity;
+package fr.epsi.ipeda.dal.entity.periode;
 
 import java.time.LocalDate;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 @Entity
-@Table(name = "anneeScolaire")
-public class AnneeScolaire {
+@Table(name = "periode")
+public class Periode {
 
 	@Id
 	@GeneratedValue
 	private Long id;
 
 	@NotNull
-	@Column(name = "date_debut")
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dateDebut;
 
-	@NotNull
-	@Column(name = "date_fin")
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dateFin;
 
-	public AnneeScolaire() {
+	@ManyToOne
+	private PeriodeType periodeType;
+
+	public Periode() {
+	}
+
+	public Periode(PeriodeType periodeType, LocalDate dateDebut) {
+		this.periodeType = periodeType;
+		this.dateDebut = dateDebut;
+	}
+
+	public Periode(PeriodeType periodeType, LocalDate dateDebut, LocalDate dateFin) {
+		this.periodeType = periodeType;
+		this.dateDebut = dateDebut;
+		this.dateFin = dateFin;
 	}
 
 	public Long getId() {
@@ -54,6 +61,14 @@ public class AnneeScolaire {
 
 	public void setDateFin(LocalDate dateFin) {
 		this.dateFin = dateFin;
+	}
+
+	public PeriodeType getPeriodeType() {
+		return periodeType;
+	}
+
+	public void setPeriodeType(PeriodeType periodeType) {
+		this.periodeType = periodeType;
 	}
 
 }

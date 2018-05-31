@@ -9,7 +9,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import fr.epsi.ipeda.dal.entity.Module;
-import fr.epsi.ipeda.dal.entity.Semestre;
 
 @Repository
 public interface ModuleRepository extends CrudRepository<Module, Long> {
@@ -23,8 +22,6 @@ public interface ModuleRepository extends CrudRepository<Module, Long> {
 	List<Module> findByDureeFFP(Duration duree);
 
 	List<Module> findByDureeTE(Duration duree);
-
-	List<Module> findBySemestre(Semestre semestre);
 
 	List<Module> findByModuleParentCompose(Module moduleparentcompose);
 

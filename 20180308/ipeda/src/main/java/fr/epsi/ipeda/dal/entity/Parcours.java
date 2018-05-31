@@ -5,15 +5,13 @@ import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "parcours")
@@ -29,13 +27,8 @@ public class Parcours {
 	@ManyToOne
 	private Formation formation;
 
-	public enum TypeParcours {
-		SOCLE, COMPLEMENTAIRE, METIER, PROFESSIONNEL, BTS_SIO
-	}
-
-	@Column(name = "type_parcours")
-	@Enumerated(EnumType.STRING)
-	private TypeParcours typeParcours;
+	@NotNull
+	private String libelle;
 
 	@OneToMany(mappedBy = "parcours", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<UniteEnseignement> listeUnitesEnseignement = new ArrayList<UniteEnseignement>();
@@ -43,13 +36,34 @@ public class Parcours {
 	@OneToMany(mappedBy = "parcours", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<BlocCompetences> listeBlocsCompetences = new ArrayList<BlocCompetences>();
 
+	@ManyToOne
+	private Specificite specificite;
+
 	public Parcours() {
 	}
 
-	public Parcours(TypeParcours typeParcours, boolean optionnel, Formation formation) {
+	public Parcours(String libelle, boolean optionnel, Formation formation) {
 		this.optionnel = optionnel;
 		this.formation = formation;
-		this.typeParcours = typeParcours;
+		this.libelle = libelle;
+	}
+
+	public Parcours(Formation formation, String libelle) {
+		this.formation = formation;
+		this.libelle = libelle;
+	}
+
+	public Parcours(Formation formation, String libelle, Specificite specificite) {
+		this.formation = formation;
+		this.libelle = libelle;
+		this.specificite = specificite;
+	}
+
+	public Parcours(Formation formation, String libelle, Specificite specificite, boolean optionnel) {
+		this.formation = formation;
+		this.libelle = libelle;
+		this.optionnel = optionnel;
+		this.specificite = specificite;
 	}
 
 	public Long getId() {
@@ -76,14 +90,6 @@ public class Parcours {
 		this.formation = formation;
 	}
 
-	public TypeParcours getTypeParcours() {
-		return typeParcours;
-	}
-
-	public void setTypeParcours(TypeParcours typeParcours) {
-		this.typeParcours = typeParcours;
-	}
-
 	public List<UniteEnseignement> getListeUnitesEnseignement() {
 		return listeUnitesEnseignement;
 	}
@@ -98,6 +104,22 @@ public class Parcours {
 
 	public void setListeBlocsCompetences(List<BlocCompetences> listeBlocsCompetences) {
 		this.listeBlocsCompetences = listeBlocsCompetences;
+	}
+
+	public String getLibelle() {
+		return libelle;
+	}
+
+	public void setLibelle(String libelle) {
+		this.libelle = libelle;
+	}
+
+	public Specificite getSpecificite() {
+		return specificite;
+	}
+
+	public void setSpecificite(Specificite specificite) {
+		this.specificite = specificite;
 	}
 
 }

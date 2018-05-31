@@ -14,7 +14,7 @@ import javax.persistence.Table;
 public class ProjetTransversal extends Module {
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "bloc_comptences_id")
+	@JoinColumn(name = "bloc_competences_id")
 	@Basic(optional = false)
 	private BlocCompetences blocCompetences;
 
@@ -22,20 +22,16 @@ public class ProjetTransversal extends Module {
 		super();
 	}
 
-	public ProjetTransversal(String code, String libelle, Semestre semestre, Duration dureeFFP, Duration dureeTE, Intervenant intervenant) {
-		super(code, libelle, semestre, dureeFFP, dureeTE, intervenant);
+	public ProjetTransversal(String code, String libelle, Duration dureeFFP, Duration dureeTE, Intervenant intervenant) {
+		super(code, libelle, dureeFFP, dureeTE, intervenant, null);
 	}
 
-	public ProjetTransversal(String code, String libelle, Semestre semestre, Duration dureeFFP, Duration dureeTE) {
-		super(code, libelle, semestre, dureeFFP, dureeTE);
+	public ProjetTransversal(String code, String libelle, Duration dureeFFP, Duration dureeTE) {
+		super(code, libelle, dureeFFP, dureeTE, null);
 	}
 
-	// public ProjetTransversal(Module moduleParent, String libelle, Duration dureeFFP, Duration dureeTE, Intervenant intervenant) {
-	// super(moduleParent, libelle, dureeFFP, dureeTE, intervenant);
-	// }
-
-	public ProjetTransversal(String code, String libelle, Semestre semestre, Duration dureeFFP, Duration dureeTE, Intervenant intervenant, BlocCompetences blocCompetences) {
-		super(code, libelle, semestre, dureeFFP, dureeTE, intervenant);
+	public ProjetTransversal(String code, String libelle, Duration dureeFFP, Duration dureeTE, Intervenant intervenant, BlocCompetences blocCompetences) {
+		super(code, libelle, dureeFFP, dureeTE, intervenant, null);
 		this.blocCompetences = blocCompetences;
 	}
 

@@ -1,0 +1,350 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+<title>Formations</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<link rel="stylesheet" type="text/css" media="all" th:href="@{/assets/css/bootstrap-datepicker3.min.css}">
+
+<script type="text/javascript" th:src="@{/assets/js/metier/formation.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/datatables/datetime.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/moment-with-locales.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/datepicker/bootstrap-datepicker.min.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/datepicker/bootstrap-datepicker.fr.min.js}"></script>
+
+</head>
+<body>
+
+	<div layout:fragment="content">
+
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+				
+			var storedMessage = ""; 
+
+			$(document).ready(function() {
+				$('#example').DataTable({
+					"dom": '<"toolbar">rtip',
+					"processing": true,
+					"serverSide" : true,
+					"ordering": true,
+					"order" : [ [ 2, "asc" ] ], /* mettre des espaces pour éviter collision avec Thymeleaf */
+					"pageLength": 10,
+					"searchDelay": 0,
+					"ajax": {
+		                "url": "/rest/formations"
+		            },
+					"columns": [
+			            {	data: "id",
+			            	searchable: false,
+			            	width: "30px"
+			            },
+			            {	data: null,
+			            	"render": function ( data, type, row, meta ) {
+		            	    	return moment(row.dateDebut, 'YYYY-MM-DD').format('YYYY') + '/' + moment(row.dateFin, 'YYYY-MM-DD').format('YYYY');
+		            	    }
+			            },
+			            {	data: "libelle" },
+			            {	data: "semestre1DateDebut",
+			            	render: $.fn.dataTable.render.moment( 'DD/MM/YYYY' )
+			            },
+			            {	data: "semestre2DateFin",
+			            	render: $.fn.dataTable.render.moment( 'DD/MM/YYYY' )
+			            },
+						{
+				            className:      "colonne-modifier dt-center",
+				            orderable:      false,
+				            searchable:     false,
+				            data:           null,
+				            width: '100px',
+				            render: function ( data, type, row ) {
+				                return "<a href=\"#\" onclick=\"javascript:openModalUpdate('formationUpdate', " + data.id + ");\"><span class=\"fas fa-edit btn btn-primary\"></span></a>";
+				            }
+				        },
+						{
+				            className:      "colonne-supprimer dt-center",
+				            orderable:      false,
+				            searchable:     false,
+				            data:           null,
+				            width: '100px',
+				            render: function ( data, type, row ) {
+				                return "<a href=\"#\" onclick=\"javascript:openModalDelete('formationDelete', " + data.id + ");\"><span class=\"fas fa-trash-alt btn btn-danger\"></span></a>";
+				            }
+				        }
+			        ]
+				});
+				$("div.toolbar").html('<a href="#" onclick="javascript:openModalCreate(\'formationCreate\');" class="btn btn-outline-success"><span class="fas fa-plus-square"></span> ' + [[#{msg.0023}]] + '</a>');
+				
+				$('#modal-form-formationCreate, #modal-form-formationUpdate').submit(function(e) {
+					var diz = $(this);
+				    $.ajax({
+						type: "POST",
+						url: diz.attr('action'),
+						data: diz.serialize(),
+						success: function(response) {
+							if(response.status == 'ERROR') {
+								$.each(response.listError, function(k, v) {
+									diz.parent().find("#" + v.field).next().remove();
+									diz.parent().find("#" + v.field).after("<small class=\"text-danger\">" + v.defaultMessage + "</small>");
+								});
+							} else {
+								window.location.replace(response.returnUrl);
+							}
+						}
+					});
+				    e.preventDefault();
+				});
+				
+			
+				var storedMessage = $("#modal-container-formationDelete #message").html();
+				
+				$('#modal-container-formationDelete').on('hidden.bs.modal', function (e) {
+					$(this).find("#message").html(storedMessage);
+				});
+				
+				$('#modal-form-formationDelete').submit(function(e) {
+					var diz = $(this);
+				    $.ajax({
+						type: "POST",
+						url: diz.attr('action'),
+						data: diz.serialize(),
+						success: function(response) {
+							if(response.status == 'ERROR') {
+								$.each(response.listError, function(k, v) {
+									diz.parent().find("#message").html(v.defaultMessage);
+								});
+							} else {
+								window.location.replace(response.returnUrl);
+							}
+						}
+					});
+				    e.preventDefault();
+				});
+				
+				$('#modal-form-formationCreate #dateDebut').datepicker({
+				    format: "dd/mm/yyyy",
+				    todayBtn: "linked",
+				    language: "fr",
+				    daysOfWeekHighlighted: "0,6",
+				    calendarWeeks: true,
+				    autoclose: true,
+				    todayHighlight: true
+				});
+				
+				$('#modal-form-formationCreate #dateFin').datepicker({
+				    format: "dd/mm/yyyy",
+				    todayBtn: "linked",
+				    language: "fr",
+				    daysOfWeekHighlighted: "0,6",
+				    calendarWeeks: true,
+				    autoclose: true,
+				    todayHighlight: true
+				});
+				
+				$('#modal-form-formationUpdate #dateDebut').datepicker({
+				    format: "dd/mm/yyyy",
+				    todayBtn: "linked",
+				    language: "fr",
+				    daysOfWeekHighlighted: "0,6",
+				    calendarWeeks: true,
+				    autoclose: true,
+				    todayHighlight: true
+				});
+				
+				$('#modal-form-formationUpdate #dateFin').datepicker({
+				    format: "dd/mm/yyyy",
+				    todayBtn: "linked",
+				    language: "fr",
+				    daysOfWeekHighlighted: "0,6",
+				    calendarWeeks: true,
+				    autoclose: true,
+				    todayHighlight: true
+				});
+
+			});
+
+			/*]]>*/
+		</script>
+
+		<table id="example" class="table table-striped table-bordered hover" style="width: 100%">
+			<thead>
+				<tr>
+					<th>[[#{msg.0006}]]</th>
+					<th>[[#{msg.0025}]]</th>
+					<th>[[#{msg.0003}]]</th>
+					<th>[[#{msg.0014}]]</th>
+					<th>[[#{msg.0015}]]</th>
+					<th>[[#{msg.0007}]]</th>
+					<th>[[#{msg.0008}]]</th>
+				</tr>
+			</thead>
+			<tfoot>
+				<tr>
+					<th>[[#{msg.0006}]]</th>
+					<th>[[#{msg.0025}]]</th>
+					<th>[[#{msg.0003}]]</th>
+					<th>[[#{msg.0014}]]</th>
+					<th>[[#{msg.0015}]]</th>
+					<th>[[#{msg.0007}]]</th>
+					<th>[[#{msg.0008}]]</th>
+				</tr>
+			</tfoot>
+		</table>
+
+		<div layout:insert="fragments/modal :: modal(modalId='formationCreate', modalHeader='msg.0024', modalButton='cancel|msg.0001,submit|msg.0002')" th:remove="tag">
+			<form id="modal-form-formationCreate" layout:fragment="modal-content" action="#" th:action="@{/rest/formations/save}" th:object="${formation}" method="post">
+				
+				<!-- annee scolaire -->
+				<div class="form-group row">
+					<label for="anneeScolaire" th:text="#{msg.0025}" class="col-sm-3 col-form-label col-form-label-sm" ></label>
+					<div class="col-sm-9">
+						<select th:field="*{anneeScolaire}">
+							<option th:each="type : ${listAnneeScolaire}" th:value="${id}" th:text="#{${dateDebut + '/' + dateFin}}"></option>
+						</select>
+						<small th:if="${#fields.hasErrors('dateDebut')}" th:errors="*{dateDebut}" class="text-muted"></small>
+					</div>
+				</div>
+				
+				<!-- libellé -->
+				<div class="form-group row">
+					<label for="libelle" th:text="#{msg.0003}" class="col-sm-3 col-form-label col-form-label-sm" ></label>
+					<div class="col-sm-9">
+						<input type="text" th:field="*{libelle}" th:placeholder="#{msg.0004}" class="form-control form-control-sm" />
+						<small th:if="${#fields.hasErrors('libelle')}" th:errors="*{libelle}" class="text-muted"></small>
+					</div>
+				</div>
+				
+				<!-- semestres -->
+				<fieldset>
+					<legend>[[#{msg.0026}]]</legend>
+					
+					<!-- semestre 1 -->
+					
+					<!-- date début -->
+					<div class="form-group row">
+						<label for="semestre1.dateDebut" th:text="#{msg.0027 + ' - ' + msg.0014}" class="col-sm-3 col-form-label col-form-label-sm" ></label>
+						<div class="col-sm-9">
+							<input type="text" th:field="*{semestre1.dateDebut}" th:placeholder="#{msg.0016}" class="form-control form-control-sm" />
+							<small th:if="${#fields.hasErrors('semestre1.dateDebut')}" th:errors="*{semestre1.dateDebut}" class="text-muted"></small>
+						</div>
+					</div>
+					
+					<!-- date fin -->
+					<div class="form-group row">
+						<label for="semestre1.dateFin" th:text="#{msg.0027 + ' - ' + msg.0015}" class="col-sm-3 col-form-label col-form-label-sm" ></label>
+						<div class="col-sm-9">
+							<input type="text" th:field="*{semestre1.dateFin}" th:placeholder="#{msg.0017}" class="form-control form-control-sm" />
+							<small th:if="${#fields.hasErrors('semestre1.dateFin')}" th:errors="*{semestre1.dateFin}" class="text-muted"></small>
+						</div>
+					</div>
+
+					<!-- semestre 2 -->
+					
+					<!-- date début -->
+					<div class="form-group row">
+						<label for="semestre2.dateDebut" th:text="#{msg.0028 + ' - ' + msg.0014}" class="col-sm-3 col-form-label col-form-label-sm"></label>
+						<div class="col-sm-9">
+							<input type="text" th:field="*{semestre2.dateDebut}" th:placeholder="#{msg.0016}" class="form-control form-control-sm" /> <small th:if="${#fields.hasErrors('semestre2.dateDebut')}"
+								th:errors="*{semestre2.dateDebut}" class="text-muted"></small>
+						</div>
+					</div>
+
+					<!-- date fin -->
+					<div class="form-group row">
+						<label for="semestre2.dateFin" th:text="#{msg.0028 + ' - ' + msg.0015}" class="col-sm-3 col-form-label col-form-label-sm"></label>
+						<div class="col-sm-9">
+							<input type="text" th:field="*{semestre2.dateFin}" th:placeholder="#{msg.0017}" class="form-control form-control-sm" /> <small th:if="${#fields.hasErrors('semestre2.dateFin')}"
+								th:errors="*{semestre2.dateFin}" class="text-muted"></small>
+						</div>
+					</div>
+
+				</fieldset>
+
+			</form>
+		</div>
+
+		<div layout:insert="fragments/modal :: modal(modalId='formationUpdate', modalHeader='msg.0029', modalButton='cancel|msg.0001,submit|msg.0007')" th:remove="tag">
+			<form id="modal-form-formationUpdate" layout:fragment="modal-content" action="#" th:action="@{/rest/formations/save}" th:object="${formation}" method="post">
+
+				<!-- id -->
+				<input type="hidden" th:field="*{id}" />
+
+				<!-- annee scolaire -->
+				<div class="form-group row">
+					<label for="anneeScolaire" th:text="#{msg.0025}" class="col-sm-3 col-form-label col-form-label-sm"></label>
+					<div class="col-sm-9">
+						<select th:field="*{anneeScolaire}">
+							<option th:each="type : ${allTypes}" th:value="${type}" th:text="#{${'seedstarter.type.' + type}}">Wireframe</option>
+						</select> <small th:if="${#fields.hasErrors('dateDebut')}" th:errors="*{dateDebut}" class="text-muted"></small>
+					</div>
+				</div>
+
+				<!-- libellé -->
+				<div class="form-group row">
+					<label for="libelle" th:text="#{msg.0003}" class="col-sm-3 col-form-label col-form-label-sm"></label>
+					<div class="col-sm-9">
+						<input type="text" th:field="*{libelle}" th:placeholder="#{msg.0004}" class="form-control form-control-sm" /> <small th:if="${#fields.hasErrors('libelle')}" th:errors="*{libelle}"
+							class="text-muted"></small>
+					</div>
+				</div>
+
+				<!-- semestres -->
+				<fieldset>
+					<legend>[[#{msg.0026}]]</legend>
+
+					<!-- semestre 1 -->
+
+					<!-- date début -->
+					<div class="form-group row">
+						<label for="semestre1.dateDebut" th:text="#{msg.0027 + ' - ' + msg.0014}" class="col-sm-3 col-form-label col-form-label-sm"></label>
+						<div class="col-sm-9">
+							<input type="text" th:field="*{semestre1.dateDebut}" th:placeholder="#{msg.0016}" class="form-control form-control-sm" />
+							<small th:if="${#fields.hasErrors('semestre1.dateDebut')}" th:errors="*{semestre1.dateDebut}" class="text-muted"></small>
+						</div>
+					</div>
+
+					<!-- date fin -->
+					<div class="form-group row">
+						<label for="semestre1.dateFin" th:text="#{msg.0027 + ' - ' + msg.0015}" class="col-sm-3 col-form-label col-form-label-sm"></label>
+						<div class="col-sm-9">
+							<input type="text" th:field="*{semestre1.dateFin}" th:placeholder="#{msg.0017}" class="form-control form-control-sm" />
+							<small th:if="${#fields.hasErrors('semestre1.dateFin')}" th:errors="*{semestre1.dateFin}" class="text-muted"></small>
+						</div>
+					</div>
+
+					<!-- semestre 2 -->
+					
+					<!-- date début -->
+					<div class="form-group row">
+						<label for="semestre2.dateDebut" th:text="#{msg.0028 + ' - ' + msg.0014}" class="col-sm-3 col-form-label col-form-label-sm"></label>
+						<div class="col-sm-9">
+							<input type="text" th:field="*{semestre2.dateDebut}" th:placeholder="#{msg.0016}" class="form-control form-control-sm" />
+							<small th:if="${#fields.hasErrors('semestre2.dateDebut')}" th:errors="*{semestre2.dateDebut}" class="text-muted"></small>
+						</div>
+					</div>
+
+					<!-- date fin -->
+					<div class="form-group row">
+						<label for="semestre2.dateFin" th:text="#{msg.0028 + ' - ' + msg.0015}" class="col-sm-3 col-form-label col-form-label-sm"></label>
+						<div class="col-sm-9">
+							<input type="text" th:field="*{semestre2.dateFin}" th:placeholder="#{msg.0017}" class="form-control form-control-sm" />
+							<small th:if="${#fields.hasErrors('semestre2.dateFin')}" th:errors="*{semestre2.dateFin}" class="text-muted"></small>
+						</div>
+					</div>
+
+				</fieldset>
+
+			</form>
+		</div>
+
+		<div layout:insert="fragments/modal :: modal(modalId='formationDelete', modalHeader='msg.0030', modalButton='cancel|msg.0001,submitDanger|msg.0008')" th:remove="tag">
+			<form id="modal-form-formationDelete" layout:fragment="modal-content" action="#" th:action="@{/rest/formations/delete}" th:object="${formation}" method="post">
+				<input type="hidden" th:field="*{id}" />
+				<p id="message" class="text-center" th:utext="#{msg.0031}"></p>
+			</form>
+		</div>
+
+	</div>
+
+</body>
+</html>

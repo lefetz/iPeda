@@ -1,11 +1,20 @@
 package fr.epsi.ipeda.model.service.formation;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
 import fr.epsi.ipeda.dal.entity.Formation;
-import fr.epsi.ipeda.dal.entity.Formation.TypeFormation;
 
 public interface IFormationService {
-	
-	public Formation getFormation(TypeFormation typeFormation); 
-	public Formation getFormation(TypeFormation typeFormation, int annee); 
+
+	List<Formation> findAll();
+
+	Page<Formation> findAll(PageRequest pageRequest);
+
+	Formation save(Formation object);
+
+	void delete(Formation object);
 
 }

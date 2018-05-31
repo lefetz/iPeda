@@ -28,5 +28,3 @@ function openModalDelete(modalId, id) {
 		container.modal("show");
 	}
 }
-
-

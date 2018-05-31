@@ -2,17 +2,22 @@ package fr.epsi.ipeda.dal.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import fr.epsi.ipeda.dal.entity.AnneeScolaire;
 import fr.epsi.ipeda.dal.entity.Formation;
-import fr.epsi.ipeda.dal.entity.Formation.TypeFormation;
 
 @Repository
 public interface FormationRepository extends CrudRepository<Formation, Long> {
 
-	List<Formation> findByLibelle(String libelle);
+	List<Formation> findAll();
 
-	Formation findByTypeFormation(TypeFormation type);
+	Formation findByLibelleContainingAndAnneeScolaire(String libelle, AnneeScolaire anneeScolaire);
+
+	Page<Formation> findAll(Pageable pageable);
+
 
 }

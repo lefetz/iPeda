@@ -31,9 +31,6 @@ public class Module {
 
 	private String code;
 
-	@ManyToOne
-	private Semestre semestre;
-
 	@Basic(optional = false)
 	private String libelle;
 
@@ -74,29 +71,26 @@ public class Module {
 	public Module() {
 	}
 
-	public Module(String code, String libelle, Semestre semestre, Duration dureeFFP, Duration dureeTE, Intervenant intervenant) {
+	public Module(String code, String libelle, Duration dureeFFP, Duration dureeTE, Intervenant intervenant) {
 		this.code = code;
 		this.libelle = libelle;
-		this.semestre = semestre;
 		this.dureeFFP = dureeFFP;
 		this.dureeTE = dureeTE;
 		this.intervenant = intervenant;
 	}
 
-	public Module(String code, String libelle, Semestre semestre, Duration dureeFFP, Duration dureeTE, Intervenant intervenant, UniteEnseignement uniteEnseignement) {
+	public Module(String code, String libelle, Duration dureeFFP, Duration dureeTE, Intervenant intervenant, UniteEnseignement uniteEnseignement) {
 		this.code = code;
 		this.libelle = libelle;
-		this.semestre = semestre;
 		this.dureeFFP = dureeFFP;
 		this.dureeTE = dureeTE;
 		this.intervenant = intervenant;
 		this.uniteEnseignement = uniteEnseignement;
 	}
 
-	public Module(String code, String libelle, Semestre semestre, Duration dureeFFP, Duration dureeTE) {
+	public Module(String code, String libelle, Duration dureeFFP, Duration dureeTE) {
 		this.code = code;
 		this.libelle = libelle;
-		this.semestre = semestre;
 		this.dureeFFP = dureeFFP;
 		this.dureeTE = dureeTE;
 	}
@@ -122,14 +116,6 @@ public class Module {
 
 	public void setCode(String code) {
 		this.code = code;
-	}
-
-	public Semestre getSemestre() {
-		return semestre;
-	}
-
-	public void setSemestre(Semestre semestre) {
-		this.semestre = semestre;
 	}
 
 	public String getLibelle() {

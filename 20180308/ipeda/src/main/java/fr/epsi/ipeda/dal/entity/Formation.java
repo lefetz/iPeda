@@ -1,20 +1,19 @@
 package fr.epsi.ipeda.dal.entity;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Basic;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "formation")
@@ -24,22 +23,14 @@ public class Formation {
 	@GeneratedValue
 	private Long id;
 
-	@Basic(optional = false)
+	@NotNull
 	private String libelle;
 
-	public enum TypeFormation {
-		B1, B2, B3, I4, I5, UDEV
-	}
+	private LocalDate dateFinSemestre1;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "type_formation")
-	private TypeFormation typeFormation;
-
-	@OneToOne(mappedBy = "formation", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Semestre semestre1;
-
-	@OneToOne(mappedBy = "formation", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Semestre semestre2;
+	@NotNull
+	@ManyToOne
+	private AnneeScolaire anneeScolaire;
 
 	@OneToMany(mappedBy = "formation", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Parcours> listeParcours = new ArrayList<Parcours>();
@@ -47,24 +38,26 @@ public class Formation {
 	@ManyToMany(mappedBy = "listeFormations")
 	private List<Module> listeModules = new ArrayList<Module>(); // cas UDEV
 
+	@OneToOne(mappedBy = "formation", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Planning planning;
+
 	public Formation() {
 	}
 
-	public Formation(TypeFormation typeFormation, String libelle, Semestre semestre1, Semestre semestre2) {
-		this.typeFormation = typeFormation;
+	public Formation(String libelle) {
 		this.libelle = libelle;
 
-		semestre1.setFormation(this);
-		this.semestre1 = semestre1;
-
-		semestre2.setFormation(this);
-		this.semestre2 = semestre2;
 	}
 
-	public Formation(TypeFormation typeFormation, String libelle, List<Module> listeModules) {
-		this.typeFormation = typeFormation;
+	public Formation(String libelle, List<Module> listeModules) {
 		this.libelle = libelle;
 		addModule(listeModules);
+	}
+
+	public Formation(String libelle, AnneeScolaire anneeScolaire, LocalDate dateFinSemestre1) {
+		this.libelle = libelle;
+		this.anneeScolaire = anneeScolaire;
+		this.dateFinSemestre1 = dateFinSemestre1;
 	}
 
 	public Long getId() {
@@ -83,46 +76,6 @@ public class Formation {
 		this.libelle = libelle;
 	}
 
-	public Semestre getSemestre1() {
-		return semestre1;
-	}
-
-	public void addSemestre1(Semestre semestre) {
-		semestre.setFormation(this);
-		this.semestre1 = semestre;
-	}
-
-	public void removeSemestre1() {
-		if (semestre1 != null) {
-			semestre1.setFormation(null);
-			this.semestre1 = null;
-		}
-	}
-
-	public Semestre getSemestre2() {
-		return semestre2;
-	}
-
-	public void addSemestre2(Semestre semestre) {
-		semestre.setFormation(this);
-		this.semestre2 = semestre;
-	}
-
-	public void removeSemestre2() {
-		if (semestre2 != null) {
-			semestre2.setFormation(null);
-			this.semestre2 = null;
-		}
-	}
-
-	public TypeFormation getTypeFormation() {
-		return typeFormation;
-	}
-
-	public void setTypeFormation(TypeFormation typeFormation) {
-		this.typeFormation = typeFormation;
-	}
-
 	public List<Parcours> getListeParcours() {
 		return listeParcours;
 	}
@@ -137,14 +90,6 @@ public class Formation {
 		}
 	}
 
-	public void setSemestre1(Semestre semestre1) {
-		this.semestre1 = semestre1;
-	}
-
-	public void setSemestre2(Semestre semestre2) {
-		this.semestre2 = semestre2;
-	}
-
 	public void addModule(List<Module> listeModules) {
 		if (null != listeModules) {
 			for (Module module : listeModules) {
@@ -152,6 +97,30 @@ public class Formation {
 				module.getListeFormations().add(this);
 			}
 		}
+	}
+
+	public AnneeScolaire getAnneeScolaire() {
+		return anneeScolaire;
+	}
+
+	public void setAnneeScolaire(AnneeScolaire anneeScolaire) {
+		this.anneeScolaire = anneeScolaire;
+	}
+
+	public LocalDate getDateFinSemestre1() {
+		return dateFinSemestre1;
+	}
+
+	public void setDateFinSemestre1(LocalDate dateFinSemestre1) {
+		this.dateFinSemestre1 = dateFinSemestre1;
+	}
+
+	public Planning getPlanning() {
+		return planning;
+	}
+
+	public void setPlanning(Planning planning) {
+		this.planning = planning;
 	}
 
 }

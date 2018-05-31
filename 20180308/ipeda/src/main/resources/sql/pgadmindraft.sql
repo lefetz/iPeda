@@ -17,7 +17,7 @@ inner join intervenant i on i.id = im.listeintervenants_id
 inner join salle_cours sc on sc.listecours_id = c.id
 inner join salle s on s.id = sc.listesalles_id
 left join unite_enseignement ue on ue.id = m.uniteenseignement_id
-left join bloc_competences bc on bc.id = m.bloc_comptences_id or bc.id = ue.bloccompetences_id
+left join bloc_competences bc on bc.id = m.bloc_competences_id or bc.id = ue.bloccompetences_id
 left join parcours p on p.id = ue.parcours_id or p.id = bc.parcours_id
 where c.dateheuredebut >= to_timestamp('16 2018','WW YYYY')::date and c.dateheuredebut < (to_timestamp('16 2018','WW YYYY')+ interval '1 week')::date;
 
