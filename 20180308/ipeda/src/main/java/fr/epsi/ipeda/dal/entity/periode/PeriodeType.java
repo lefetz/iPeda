@@ -17,11 +17,15 @@ public class PeriodeType {
 	@NotNull
 	private String libelle;
 
+	@NotNull
+	private int priorite;
+
 	public PeriodeType() {
 	}
 
-	public PeriodeType(String libelle) {
+	public PeriodeType(String libelle, int priorite) {
 		this.libelle = libelle;
+		this.priorite = priorite;
 	}
 
 	public Long getId() {
@@ -38,6 +42,14 @@ public class PeriodeType {
 
 	public void setLibelle(String libelle) {
 		this.libelle = libelle;
+	}
+
+	public int getPriorite() {
+		return priorite;
+	}
+
+	public void setPriorite(int priorite) {
+		this.priorite = priorite;
 	}
 
 }

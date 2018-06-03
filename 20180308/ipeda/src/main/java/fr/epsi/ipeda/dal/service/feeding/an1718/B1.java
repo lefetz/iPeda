@@ -214,6 +214,7 @@ public class B1 extends Feeding {
 		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2019, 1, 10, 0, 0, 0), LocalDateTime.of(2019, 1, 11, 23, 59, 59)));
 
 		periodeType = periodeTypeRepository.findByLibelle("NON_PLANIFIABLE");
+		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2018, 9, 1, 0, 0, 0), LocalDateTime.of(2018, 9, 16, 23, 59, 59)));
 		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2018, 9, 17, 0, 0, 0), LocalDateTime.of(2018, 9, 17, 13, 59, 59)));
 		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2019, 1, 14, 0, 0, 0), LocalDateTime.of(2019, 1, 18, 23, 59, 59)));
 		planning.addPeriode(new Periode(periodeType, LocalDateTime.of(2019, 3, 18, 0, 0, 0), LocalDateTime.of(2019, 3, 22, 23, 59, 59)));

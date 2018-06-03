@@ -10,8 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import fr.epsi.ipeda.dal.entity.AnneeScolaire;
+import fr.epsi.ipeda.dal.entity.Formation;
 import fr.epsi.ipeda.helpers.TimeUtils;
 import fr.epsi.ipeda.helpers.TimeUtils.TIMEFIELD;
+import fr.epsi.ipeda.model.service.anneeScolaire.AnneeScolaireService;
+import fr.epsi.ipeda.model.service.formation.FormationService;
 import fr.epsi.ipeda.model.service.planning.PlanningService;
 
 @Controller
@@ -19,6 +23,12 @@ public class PlanningController {
 
 	@Autowired
 	private PlanningService planningService;
+
+	@Autowired
+	private FormationService formationService;
+
+	@Autowired
+	private AnneeScolaireService anneeScolaireService;
 
 	@RequestMapping("/planif/test")
 	public String edt(Model model) {
@@ -40,7 +50,9 @@ public class PlanningController {
 
 	@RequestMapping("/planif")
 	public String planif(Model model) {
-		model.addAttribute("listeSeances", planningService.getListeSeances());
+		AnneeScolaire anneeScolaire = anneeScolaireService.findByDateDebut(LocalDate.of(2018, 9, 1));
+		Formation formation = formationService.findByLibelleContainingAndAnneeScolaire("BACHELOR 1", anneeScolaire);
+		model.addAttribute("listeSeances", planningService.getListeSeances(formation));
 		return "pages/planif/read";
 	}
 

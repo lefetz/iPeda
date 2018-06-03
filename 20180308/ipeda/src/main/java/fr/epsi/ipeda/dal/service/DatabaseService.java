@@ -419,20 +419,19 @@ public class DatabaseService implements IDatabaseService {
 
 	@Override
 	public void initialiserPeriodeType() {
-
-		periodeTypeRepository.save(new PeriodeType("NON_PLANIFIABLE"));
-		periodeTypeRepository.save(new PeriodeType("JOUR_FERIE"));
-		periodeTypeRepository.save(new PeriodeType("FERMETURE"));
-		periodeTypeRepository.save(new PeriodeType("STAGE"));
-		periodeTypeRepository.save(new PeriodeType("SEMAINE_ECOLE"));
-		periodeTypeRepository.save(new PeriodeType("SEMAINE_ENTREPRISE"));
-		periodeTypeRepository.save(new PeriodeType("RATTRAPAGES"));
-		periodeTypeRepository.save(new PeriodeType("REVISIONS"));
-		periodeTypeRepository.save(new PeriodeType("BTS_BLANC"));
-		periodeTypeRepository.save(new PeriodeType("BTS_REEL"));
-		periodeTypeRepository.save(new PeriodeType("SALON_ETUDIANT"));
-		periodeTypeRepository.save(new PeriodeType("VACANCES"));
-		periodeTypeRepository.save(new PeriodeType("SOUTENANCES"));
+		periodeTypeRepository.save(new PeriodeType("JOUR_FERIE", 1));
+		periodeTypeRepository.save(new PeriodeType("FERMETURE", 2));
+		periodeTypeRepository.save(new PeriodeType("SEMAINE_ENTREPRISE", 3));
+		periodeTypeRepository.save(new PeriodeType("NON_PLANIFIABLE", 4));
+		periodeTypeRepository.save(new PeriodeType("VACANCES", 5));
+		periodeTypeRepository.save(new PeriodeType("STAGE", 6));
+		periodeTypeRepository.save(new PeriodeType("SALON_ETUDIANT", 7));
+		periodeTypeRepository.save(new PeriodeType("BTS_REEL", 8));
+		periodeTypeRepository.save(new PeriodeType("BTS_BLANC", 9));
+		periodeTypeRepository.save(new PeriodeType("SOUTENANCES", 10));
+		periodeTypeRepository.save(new PeriodeType("RATTRAPAGES", 11));
+		periodeTypeRepository.save(new PeriodeType("REVISIONS", 12));
+		periodeTypeRepository.save(new PeriodeType("SEMAINE_ECOLE", 13));
 
 	}
 

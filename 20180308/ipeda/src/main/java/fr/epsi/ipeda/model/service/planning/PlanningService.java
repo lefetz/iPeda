@@ -2,7 +2,6 @@ package fr.epsi.ipeda.model.service.planning;
 
 import java.time.DayOfWeek;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -14,14 +13,12 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import fr.epsi.ipeda.dal.dto.SeanceDTO;
-import fr.epsi.ipeda.dal.entity.AnneeScolaire;
 import fr.epsi.ipeda.dal.entity.Formation;
-import fr.epsi.ipeda.dal.entity.Planning;
 import fr.epsi.ipeda.dal.entity.Seance;
+import fr.epsi.ipeda.dal.entity.periode.Periode;
 import fr.epsi.ipeda.helpers.TimeUtils;
 import fr.epsi.ipeda.helpers.TimeUtils.TIMEFIELD;
-import fr.epsi.ipeda.model.service.anneeScolaire.AnneeScolaireService;
-import fr.epsi.ipeda.model.service.formation.FormationService;
+import fr.epsi.ipeda.model.service.periode.IPeriodeService;
 
 @Service
 public class PlanningService implements IPlanningService {
@@ -30,27 +27,20 @@ public class PlanningService implements IPlanningService {
 	private Environment env;
 
 	@Autowired
-	private AnneeScolaireService anneeScolaireService;
-
-	@Autowired
-	private FormationService formationService;
+	private IPeriodeService periodeService;
 
 	public LocalTime getHeureFromProperties(String propname) {
 		String[] parts = env.getProperty(propname).split(env.getProperty("timeSeparator"));
 		return LocalTime.of(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
 	}
 
-	public List<SeanceDTO> getListeSeances() {
+	public List<SeanceDTO> getListeSeances(Formation formation) {
+
 		SeanceDTO seanceDto = null;
 		List<SeanceDTO> listeSeances = new ArrayList<SeanceDTO>();
 
-		// récupère le planning des B1 (par exemple)
-		AnneeScolaire anneeScolaire = anneeScolaireService.findByDateDebut(LocalDate.of(2018, 9, 1));
-		Formation formation = formationService.findByLibelleContainingAndAnneeScolaire("BACHELOR 1", anneeScolaire);
-		Planning planning = formation.getPlanning();
-
 		// pour chaque séance du planning de la formation
-		for (Seance seance : planning.getListSeance()) {
+		for (Seance seance : formation.getPlanning().getListSeance()) {
 
 			// nouveau DTO
 			seanceDto = new SeanceDTO();
@@ -77,8 +67,13 @@ public class PlanningService implements IPlanningService {
 			// duree séance
 			Duration duree = Duration.between(seance.getHeureDebut(), seance.getHeureFin());
 			seanceDto.setDureeSeance(String.format("%02d:%02d", duree.getSeconds() / 3600, (duree.getSeconds() % 3600) / 60));
-			
+
 			// période
+			Periode periode = periodeService.findPeriode(seance);
+			// Periode periode = periodeService.testbidule();
+			if (null != periode) {
+				seanceDto.setPeriode(periode.getPeriodeType().getLibelle());
+			}
 
 			// s'agit-il d'un jour de week-end ?
 			seanceDto.setWeekEnd(seance.getDate().getDayOfWeek() == DayOfWeek.SATURDAY || seance.getDate().getDayOfWeek() == DayOfWeek.SUNDAY);

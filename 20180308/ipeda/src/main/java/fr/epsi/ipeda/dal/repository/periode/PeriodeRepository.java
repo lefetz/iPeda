@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 import fr.epsi.ipeda.dal.entity.periode.Periode;
 
 @Repository
-public interface PeriodeRepository extends CrudRepository<Periode, Long> {
+public interface PeriodeRepository extends CrudRepository<Periode, Long>, PeriodeRepositoryCustom {
+	
+	
 
 }
