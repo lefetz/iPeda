@@ -21,29 +21,31 @@
 					<th>Jour</th>
 					<th>Heure début</th>
 					<th>Heure fin</th>
-					<th>Durée prévue</th>
-					<th>Durée module</th>
+					<th>Durée séance</th>
+					<th>Période</th>
+					<th>Activité/Module</th>
 					<th>Spécialité</th>
-					<th>Module</th>
+					<th>Cumul durée</th>
 					<th>Intervenant</th>
-					<th>Salle</th>
+					<th>Salle(s)</th>
 					<th>Remarque</th>
 				</tr>
 			</thead>
-			<tr th:each="creneau : ${creneaux}" th:class="${creneau.weekEnd}? 'weekend'">
-				<td th:text="${creneau.groupe}">B1</td>
-				<td th:text="${creneau.semaine}">2018-24</td>
-				<td th:text="${creneau.date}">01/02/2018</td>
-				<td th:text="${creneau.jour}">lun</td>
-				<td th:text="${creneau.heureDebut}">08h15</td>
-				<td th:text="${creneau.heureFin}">12h15</td>
-				<td th:text="${creneau.dureePrevue}">04h00</td>
-				<td th:text="${creneau.dureeModule}">20h00</td>
-				<td th:text="${creneau.specialite}">20h00</td>
-				<td th:text="${creneau.libelleModule}">AZZE123 - Super module</td>
-				<td th:text="${creneau.intervenant}">GABER Khalid</td>
-				<td th:text="${creneau.salle}">Jaune</td>
-				<td th:text="${creneau.remarque}">Remarque</td>
+			<tr th:each="seance : ${listeSeances}" th:class="${seance.weekEnd}? 'weekend'">
+				<td th:text="${seance.groupe}">B1</td>
+				<td th:text="${seance.semaine}">2018-24</td>
+				<td th:text="${seance.date}">01/02/2018</td>
+				<td th:text="${seance.jour}">lun</td>
+				<td th:text="${seance.heureDebut}">08h15</td>
+				<td th:text="${seance.heureFin}">12h15</td>
+				<td th:text="${seance.dureeSeance}">04h00</td>
+				<td th:text="${seance.periode}">Cours</td>
+				<td th:text="${seance.activite}">AZZE123 - Super module</td>
+				<td th:text="${seance.specialite}">C-IOT</td>
+				<td th:text="${seance.cumulDuree}">04h00/20h00</td>
+				<td th:text="${seance.intervenant}">GABER Khalid</td>
+				<td th:text="${seance.salle}">Jaune</td>
+				<td th:text="${seance.remarque}">Remarque</td>
 			</tr>
 			<tfoot>
 				<tr>
@@ -53,12 +55,13 @@
 					<th>Jour</th>
 					<th>Heure début</th>
 					<th>Heure fin</th>
-					<th>Durée prévue</th>
-					<th>Durée module</th>
+					<th>Durée séance</th>
+					<th>Période</th>
+					<th>Activité/Module</th>
 					<th>Spécialité</th>
-					<th>Module</th>
+					<th>Cumul durée</th>
 					<th>Intervenant</th>
-					<th>Salle</th>
+					<th>Salle(s)</th>
 					<th>Remarque</th>
 				</tr>
 			</tfoot>

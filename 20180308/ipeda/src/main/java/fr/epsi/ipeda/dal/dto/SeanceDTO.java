@@ -1,6 +1,6 @@
 package fr.epsi.ipeda.dal.dto;
 
-public class CreneauDTO {
+public class SeanceDTO {
 
 	private String groupe;
 	private String semaine;
@@ -8,14 +8,32 @@ public class CreneauDTO {
 	private String jour;
 	private String heureDebut;
 	private String heureFin;
-	private String dureePrevue;
-	private String dureeModule;
+	private String dureeSeance;
+	private String periode;
+	private String activite;
 	private String specialite;
-	private String libelleModule;
+	private String cumulDuree;
 	private String intervenant;
 	private String salle;
 	private String remarque;
 	private boolean isWeekEnd;
+	private boolean isJourPair;
+
+	public boolean getWeekEnd() {
+		return isWeekEnd;
+	}
+
+	public void setWeekEnd(boolean isWeekEnd) {
+		this.isWeekEnd = isWeekEnd;
+	}
+
+	public boolean getJourPair() {
+		return isJourPair;
+	}
+
+	public void setJourPair(boolean isJourPair) {
+		this.isJourPair = isJourPair;
+	}
 
 	public String getGroupe() {
 		return groupe;
@@ -65,20 +83,28 @@ public class CreneauDTO {
 		this.heureFin = heureFin;
 	}
 
-	public String getDureePrevue() {
-		return dureePrevue;
+	public String getDureeSeance() {
+		return dureeSeance;
 	}
 
-	public void setDureePrevue(String dureePrevue) {
-		this.dureePrevue = dureePrevue;
+	public void setDureeSeance(String dureeSeance) {
+		this.dureeSeance = dureeSeance;
 	}
 
-	public String getDureeModule() {
-		return dureeModule;
+	public String getPeriode() {
+		return periode;
 	}
 
-	public void setDureeModule(String dureeModule) {
-		this.dureeModule = dureeModule;
+	public void setPeriode(String periode) {
+		this.periode = periode;
+	}
+
+	public String getActivite() {
+		return activite;
+	}
+
+	public void setActivite(String activite) {
+		this.activite = activite;
 	}
 
 	public String getSpecialite() {
@@ -89,12 +115,12 @@ public class CreneauDTO {
 		this.specialite = specialite;
 	}
 
-	public String getLibelleModule() {
-		return libelleModule;
+	public String getCumulDuree() {
+		return cumulDuree;
 	}
 
-	public void setLibelleModule(String libelleModule) {
-		this.libelleModule = libelleModule;
+	public void setCumulDuree(String cumulDuree) {
+		this.cumulDuree = cumulDuree;
 	}
 
 	public String getIntervenant() {
@@ -119,14 +145,6 @@ public class CreneauDTO {
 
 	public void setRemarque(String remarque) {
 		this.remarque = remarque;
-	}
-
-	public boolean getWeekEnd() {
-		return isWeekEnd;
-	}
-
-	public void setWeekEnd(boolean isWeekEnd) {
-		this.isWeekEnd = isWeekEnd;
 	}
 
 }

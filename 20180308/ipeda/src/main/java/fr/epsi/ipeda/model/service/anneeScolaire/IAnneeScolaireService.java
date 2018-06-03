@@ -22,4 +22,6 @@ public interface IAnneeScolaireService {
 
 	void delete(AnneeScolaire object);
 
+	AnneeScolaire findByDateDebut(LocalDate dateDebut);
+
 }

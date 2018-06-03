@@ -4,6 +4,6 @@ public interface IFeeding {
 
 	void initialiserFormation();
 
-	void initialiserCours();
+	void initialiserSeances();
 
 }

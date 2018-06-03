@@ -35,6 +35,7 @@ public class DatabaseController {
 	@Transactional
 	public String generation(Model model) {
 
+//		databaseService.initialiserProperties();
 		databaseService.initialiserSpecificite();
 		databaseService.initialiserAnneeScolaire();
 		// databaseService.initialiserFormation();
@@ -54,7 +55,8 @@ public class DatabaseController {
 		// databaseService.afficheCours();
 
 		b1.initialiserFormation();
-		b1.initialiserPlanif();
+		b1.initialiserPeriodes();
+		b1.initialiserSeances();
 		// b2.initialiserFormation();
 		// b3.initialiserFormation();
 		// b3.initialiserCours();

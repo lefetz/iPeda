@@ -14,7 +14,7 @@ public interface IDatabaseService {
 
 	public void initialiserIntervenants();
 
-	public void afficheCours();
+	// public void afficheCours();
 
 	Module createModule(String codeModule, String libelle, double dureeFFP, double dureeTE, Intervenant intervenant, UniteEnseignement ue);
 
@@ -24,9 +24,10 @@ public interface IDatabaseService {
 
 	void createModuleMutualise(String libelle, ArrayList<Module> listeModulesMutualises);
 
+	//
 	ProjetTransversal createProjetTransversal(String codeModule, String libelle, double dureeFFP, double dureeTE, Intervenant intervenant, BlocCompetences blocCompetences);
-
-	void createCours(String dateHeureDebut, double duree, String codeModule, Long salleId);
+	//
+	// void createCours(String dateHeureDebut, double duree, String codeModule, Long salleId);
 
 	public void initialiserAnneeScolaire();
 

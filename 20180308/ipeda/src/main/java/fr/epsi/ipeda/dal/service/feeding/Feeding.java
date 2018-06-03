@@ -1,6 +1,7 @@
 package fr.epsi.ipeda.dal.service.feeding;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import fr.epsi.ipeda.dal.entity.BlocCompetences;
@@ -13,16 +14,21 @@ import fr.epsi.ipeda.dal.repository.FormationRepository;
 import fr.epsi.ipeda.dal.repository.IntervenantRepository;
 import fr.epsi.ipeda.dal.repository.ParcoursRepository;
 import fr.epsi.ipeda.dal.repository.PlanningRepository;
+import fr.epsi.ipeda.dal.repository.SeanceRepository;
 import fr.epsi.ipeda.dal.repository.SpecificiteRepository;
 import fr.epsi.ipeda.dal.repository.UniteEnseignementRepository;
 import fr.epsi.ipeda.dal.repository.periode.PeriodeRepository;
 import fr.epsi.ipeda.dal.repository.periode.PeriodeTypeRepository;
 import fr.epsi.ipeda.dal.service.IDatabaseService;
+import fr.epsi.ipeda.model.service.anneeScolaire.IAnneeScolaireService;
 import fr.epsi.ipeda.model.service.formation.IFormationService;
 import fr.epsi.ipeda.model.service.planning.IPlanningService;
 
 @Component
 public abstract class Feeding implements IFeeding {
+
+	@Autowired
+	protected Environment env;
 
 	@Autowired
 	protected FormationRepository formationRepository;
@@ -55,6 +61,9 @@ public abstract class Feeding implements IFeeding {
 	protected PeriodeTypeRepository periodeTypeRepository;
 
 	@Autowired
+	protected SeanceRepository seanceRepository;
+
+	@Autowired
 	protected IDatabaseService databaseService;
 
 	@Autowired
@@ -62,6 +71,9 @@ public abstract class Feeding implements IFeeding {
 
 	@Autowired
 	protected IFormationService formationService;
+
+	@Autowired
+	protected IAnneeScolaireService anneeScolaireService;
 
 	// protected Map<NumeroSemestre, Semestre> mapSemestres = null;
 	protected UniteEnseignement ue = null;

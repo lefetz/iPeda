@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import fr.epsi.ipeda.dal.entity.AnneeScolaire;
 import fr.epsi.ipeda.dal.entity.Formation;
 
 public interface IFormationService {
@@ -16,5 +17,7 @@ public interface IFormationService {
 	Formation save(Formation object);
 
 	void delete(Formation object);
+
+	Formation findByLibelleContainingAndAnneeScolaire(String libelle, AnneeScolaire anneeScolaire);
 
 }

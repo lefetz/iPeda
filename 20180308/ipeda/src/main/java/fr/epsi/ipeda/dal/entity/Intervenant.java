@@ -1,9 +1,14 @@
 package fr.epsi.ipeda.dal.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -19,6 +24,9 @@ public class Intervenant {
 
 	@Basic(optional = false)
 	private String prenom;
+
+	@OneToMany(mappedBy = "intervenant", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Seance> listeSeances = new ArrayList<Seance>();
 
 	public Intervenant() {
 	}

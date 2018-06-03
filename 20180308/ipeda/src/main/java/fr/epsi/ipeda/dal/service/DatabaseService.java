@@ -3,9 +3,7 @@ package fr.epsi.ipeda.dal.service;
 import java.lang.invoke.MethodHandles;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import fr.epsi.ipeda.dal.entity.AnneeScolaire;
 import fr.epsi.ipeda.dal.entity.BlocCompetences;
-import fr.epsi.ipeda.dal.entity.Cours;
 import fr.epsi.ipeda.dal.entity.Formation;
 import fr.epsi.ipeda.dal.entity.Intervenant;
 import fr.epsi.ipeda.dal.entity.Module;
@@ -26,7 +23,6 @@ import fr.epsi.ipeda.dal.entity.UniteEnseignement;
 import fr.epsi.ipeda.dal.entity.periode.PeriodeType;
 import fr.epsi.ipeda.dal.repository.AnneeScolaireRepository;
 import fr.epsi.ipeda.dal.repository.BlocCompetencesRepository;
-import fr.epsi.ipeda.dal.repository.CoursRepository;
 import fr.epsi.ipeda.dal.repository.FormationRepository;
 import fr.epsi.ipeda.dal.repository.IntervenantRepository;
 import fr.epsi.ipeda.dal.repository.ModuleRepository;
@@ -35,7 +31,6 @@ import fr.epsi.ipeda.dal.repository.ProjetTransversalRepository;
 import fr.epsi.ipeda.dal.repository.SalleRepository;
 import fr.epsi.ipeda.dal.repository.SpecificiteRepository;
 import fr.epsi.ipeda.dal.repository.periode.PeriodeTypeRepository;
-import fr.epsi.ipeda.helpers.FormatterUtils;
 
 @Service
 public class DatabaseService implements IDatabaseService {
@@ -53,9 +48,6 @@ public class DatabaseService implements IDatabaseService {
 
 	@Autowired
 	private ProjetTransversalRepository projetTransversalRepository;
-
-	@Autowired
-	private CoursRepository coursRepository;
 
 	@Autowired
 	private AnneeScolaireRepository anneeScolaireRepository;
@@ -261,20 +253,19 @@ public class DatabaseService implements IDatabaseService {
 
 	}
 
-	@Override
-	public void createCours(String dateHeureDebut, double duree, String codeModule, Long salleId) {
-		coursRepository.save(new Cours(LocalDateTime.parse(dateHeureDebut, FormatterUtils.getDateTimeFormatterFR()), Duration.ofMinutes((long) (duree * 60)), moduleRepository.findByCode(codeModule),
-				salleRepository.findById(salleId)));
-	}
-
-	@Override
-	public void afficheCours() {
-		List<Cours> listeCours = coursRepository.findByModule(moduleRepository.findByCode("RESE631"));
-		for (Cours cours : listeCours) {
-			System.out.println("cours : " + cours.getModule().getCode() + " - " + cours.getModule().getLibelle() + " - " + cours.getListeSalles().get(0).getLibelle() + " - "
-					+ cours.getModule().getIntervenant().getNom());
-		}
-	}
+	// @Override
+	// public void createCours(String dateHeureDebut, double duree, String codeModule, Long salleId) {
+	// coursRepository.save(new Cours(moduleRepository.findByCode(codeModule)));
+	// }
+	//
+	// @Override
+	// public void afficheCours() {
+	// List<Cours> listeCours = coursRepository.findByModule(moduleRepository.findByCode("RESE631"));
+	// for (Cours cours : listeCours) {
+	// System.out.println("cours : " + cours.getModule().getCode() + " - " + cours.getModule().getLibelle() + " - " + cours.getListeSalles().get(0).getLibelle() + " - "
+	// + cours.getModule().getIntervenant().getNom());
+	// }
+	// }
 
 	@Override
 	public void initialiserAnneeScolaire() {
@@ -444,24 +435,5 @@ public class DatabaseService implements IDatabaseService {
 		periodeTypeRepository.save(new PeriodeType("SOUTENANCES"));
 
 	}
-
-	// @Override
-	// public void initialiserUniteEnseignement() {
-	//
-	// AnneeScolaire anneeScolaire = anneeScolaireRepository.findByDateDebut(LocalDate.of(2018, 9, 1));
-	//
-	// // b1
-	// Formation formation = formationRepository.findByLibelleContainingAndAnneeScolaire("BACHELOR 1", anneeScolaire);
-	//
-	// Parcours parcours = parcoursRepository.findByFormationAndLibelleContaining(formation, "SOCLE DEVOPS");
-	// BlocCompetences bloc = blocCompetencesRepository.findByParcoursAndNumero(parcours, 1);
-	//
-	// UniteEnseignement ue = new UniteEnseignement();
-	// ue.setBlocCompetences(bloc);
-	// ue.setLibelle("Apprendre à développer");
-	// // ue.setParcours(parcours);
-	// // ue.setSpecificite(specificite);
-	// uniteEnseignementRepository.save(new UniteEnseignement("Apprendre à développer", bloc));
-	// }
 
 }

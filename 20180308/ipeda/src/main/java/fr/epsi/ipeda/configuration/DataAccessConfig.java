@@ -103,7 +103,7 @@ public class DataAccessConfig {
 		return factory;
 	}
 
-	@Bean
+	@Bean(name = "transactionManager")
 	public PlatformTransactionManager transactionManager() {
 		return new JpaTransactionManager(entityManagerFactoryBean().getObject());
 	}

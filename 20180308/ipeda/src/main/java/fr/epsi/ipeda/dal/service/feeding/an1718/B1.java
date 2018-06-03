@@ -2,6 +2,8 @@ package fr.epsi.ipeda.dal.service.feeding.an1718;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 
 import org.springframework.stereotype.Component;
 
@@ -11,6 +13,7 @@ import fr.epsi.ipeda.dal.entity.Formation;
 import fr.epsi.ipeda.dal.entity.Module;
 import fr.epsi.ipeda.dal.entity.Parcours;
 import fr.epsi.ipeda.dal.entity.Planning;
+import fr.epsi.ipeda.dal.entity.Seance;
 import fr.epsi.ipeda.dal.entity.UniteEnseignement;
 import fr.epsi.ipeda.dal.entity.periode.Periode;
 import fr.epsi.ipeda.dal.entity.periode.PeriodeType;
@@ -174,13 +177,7 @@ public class B1 extends Feeding {
 
 	}
 
-	@Override
-	public void initialiserCours() {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void initialiserPlanif() {
+	public void initialiserPeriodes() {
 
 		AnneeScolaire anneeScolaire = anneeScolaireRepository.findByDateDebut(LocalDate.of(2018, 9, 1));
 
@@ -235,6 +232,62 @@ public class B1 extends Feeding {
 
 		formation.setPlanning(planning);
 		formationRepository.save(formation);
+
+	}
+
+	@Override
+	public void initialiserSeances() {
+
+		AnneeScolaire anneeScolaire = anneeScolaireService.findByDateDebut(LocalDate.of(2018, 9, 1));
+		Formation formation = formationService.findByLibelleContainingAndAnneeScolaire("BACHELOR 1", anneeScolaire);
+
+		LocalDate dateDebut = formation.getAnneeScolaire().getDateDebut();
+		LocalDate dateFin = formation.getAnneeScolaire().getDateFin();
+		long daysBetween = ChronoUnit.DAYS.between(dateDebut, dateFin);
+
+		LocalDate currentLocalDate = dateDebut;
+		String[] parts = null;
+		Seance seance = null;
+		Planning planning = formation.getPlanning();
+		String timeSeparator = env.getProperty("timeSeparator");
+
+		// pour chaque jour de la formation
+		for (long i = 0; i < daysBetween + 1; i++) {
+
+			// matin
+			seance = new Seance();
+			seance.setActivite(null);
+			seance.setDate(currentLocalDate);
+			parts = env.getProperty("heureAMDebut").split(timeSeparator);
+			seance.setHeureDebut(LocalTime.of(Integer.parseInt(parts[0]), Integer.parseInt(parts[1])));
+			parts = env.getProperty("heureAMFin").split(timeSeparator);
+			seance.setHeureFin(LocalTime.of(Integer.parseInt(parts[0]), Integer.parseInt(parts[1])));
+			seance.setIntervenant(null);
+			seance.setRemarque(null);
+			seance.setPlanning(planning);
+			seance = seanceRepository.save(seance);
+			planning.addSeance(seance);
+			planning = planningRepository.save(planning);
+
+			// après-midi
+			seance = new Seance();
+			seance.setActivite(null);
+			seance.setDate(currentLocalDate);
+			parts = env.getProperty("heurePMDebut").split(timeSeparator);
+			seance.setHeureDebut(LocalTime.of(Integer.parseInt(parts[0]), Integer.parseInt(parts[1])));
+			parts = env.getProperty("heurePMFin").split(timeSeparator);
+			seance.setHeureFin(LocalTime.of(Integer.parseInt(parts[0]), Integer.parseInt(parts[1])));
+			seance.setIntervenant(null);
+			seance.setRemarque(null);
+			seance.setPlanning(planning);
+			seance = seanceRepository.save(seance);
+			planning.addSeance(seance);
+			planning = planningRepository.save(planning);
+
+			// maj date +1 jour
+			currentLocalDate = currentLocalDate.plusDays(1);
+
+		}
 
 	}
 

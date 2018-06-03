@@ -24,7 +24,7 @@ public class Salle {
 	private String libelle;
 
 	@ManyToMany
-	private List<Cours> listeCours = new ArrayList<>();
+	private List<Seance> listSeances = new ArrayList<Seance>();
 
 	public Salle() {
 	}
@@ -47,14 +47,6 @@ public class Salle {
 
 	public void setLibelle(String libelle) {
 		this.libelle = libelle;
-	}
-
-	public List<Cours> getListeCours() {
-		return listeCours;
-	}
-
-	public void setListeCours(List<Cours> listeCours) {
-		this.listeCours = listeCours;
 	}
 
 }

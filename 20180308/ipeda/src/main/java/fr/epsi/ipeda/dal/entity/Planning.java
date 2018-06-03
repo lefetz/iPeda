@@ -25,6 +25,9 @@ public class Planning {
 	@OneToMany
 	private List<Periode> listPeriode = new ArrayList<Periode>();
 
+	@OneToMany
+	private List<Seance> listSeance = new ArrayList<Seance>();
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "formation_id")
 	private Formation formation;
@@ -54,6 +57,28 @@ public class Planning {
 
 	public void addPeriode(Periode periode) {
 		listPeriode.add(periode);
+	}
+
+	public List<Seance> getListSeance() {
+		return listSeance;
+	}
+
+	public void setListSeance(List<Seance> listSeance) {
+		this.listSeance = listSeance;
+	}
+
+	public Formation getFormation() {
+		return formation;
+	}
+
+	public void setFormation(Formation formation) {
+		this.formation = formation;
+	}
+
+	public void addSeance(Seance seance) {
+		if (null != seance) {
+			listSeance.add(seance);
+		}
 	}
 
 }

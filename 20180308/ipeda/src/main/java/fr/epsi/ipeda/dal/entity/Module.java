@@ -20,6 +20,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
+import fr.epsi.ipeda.dal.entity.activite.Cours;
+
 @Entity
 @Table(name = "module")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
