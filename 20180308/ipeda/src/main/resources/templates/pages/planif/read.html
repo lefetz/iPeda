@@ -31,7 +31,7 @@
 					<th>Remarque</th>
 				</tr>
 			</thead>
-			<tr th:each="seance : ${listeSeances}" th:class="${seance.weekEnd}? 'weekend'">
+			<tr th:each="seance : ${listeSeances}" th:class="${seance.weekEnd}? 'weekend' : (${seance.periode == 'JOUR_FERIE' or seance.periode == 'FERMETURE' or seance.periode == 'SEMAINE_ENTREPRISE' or seance.periode == 'NON_PLANIFIABLE' or seance.periode == 'VACANCES' or seance.periode == 'STAGE'} ? 'nonPlanifiable' : (${seance.jourPair}? 'jourPair' : 'jourImpair')) 	 ">
 				<td th:text="${seance.groupe}">B1</td>
 				<td th:text="${seance.semaine}">2018-24</td>
 				<td th:text="${seance.date}">01/02/2018</td>

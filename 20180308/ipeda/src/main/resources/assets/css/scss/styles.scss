@@ -31,3 +31,6 @@ table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover
 }
 
 #planif .weekend td { background-color : #CCCCCC; }
+#planif .jourPair td { background-color : #eaeaea; }
+#planif .jourImpair td { background-color : #ffffff; }
+#planif .nonPlanifiable td { background-color : #FFdddd; color: #7D0000; }
