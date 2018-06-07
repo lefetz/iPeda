@@ -6,13 +6,11 @@ public class FormationDTO {
 
 	private String libelle;
 
-	private String semestre1DateDebut;
+	private String anneeScolaireDateDebut;
 
-	private String semestre1DateFin;
+	private String anneeScolaireDateFin;
 
-	private String semestre2DateDebut;
-
-	private String semestre2DateFin;
+	private String dateFinSemestre1;
 
 	public String getId() {
 		return id;
@@ -30,36 +28,28 @@ public class FormationDTO {
 		this.libelle = libelle;
 	}
 
-	public String getSemestre1DateDebut() {
-		return semestre1DateDebut;
+	public String getDateFinSemestre1() {
+		return dateFinSemestre1;
 	}
 
-	public void setSemestre1DateDebut(String semestre1DateDebut) {
-		this.semestre1DateDebut = semestre1DateDebut;
+	public void setDateFinSemestre1(String dateFinSemestre1) {
+		this.dateFinSemestre1 = dateFinSemestre1;
 	}
 
-	public String getSemestre1DateFin() {
-		return semestre1DateFin;
+	public String getAnneeScolaireDateDebut() {
+		return anneeScolaireDateDebut;
 	}
 
-	public void setSemestre1DateFin(String semestre1DateFin) {
-		this.semestre1DateFin = semestre1DateFin;
+	public void setAnneeScolaireDateDebut(String anneeScolaireDateDebut) {
+		this.anneeScolaireDateDebut = anneeScolaireDateDebut;
 	}
 
-	public String getSemestre2DateDebut() {
-		return semestre2DateDebut;
+	public String getAnneeScolaireDateFin() {
+		return anneeScolaireDateFin;
 	}
 
-	public void setSemestre2DateDebut(String semestre2DateDebut) {
-		this.semestre2DateDebut = semestre2DateDebut;
-	}
-
-	public String getSemestre2DateFin() {
-		return semestre2DateFin;
-	}
-
-	public void setSemestre2DateFin(String semestre2DateFin) {
-		this.semestre2DateFin = semestre2DateFin;
+	public void setAnneeScolaireDateFin(String anneeScolaireDateFin) {
+		this.anneeScolaireDateFin = anneeScolaireDateFin;
 	}
 
 }

@@ -1,8 +1,8 @@
 
 function openModalCreate(modalId) {
 	var container = getModalContainer(modalId);
-	container.find("#dateDebut").val(""); // reset
-	container.find("#dateFin").val(""); // reset
+	//container.find("#anneeScolaireDateDebut").val(""); // reset
+	//container.find("#anneeScolaireDateDebut").val(""); // reset
 	container.find("small").text(""); // reset
 	container.modal("show");
 }

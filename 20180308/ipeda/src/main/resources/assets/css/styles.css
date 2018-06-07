@@ -45,3 +45,7 @@ table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
   background-color: #FFdddd;
   color: #7D0000;
 }
+
+.modal-dialog {
+  max-width: 700px;
+}

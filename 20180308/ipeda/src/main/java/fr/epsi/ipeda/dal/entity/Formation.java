@@ -15,6 +15,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 @Table(name = "formation")
 public class Formation {
@@ -29,6 +31,7 @@ public class Formation {
 	@NotNull
 	private String libelleCourt;
 
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dateFinSemestre1;
 
 	@NotNull

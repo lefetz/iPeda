@@ -1,13 +1,13 @@
 package fr.epsi.ipeda.controller.rest;
 
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,10 +22,7 @@ import fr.epsi.ipeda.dal.dto.FormationDTO;
 import fr.epsi.ipeda.dal.dto.ajax.AjaxResponse;
 import fr.epsi.ipeda.dal.dto.datatables.DatatablesRequestDTO;
 import fr.epsi.ipeda.dal.dto.datatables.DatatablesResponseDTO;
-import fr.epsi.ipeda.dal.dto.modelmapper.ModelMapperManager;
-import fr.epsi.ipeda.dal.entity.AnneeScolaire;
 import fr.epsi.ipeda.dal.entity.Formation;
-import fr.epsi.ipeda.model.service.anneeScolaire.AnneeScolaireService;
 import fr.epsi.ipeda.model.service.formation.FormationService;
 
 @RestController
@@ -34,19 +31,12 @@ public class FormationRestController {
 	@Autowired
 	private FormationService formationService;
 
-	@Autowired
-	private AnneeScolaireService anneeScolaireService;
-
-	@Autowired
-	private ModelMapperManager modelMapperManager;
-
 	@RequestMapping("/rest/formations")
 	public DatatablesResponseDTO getAllFormations(HttpServletRequest request, HttpServletResponse response, Model model) {
 
 		// init
 		DatatablesRequestDTO datatablesRequestDTO = new DatatablesRequestDTO(request);
 		DatatablesResponseDTO wrapper = new DatatablesResponseDTO(datatablesRequestDTO);
-		ModelMapper modelMapper = modelMapperManager.getModelMapper();
 		int tailleTotale = formationService.findAll().size();
 
 		// initialisation de la pagination
@@ -61,10 +51,16 @@ public class FormationRestController {
 		wrapper.setRecordsFiltered(tailleTotale);
 
 		// map la liste en liste de DTO
-		java.lang.reflect.Type targetListType = new TypeToken<List<FormationDTO>>() {
-		}.getType();
-		List<FormationDTO> listDto = modelMapper.map(listeObjets.getContent(), targetListType);
-		modelMapper.validate();
+		List<FormationDTO> listDto = new ArrayList<FormationDTO>();
+		for (Formation o : listeObjets) {
+			FormationDTO dto = new FormationDTO();
+			dto.setAnneeScolaireDateDebut(o.getAnneeScolaire().getDateDebut().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			dto.setAnneeScolaireDateFin(o.getAnneeScolaire().getDateFin().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			dto.setDateFinSemestre1(o.getDateFinSemestre1().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			dto.setId(Long.toString(o.getId()));
+			dto.setLibelle(o.getLibelle());
+			listDto.add(dto);
+		}
 
 		// set les données dans le wrapper
 		wrapper.setData(listDto);

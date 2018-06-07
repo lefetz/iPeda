@@ -58,11 +58,11 @@ public class AnneeScolaireRestController {
 		// map la liste en liste de DTO
 		java.lang.reflect.Type targetListType = new TypeToken<List<AnneeScolaireDTO>>() {
 		}.getType();
-		List<AnneeScolaireDTO> listeSallesDTO = modelMapper.map(listeObjets.getContent(), targetListType);
+		List<AnneeScolaireDTO> dto = modelMapper.map(listeObjets.getContent(), targetListType);
 		modelMapper.validate();
 
 		// set les données dans le wrapper
-		wrapper.setData(listeSallesDTO);
+		wrapper.setData(dto);
 		wrapper.setRecordsTotal(tailleTotale);
 
 		return wrapper;
