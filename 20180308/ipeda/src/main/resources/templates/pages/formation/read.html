@@ -45,6 +45,9 @@
 		            	    }
 			            },
 			            {	data: "libelle" },
+			            {	data: "libelleCourt",
+			            	visible: false
+			            },
 			            {	data: "anneeScolaireDateDebut",
 			            	render: $.fn.dataTable.render.moment( 'DD/MM/YYYY' )
 			            },
@@ -125,7 +128,7 @@
 				});
 				
 				$('#modal-form-formationCreate #dateFinSemestre1').datepicker({
-				    format: "dd/mm/yyyy",
+					format: "dd/mm/yyyy",
 				    todayBtn: "linked",
 				    language: "fr",
 				    daysOfWeekHighlighted: "0,6",
@@ -135,7 +138,7 @@
 				});
 				
 				$('#modal-form-formationUpdate #dateFinSemestre1').datepicker({
-				    format: "dd/mm/yyyy",
+					format: "dd/mm/yyyy",
 				    todayBtn: "linked",
 				    language: "fr",
 				    daysOfWeekHighlighted: "0,6",
@@ -155,6 +158,7 @@
 					<th>[[#{msg.0006}]]</th>
 					<th>[[#{msg.0025}]]</th>
 					<th>[[#{msg.0003}]]</th>
+					<th></th>
 					<th>[[#{msg.0014}]]</th>
 					<th>[[#{msg.0015}]]</th>
 					<th>[[#{msg.0032}]]</th>
@@ -167,6 +171,7 @@
 					<th>[[#{msg.0006}]]</th>
 					<th>[[#{msg.0025}]]</th>
 					<th>[[#{msg.0003}]]</th>
+					<th></th>
 					<th>[[#{msg.0014}]]</th>
 					<th>[[#{msg.0015}]]</th>
 					<th>[[#{msg.0032}]]</th>
@@ -199,6 +204,15 @@
 					</div>
 				</div>
 				
+				<!-- libellé court -->
+				<div class="form-group row">
+					<label for="libelleCourt" th:text="#{msg.0033}" class="col-sm-3 col-form-label col-form-label-sm" ></label>
+					<div class="col-sm-9">
+						<input type="text" th:field="*{libelleCourt}" th:placeholder="#{msg.0004}" class="form-control form-control-sm" />
+						<small th:if="${#fields.hasErrors('libelleCourt')}" th:errors="*{libelleCourt}" class="text-muted"></small>
+					</div>
+				</div>
+				
 				<!-- date fin semestre 1 -->
 				<div class="form-group row">
 					<label for="dateFinSemestre1" th:text="#{msg.0032}" class="col-sm-3 col-form-label col-form-label-sm" ></label>
@@ -219,26 +233,36 @@
 
 				<!-- annee scolaire -->
 				<div class="form-group row">
-					<label for="anneeScolaire" th:text="#{msg.0025}" class="col-sm-3 col-form-label col-form-label-sm"></label>
+					<label for="anneeScolaire" th:text="#{msg.0025}" class="col-sm-3 col-form-label col-form-label-sm" ></label>
 					<div class="col-sm-9">
-						<select th:field="*{anneeScolaire}">
-							<option th:each="type : ${allTypes}" th:value="${type}" th:text="#{${'seedstarter.type.' + type}}">Wireframe</option>
-						</select> <small th:if="${#fields.hasErrors('dateDebut')}" th:errors="*{dateDebut}" class="text-muted"></small>
+						<select th:field="*{anneeScolaire}" class="form-control form-control-sm">
+							<option th:each="anneeScolaire : ${listAnneeScolaire}" th:value="${anneeScolaire.id}" th:text="${#temporals.format(anneeScolaire.dateDebut, 'yyyy')} + ' - ' + ${#temporals.format(anneeScolaire.dateFin, 'yyyy')}"></option>
+						</select>
+						<small th:if="${#fields.hasErrors('anneeScolaire')}" th:errors="*{anneeScolaire}" class="text-muted"></small>
 					</div>
 				</div>
-
+				
 				<!-- libellé -->
 				<div class="form-group row">
-					<label for="libelle" th:text="#{msg.0003}" class="col-sm-3 col-form-label col-form-label-sm"></label>
+					<label for="libelle" th:text="#{msg.0003}" class="col-sm-3 col-form-label col-form-label-sm" ></label>
 					<div class="col-sm-9">
-						<input type="text" th:field="*{libelle}" th:placeholder="#{msg.0004}" class="form-control form-control-sm" /> <small th:if="${#fields.hasErrors('libelle')}" th:errors="*{libelle}"
-							class="text-muted"></small>
+						<input type="text" th:field="*{libelle}" th:placeholder="#{msg.0004}" class="form-control form-control-sm" />
+						<small th:if="${#fields.hasErrors('libelle')}" th:errors="*{libelle}" class="text-muted"></small>
 					</div>
 				</div>
-
+				
+				<!-- libellé court -->
+				<div class="form-group row">
+					<label for="libelleCourt" th:text="#{msg.0033}" class="col-sm-3 col-form-label col-form-label-sm" ></label>
+					<div class="col-sm-9">
+						<input type="text" th:field="*{libelleCourt}" th:placeholder="#{msg.0004}" class="form-control form-control-sm" />
+						<small th:if="${#fields.hasErrors('libelleCourt')}" th:errors="*{libelleCourt}" class="text-muted"></small>
+					</div>
+				</div>
+				
 				<!-- date fin semestre 1 -->
 				<div class="form-group row">
-					<label for="dateFinSemestre1" th:text="#{msg.0027 + ' - ' + msg.0015}" class="col-sm-3 col-form-label col-form-label-sm" ></label>
+					<label for="dateFinSemestre1" th:text="#{msg.0032}" class="col-sm-3 col-form-label col-form-label-sm" ></label>
 					<div class="col-sm-9">
 						<input type="text" th:field="*{dateFinSemestre1}" th:placeholder="#{msg.0017}" class="form-control form-control-sm" />
 						<small th:if="${#fields.hasErrors('dateFinSemestre1')}" th:errors="*{dateFinSemestre1}" class="text-muted"></small>

@@ -7,13 +7,14 @@ function openModalCreate(modalId) {
 	container.modal("show");
 }
 
-function openModalUpdate(modalId, id) {
+function openModalUpdate(modalId, id, oTable) {
 	var container = getModalContainer(modalId);
-	var tr = findTrFromIdInDatatable(id);
-	if(tr != false) {
-		container.find("#id").val(tr.find("td:eq(0)").text());
-		container.find("#dateDebut").val(tr.find("td:eq(2)").text());
-		container.find("#dateFin").val(tr.find("td:eq(3)").text());
+	var row = findRowFromIdInDatatable(id); alert(row);
+	if(row != null) {
+		container.find("#id").val(row.data()["id"]);
+		container.find("#libelle").val(row.data()["libelle"]);
+		container.find("#libelleCourt").val(row.data()["libelleCourt"]);
+		container.find("#dateFinSemestre1").val(row.data()["dateFinSemestre1"]);
 		container.modal("show");
 	}
 }

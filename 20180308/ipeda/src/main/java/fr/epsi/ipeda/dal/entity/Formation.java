@@ -31,7 +31,7 @@ public class Formation {
 	@NotNull
 	private String libelleCourt;
 
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dateFinSemestre1;
 
 	@NotNull

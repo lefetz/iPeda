@@ -1,7 +1,9 @@
 package fr.epsi.ipeda.controller.rest;
 
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,11 +11,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,6 +35,11 @@ public class FormationRestController {
 
 	@Autowired
 	private FormationService formationService;
+
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("dd/MM/yyyy"), true, 10));
+	}
 
 	@RequestMapping("/rest/formations")
 	public DatatablesResponseDTO getAllFormations(HttpServletRequest request, HttpServletResponse response, Model model) {
@@ -59,6 +69,7 @@ public class FormationRestController {
 			dto.setDateFinSemestre1(o.getDateFinSemestre1().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 			dto.setId(Long.toString(o.getId()));
 			dto.setLibelle(o.getLibelle());
+			dto.setLibelleCourt(o.getLibelleCourt());
 			listDto.add(dto);
 		}
 

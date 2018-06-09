@@ -10,6 +10,17 @@ function findTrFromIdInDatatable(id) {
 	return result;
 }
 
+function findRowFromIdInDatatable(id) {
+	var result;
+	$('#example').DataTable().rows().every( function ( rowIdx, tableLoop, rowLoop ) {
+	    if(this.data()["id"] == id) {
+	    	result = this;
+	    	return false;
+	    }
+	} );
+	return result;
+}
+
 function getModalContainer(modalId) {
 	return $("#modal-container-" + modalId);
 }

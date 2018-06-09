@@ -6,6 +6,8 @@ public class FormationDTO {
 
 	private String libelle;
 
+	private String libelleCourt;
+
 	private String anneeScolaireDateDebut;
 
 	private String anneeScolaireDateFin;
@@ -50,6 +52,14 @@ public class FormationDTO {
 
 	public void setAnneeScolaireDateFin(String anneeScolaireDateFin) {
 		this.anneeScolaireDateFin = anneeScolaireDateFin;
+	}
+
+	public String getLibelleCourt() {
+		return libelleCourt;
+	}
+
+	public void setLibelleCourt(String libelleCourt) {
+		this.libelleCourt = libelleCourt;
 	}
 
 }
