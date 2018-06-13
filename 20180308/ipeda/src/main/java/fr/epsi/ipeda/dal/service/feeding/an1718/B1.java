@@ -45,7 +45,7 @@ public class B1 extends Feeding {
 		AnneeScolaire anneeScolaire = anneeScolaireRepository.findByDateDebut(LocalDate.of(2018, 9, 1));
 		LocalDate dateFinSemestre1 = LocalDate.of(2019, 2, 1);
 
-		formation = formationRepository.save(new Formation("BACHELOR 1 18/19", "B1 18/19", anneeScolaire, dateFinSemestre1));
+		formation = formationRepository.save(new Formation("BACHELOR 1 18/19", "B1 18/19", anneeScolaire, LocalDate.of(2018, 9, 1), LocalDate.of(2019, 8, 31), dateFinSemestre1));
 
 		// ================================================
 		// PARCOURS SOCLE

@@ -21,14 +21,12 @@ public class AnneeScolaire {
 
 	@NotNull
 	@Column(name = "date_debut")
-	// @DateTimeFormat(pattern = "dd/MM/yyyy")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+//	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dateDebut;
 
 	@NotNull
 	@Column(name = "date_fin")
-	// @DateTimeFormat(pattern = "dd/MM/yyyy")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+//	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dateFin;
 
 	public AnneeScolaire() {

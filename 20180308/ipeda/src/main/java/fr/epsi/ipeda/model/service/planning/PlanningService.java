@@ -14,8 +14,10 @@ import org.springframework.stereotype.Service;
 
 import fr.epsi.ipeda.dal.dto.SeanceDTO;
 import fr.epsi.ipeda.dal.entity.Formation;
+import fr.epsi.ipeda.dal.entity.Planning;
 import fr.epsi.ipeda.dal.entity.Seance;
 import fr.epsi.ipeda.dal.entity.periode.Periode;
+import fr.epsi.ipeda.dal.repository.PlanningRepository;
 import fr.epsi.ipeda.helpers.TimeUtils;
 import fr.epsi.ipeda.helpers.TimeUtils.TIMEFIELD;
 import fr.epsi.ipeda.model.service.periode.IPeriodeService;
@@ -28,6 +30,9 @@ public class PlanningService implements IPlanningService {
 
 	@Autowired
 	private IPeriodeService periodeService;
+
+	@Autowired
+	private PlanningRepository planningRepository;
 
 	public LocalTime getHeureFromProperties(String propname) {
 		String[] parts = env.getProperty(propname).split(env.getProperty("timeSeparator"));
@@ -87,6 +92,10 @@ public class PlanningService implements IPlanningService {
 		}
 
 		return listeSeances;
+	}
+
+	public Planning findByFormation(Formation formation) {
+		return planningRepository.findByFormation(formation);
 	}
 
 }

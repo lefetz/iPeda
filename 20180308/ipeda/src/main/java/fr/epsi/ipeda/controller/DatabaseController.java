@@ -1,7 +1,5 @@
 package fr.epsi.ipeda.controller;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,16 +30,10 @@ public class DatabaseController {
 	// private I5 i5;
 
 	@RequestMapping("/db/init")
-	@Transactional
 	public String generation(Model model) {
 
-//		databaseService.initialiserProperties();
 		databaseService.initialiserSpecificite();
 		databaseService.initialiserAnneeScolaire();
-		// databaseService.initialiserFormation();
-		// databaseService.initialiserParcours();
-		// databaseService.initialiserBlocDeCompetence();
-		// databaseService.initialiserUniteEnseignement();
 
 		// initialisation des salles
 		databaseService.initialiserSalles();
@@ -52,18 +44,11 @@ public class DatabaseController {
 		// initialisation des types de périodes
 		databaseService.initialiserPeriodeType();
 
-		// databaseService.afficheCours();
+		// force commit
 
 		b1.initialiserFormation();
-		b1.initialiserPeriodes();
-		b1.initialiserSeances();
-		// b2.initialiserFormation();
-		// b3.initialiserFormation();
-		// b3.initialiserCours();
-		// i4.initialiserFormation();
-		// i5.initialiserFormation();
-
-		// databaseService.getPlanningBySemaine(Formation.TypeFormation.B3, new Semaine(2018, 8));
+		// b1.initialiserPeriodes();
+		// b1.initialiserSeances();
 
 		return "test/dbinit";
 	}

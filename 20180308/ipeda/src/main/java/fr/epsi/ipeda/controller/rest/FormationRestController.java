@@ -28,13 +28,19 @@ import fr.epsi.ipeda.dal.dto.ajax.AjaxResponse;
 import fr.epsi.ipeda.dal.dto.datatables.DatatablesRequestDTO;
 import fr.epsi.ipeda.dal.dto.datatables.DatatablesResponseDTO;
 import fr.epsi.ipeda.dal.entity.Formation;
+import fr.epsi.ipeda.dal.entity.Planning;
+import fr.epsi.ipeda.helpers.TimeUtils;
 import fr.epsi.ipeda.model.service.formation.FormationService;
+import fr.epsi.ipeda.model.service.planning.PlanningService;
 
 @RestController
 public class FormationRestController {
 
 	@Autowired
 	private FormationService formationService;
+
+	@Autowired
+	private PlanningService planningService;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -64,12 +70,18 @@ public class FormationRestController {
 		List<FormationDTO> listDto = new ArrayList<FormationDTO>();
 		for (Formation o : listeObjets) {
 			FormationDTO dto = new FormationDTO();
-			dto.setAnneeScolaireDateDebut(o.getAnneeScolaire().getDateDebut().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-			dto.setAnneeScolaireDateFin(o.getAnneeScolaire().getDateFin().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-			dto.setDateFinSemestre1(o.getDateFinSemestre1().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			dto.setAnneeScolaireId(Long.toString(o.getAnneeScolaire().getId()));
+			dto.setAnneeScolaireDateDebut(o.getAnneeScolaire().getDateDebut().format(DateTimeFormatter.ofPattern(TimeUtils.getDateFormatToView())));
+			dto.setAnneeScolaireDateFin(o.getAnneeScolaire().getDateFin().format(DateTimeFormatter.ofPattern(TimeUtils.getDateFormatToView())));
+			dto.setDateDebut(o.getDateDebut().format(DateTimeFormatter.ofPattern(TimeUtils.getDateFormatToView())));
+			dto.setDateFin(o.getDateFin().format(DateTimeFormatter.ofPattern(TimeUtils.getDateFormatToView())));
+			if (null != o.getDateFinSemestre1()) {
+				dto.setDateFinSemestre1(o.getDateFinSemestre1().format(DateTimeFormatter.ofPattern(TimeUtils.getDateFormatToView())));
+			}
 			dto.setId(Long.toString(o.getId()));
 			dto.setLibelle(o.getLibelle());
 			dto.setLibelleCourt(o.getLibelleCourt());
+
 			listDto.add(dto);
 		}
 
@@ -81,7 +93,7 @@ public class FormationRestController {
 	}
 
 	@RequestMapping("/rest/formations/save")
-	public AjaxResponse saveFormations(@Valid @ModelAttribute Formation objet, BindingResult bindingResult) {
+	public AjaxResponse saveFormations(@Valid @ModelAttribute Formation o, BindingResult bindingResult) {
 
 		// init
 		AjaxResponse ajaxResponse = new AjaxResponse(AjaxResponse.STATUS.SUCCESS);
@@ -94,7 +106,12 @@ public class FormationRestController {
 
 		// ok
 		else {
-			formationService.save(objet);
+			Planning planning = planningService.findByFormation(o);
+			if (null != planning) {
+				planning.setFormation(o);
+				o.setPlanning(planning);
+			}
+			formationService.save(o);
 			ajaxResponse.setReturnUrl("/formation/read.html");
 		}
 

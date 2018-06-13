@@ -1,20 +1,35 @@
 
 function openModalCreate(modalId) {
 	var container = getModalContainer(modalId);
-	//container.find("#anneeScolaireDateDebut").val(""); // reset
-	//container.find("#anneeScolaireDateDebut").val(""); // reset
 	container.find("small").text(""); // reset
 	container.modal("show");
 }
 
 function openModalUpdate(modalId, id, oTable) {
 	var container = getModalContainer(modalId);
-	var row = findRowFromIdInDatatable(id); alert(row);
+	var row = findRowFromIdInDatatable(id);
 	if(row != null) {
 		container.find("#id").val(row.data()["id"]);
+		container.find("form#modal-form-formationUpdate select#anneeScolaire").val(row.data()["anneeScolaireId"]);
 		container.find("#libelle").val(row.data()["libelle"]);
 		container.find("#libelleCourt").val(row.data()["libelleCourt"]);
-		container.find("#dateFinSemestre1").val(row.data()["dateFinSemestre1"]);
+		
+		var dateDebut = moment(row.data()["dateDebut"]);
+		$('#modal-form-formationUpdate #dateDebut').datepicker('setDate', dateDebut.toDate());
+		$('#modal-form-formationUpdate #dateDebut').datepicker('update');
+		$('#modal-form-formationUpdate #dateDebut').val(dateDebut.format('DD/MM/YYYY'));
+		
+		var dateFin = moment(row.data()["dateFin"]);
+		$('#modal-form-formationUpdate #dateFin').datepicker('setDate', dateFin.toDate());
+		$('#modal-form-formationUpdate #dateFin').datepicker('update');
+		$('#modal-form-formationUpdate #dateFin').val(dateFin.format('DD/MM/YYYY'));
+		
+		var dateFinSemestre1 = moment(row.data()["dateFinSemestre1"]);
+		$('#modal-form-formationUpdate #dateFinSemestre1').datepicker('setDate', dateFinSemestre1.toDate());
+		$('#modal-form-formationUpdate #dateFinSemestre1').datepicker('update');
+		$('#modal-form-formationUpdate #dateFinSemestre1').val(dateFinSemestre1.format('DD/MM/YYYY'));
+		
+		container.find("small").text(""); // reset
 		container.modal("show");
 	}
 }

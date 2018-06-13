@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -14,8 +16,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "formation")
@@ -31,20 +31,32 @@ public class Formation {
 	@NotNull
 	private String libelleCourt;
 
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@NotNull
+	@Column(name = "date_debut")
+	// @DateTimeFormat(pattern = "dd/MM/yyyy")
+	private LocalDate dateDebut;
+
+	@NotNull
+	@Column(name = "date_fin")
+	// @DateTimeFormat(pattern = "dd/MM/yyyy")
+	private LocalDate dateFin;
+
+	@NotNull
+	@Column(name = "date_fin_semestre1")
+	// @DateTimeFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dateFinSemestre1;
 
 	@NotNull
 	@ManyToOne
 	private AnneeScolaire anneeScolaire;
 
-	@OneToMany(mappedBy = "formation", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "formation", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<Parcours> listeParcours = new ArrayList<Parcours>();
 
-	@ManyToMany(mappedBy = "listeFormations")
+	@ManyToMany(mappedBy = "listeFormations", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Module> listeModules = new ArrayList<Module>(); // cas UDEV
 
-	@OneToOne(mappedBy = "formation", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(mappedBy = "formation", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private Planning planning;
 
 	public Formation() {
@@ -60,7 +72,7 @@ public class Formation {
 		addModule(listeModules);
 	}
 
-	public Formation(String libelle, String libelleCourt, AnneeScolaire anneeScolaire, LocalDate dateFinSemestre1) {
+	public Formation(String libelle, String libelleCourt, AnneeScolaire anneeScolaire, LocalDate dateDebut, LocalDate dateFin, LocalDate dateFinSemestre1) {
 		this.libelle = libelle;
 		this.libelleCourt = libelleCourt;
 		this.anneeScolaire = anneeScolaire;
@@ -136,6 +148,22 @@ public class Formation {
 
 	public void setLibelleCourt(String libelleCourt) {
 		this.libelleCourt = libelleCourt;
+	}
+
+	public LocalDate getDateDebut() {
+		return dateDebut;
+	}
+
+	public void setDateDebut(LocalDate dateDebut) {
+		this.dateDebut = dateDebut;
+	}
+
+	public LocalDate getDateFin() {
+		return dateFin;
+	}
+
+	public void setDateFin(LocalDate dateFin) {
+		this.dateFin = dateFin;
 	}
 
 }

@@ -54,4 +54,12 @@ public class TimeUtils {
 		return getNextWeek(date, 1);
 	}
 
+	public static String getDateFormatToView() {
+		return "yyyy-MM-dd";
+	}
+
+	public static String getDateFormatFromView() {
+		return "dd/MM/yyyy";
+	}
+
 }

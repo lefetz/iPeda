@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import fr.epsi.ipeda.dal.entity.AnneeScolaire;
 import fr.epsi.ipeda.dal.entity.BlocCompetences;
@@ -33,6 +34,7 @@ import fr.epsi.ipeda.dal.repository.SpecificiteRepository;
 import fr.epsi.ipeda.dal.repository.periode.PeriodeTypeRepository;
 
 @Service
+@Transactional
 public class DatabaseService implements IDatabaseService {
 
 	final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -287,11 +289,11 @@ public class DatabaseService implements IDatabaseService {
 		AnneeScolaire anneeScolaire = anneeScolaireRepository.findByDateDebut(LocalDate.of(2018, 9, 1));
 		LocalDate dateFinSemestre1 = LocalDate.of(2019, 2, 1);
 
-		formationRepository.save(new Formation("BACHELOR 1 18/19", "B1 18/19", anneeScolaire, dateFinSemestre1));
-		formationRepository.save(new Formation("BACHELOR 2 18/19", "B2 18/19", anneeScolaire, dateFinSemestre1));
-		formationRepository.save(new Formation("BACHELOR 3 18/19", "B3 18/19", anneeScolaire, dateFinSemestre1));
-		formationRepository.save(new Formation("INGENIERIE 4 18/19", "I4 18/19", anneeScolaire, dateFinSemestre1));
-		formationRepository.save(new Formation("INGENIERIE 5 18/19", "I5 18/19", anneeScolaire, dateFinSemestre1));
+		// formationRepository.save(new Formation("BACHELOR 1 18/19", "B1 18/19", anneeScolaire, dateFinSemestre1));
+		// formationRepository.save(new Formation("BACHELOR 2 18/19", "B2 18/19", anneeScolaire, dateFinSemestre1));
+		// formationRepository.save(new Formation("BACHELOR 3 18/19", "B3 18/19", anneeScolaire, dateFinSemestre1));
+		// formationRepository.save(new Formation("INGENIERIE 4 18/19", "I4 18/19", anneeScolaire, dateFinSemestre1));
+		// formationRepository.save(new Formation("INGENIERIE 5 18/19", "I5 18/19", anneeScolaire, dateFinSemestre1));
 
 	}
 
