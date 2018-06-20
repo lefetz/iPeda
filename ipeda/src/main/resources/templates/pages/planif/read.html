@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+<title>Salles</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+	<div layout:fragment="content">
+	
+		<div id="filtre">
+			
+		</div>
+
+		<table id="planif" class="table table-striped table-bordered hover">
+			<thead>
+				<tr>
+					<th>Groupe</th>
+					<th>Semaine</th>
+					<th>Date</th>
+					<th>Jour</th>
+					<th>Heure début</th>
+					<th>Heure fin</th>
+					<th>Durée séance</th>
+					<th>Période</th>
+					<th>Activité/Module</th>
+					<th>Spécialité</th>
+					<th>Cumul durée</th>
+					<th>Intervenant</th>
+					<th>Salle(s)</th>
+					<th>Remarque</th>
+				</tr>
+			</thead>
+			<tr th:each="seance : ${listeSeances}" th:class="${seance.weekEnd}? 'weekend' : (${seance.periode == 'JOUR_FERIE' or seance.periode == 'FERMETURE' or seance.periode == 'SEMAINE_ENTREPRISE' or seance.periode == 'NON_PLANIFIABLE' or seance.periode == 'VACANCES' or seance.periode == 'STAGE'} ? 'nonPlanifiable' : (${seance.jourPair}? 'jourPair' : 'jourImpair')) 	 ">
+				<td th:text="${seance.groupe}">B1</td>
+				<td th:text="${seance.semaine}">2018-24</td>
+				<td th:text="${seance.date}">01/02/2018</td>
+				<td th:text="${seance.jour}">lun</td>
+				<td th:text="${seance.heureDebut}">08h15</td>
+				<td th:text="${seance.heureFin}">12h15</td>
+				<td th:text="${seance.dureeSeance}">04h00</td>
+				<td th:text="${seance.periode}">Cours</td>
+				<td th:text="${seance.activite}">AZZE123 - Super module</td>
+				<td th:text="${seance.specialite}">C-IOT</td>
+				<td th:text="${seance.cumulDuree}">04h00/20h00</td>
+				<td th:text="${seance.intervenant}">GABER Khalid</td>
+				<td th:text="${seance.salle}">Jaune</td>
+				<td th:text="${seance.remarque}">Remarque</td>
+			</tr>
+			<tfoot>
+				<tr>
+					<th>Groupe</th>
+					<th>Semaine</th>
+					<th>Date</th>
+					<th>Jour</th>
+					<th>Heure début</th>
+					<th>Heure fin</th>
+					<th>Durée séance</th>
+					<th>Période</th>
+					<th>Activité/Module</th>
+					<th>Spécialité</th>
+					<th>Cumul durée</th>
+					<th>Intervenant</th>
+					<th>Salle(s)</th>
+					<th>Remarque</th>
+				</tr>
+			</tfoot>
+		</table>
+
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+
+	<div layout:fragment="modal" th:id="'modal-container-' + ${modalId}" class="modal fade" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+			
+				<div class="modal-header">
+					<h5 class="modal-title" th:text="#{${modalHeader}}"></h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				
+				<div class="modal-body">
+					<div layout:fragment="modal-content"></div>
+				</div>
+				
+				<div class="modal-footer">
+					<span th:each="button : ${#strings.arraySplit(modalButton,',')}" th:with="item=${#strings.arraySplit(button,'|')}" th:switch="${item[0]}">
+						<button th:case="'cancel'" th:text="#{${item[1]}}" type="button" class="btn btn-secondary" data-dismiss="modal"></button>
+						<button th:case="'submit'" th:text="#{${item[1]}}" type="button" class="btn btn-success" th:onclick="'$(\'#modal-form-' + ${modalId} + '\').submit();'"></button>
+						<button th:case="'submitDanger'" th:text="#{${item[1]}}" type="button" class="btn btn-danger" th:onclick="'$(\'#modal-form-' + ${modalId} + '\').submit();'"></button>
+					</span>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

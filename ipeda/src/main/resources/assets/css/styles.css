@@ -1,0 +1,51 @@
+table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
+  background-color: #ffffcc;
+}
+
+.toolbar {
+  float: left;
+  vertical-align: middle;
+  display: inline-block;
+  line-height: 50px;
+}
+
+.dataTables_filter label {
+  line-height: 50px;
+}
+
+.dataTables_filter input {
+  line-height: normal;
+}
+
+#planif > thead > tr > th {
+  font-size: 12px;
+  padding: 2px;
+}
+
+#planif > tbody > tr > td {
+  font-size: 12px;
+  padding: 2px;
+  line-height: normal;
+  vertical-align: middle;
+}
+
+#planif .weekend td {
+  background-color: #CCCCCC;
+}
+
+#planif .jourPair td {
+  background-color: #eaeaea;
+}
+
+#planif .jourImpair td {
+  background-color: #ffffff;
+}
+
+#planif .nonPlanifiable td {
+  background-color: #FFdddd;
+  color: #7D0000;
+}
+
+.modal-dialog {
+  max-width: 700px;
+}

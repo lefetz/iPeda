@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">iPeda</title>
+<link rel="shortcut icon" th:href="@{/assets/images/favicon.ico}">
+
+<link rel="stylesheet" type="text/css" media="all" th:href="@{/assets/css/bootstrap.min.css}">
+<link rel="stylesheet" type="text/css" media="all" th:href="@{/assets/css/jquery.dataTables.min.css}">
+<link rel="stylesheet" type="text/css" media="all" th:href="@{/assets/css/styles.css}">
+<link rel="stylesheet" type="text/css" media="all" th:href="@{/assets/css/fontawesome-all.min.css}" />
+
+<script type="text/javascript" th:src="@{/assets/js/jquery-3.3.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
+<script type="text/javascript" charset="utf8" th:src="@{/assets/js/datatables/jquery.dataTables.min.js}"></script>
+<script type="text/javascript" charset="utf8" th:src="@{/assets/js/datatables/datatables_settings.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/metier/common.js}"></script>
+
+</head>
+<body>
+	<div th:replace="fragments/menu :: menu"></div>
+	<div class="container">
+		<div layout:fragment="content"></div>
+	</div>
+	<div th:replace="fragments/footer :: footer"></div>
+<!-- 	<div th:replace="fragments/modal/normal :: salle"></div> -->
+</body>
+</html>

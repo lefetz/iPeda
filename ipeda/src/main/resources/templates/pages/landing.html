@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorate="~{layout}">
+<head>
+<title>EDT</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+	<div layout:fragment="content">
+		<p th:text="|Semaine actuelle : ${semaineActuelle.get(T(fr.epsi.ipeda.helpers.TimeUtils.TIMEFIELD).YEAR)}-${semaineActuelle.get(T(fr.epsi.ipeda.helpers.TimeUtils.TIMEFIELD).WEEK)}|" />
+
+		<p th:text="|Générer EDT pour semaine :|" />
+
+		<form action="#" th:action="@{/edt/generation}" th:object="${formSemaine}" method="post">
+			<th:block th:each="semaine : ${listeSemainesSuivantes}">
+				<p>
+					<input type="button" th:value="|semaine ${semaine.get(T(fr.epsi.ipeda.helpers.TimeUtils.TIMEFIELD).YEAR)}-${semaine.get(T(fr.epsi.ipeda.helpers.TimeUtils.TIMEFIELD).WEEK)}|" />
+				</p>
+
+			</th:block>
+		</form>
+	</div>
+	
+</body>
+</html>
