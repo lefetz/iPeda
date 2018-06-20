@@ -11,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -35,8 +34,8 @@ public class BlocCompetences {
 	@OneToMany(mappedBy = "parcours", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<UniteEnseignement> listeUnitesEnseignement = new ArrayList<UniteEnseignement>();
 
-	@OneToOne(mappedBy = "blocCompetences", cascade = CascadeType.ALL, orphanRemoval = true)
-	private ProjetTransversal projetTransversal;
+	@OneToMany(mappedBy = "blocCompetences", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ProjetTransversal> listeProjetTransversal = new ArrayList<ProjetTransversal>();
 
 	@Column(name = "ferme")
 	private boolean isFerme;
@@ -100,14 +99,6 @@ public class BlocCompetences {
 		this.listeUnitesEnseignement = listeUnitesEnseignement;
 	}
 
-	public ProjetTransversal getProjetTransversal() {
-		return projetTransversal;
-	}
-
-	public void setProjetTransversal(ProjetTransversal projetTransversal) {
-		this.projetTransversal = projetTransversal;
-	}
-
 	public boolean isFerme() {
 		return isFerme;
 	}
@@ -122,6 +113,14 @@ public class BlocCompetences {
 
 	public void setSpecificite(Specificite specificite) {
 		this.specificite = specificite;
+	}
+
+	public List<ProjetTransversal> getListeProjetTransversal() {
+		return listeProjetTransversal;
+	}
+
+	public void setListeProjetTransversal(List<ProjetTransversal> listeProjetTransversal) {
+		this.listeProjetTransversal = listeProjetTransversal;
 	}
 
 }

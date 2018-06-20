@@ -8,7 +8,7 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +60,8 @@ public class DataAccessConfig {
 
 		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
 
-		// introspection pour assigner la valeur de setPackagesToScan() en fonction de la valeur de @ComponentScan()
+		// introspection pour assigner la valeur de setPackagesToScan() en fonction de
+		// la valeur de @ComponentScan()
 		String[] packagesToScan = null;
 		for (Annotation annotation : DataAccessConfig.class.getAnnotations()) {
 			Class<? extends Annotation> type = annotation.annotationType();
@@ -70,13 +71,16 @@ public class DataAccessConfig {
 						try {
 							packagesToScan = (String[]) method.invoke(annotation, (Object[]) null);
 						} catch (IllegalAccessException e) {
-							logger.error("Erreur lors de l'invocation de la méthode dynamique '" + method.getName() + "'");
+							logger.error(
+									"Erreur lors de l'invocation de la méthode dynamique '" + method.getName() + "'");
 							e.printStackTrace();
 						} catch (IllegalArgumentException e) {
-							logger.error("Erreur lors de l'invocation de la méthode dynamique '" + method.getName() + "'");
+							logger.error(
+									"Erreur lors de l'invocation de la méthode dynamique '" + method.getName() + "'");
 							e.printStackTrace();
 						} catch (InvocationTargetException e) {
-							logger.error("Erreur lors de l'invocation de la méthode dynamique '" + method.getName() + "'");
+							logger.error(
+									"Erreur lors de l'invocation de la méthode dynamique '" + method.getName() + "'");
 							e.printStackTrace();
 						}
 					}
@@ -96,7 +100,8 @@ public class DataAccessConfig {
 		jpaProperties.put("hibernate.use_sql_comments", env.getProperty("hibernate.use_sql_comments"));
 		jpaProperties.put("hibernate.connection.isolation", env.getProperty("hibernate.connection.isolation"));
 		jpaProperties.put("hibernate.connection.autoReconnect", env.getProperty("hibernate.connection.autoReconnect"));
-		jpaProperties.put("hibernate.connection.autoReconnectForPools", env.getProperty("hibernate.connection.autoReconnectForPools"));
+		jpaProperties.put("hibernate.connection.autoReconnectForPools",
+				env.getProperty("hibernate.connection.autoReconnectForPools"));
 		jpaProperties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
 
 		factory.setJpaProperties(jpaProperties);

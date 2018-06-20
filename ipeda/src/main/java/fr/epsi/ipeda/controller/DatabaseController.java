@@ -47,8 +47,8 @@ public class DatabaseController {
 		// force commit
 
 		b1.initialiserFormation();
-		// b1.initialiserPeriodes();
-		// b1.initialiserSeances();
+		b1.initialiserPeriodes();
+		b1.initialiserSeances();
 
 		return "test/dbinit";
 	}

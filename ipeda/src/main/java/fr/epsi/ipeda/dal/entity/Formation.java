@@ -72,10 +72,13 @@ public class Formation {
 		addModule(listeModules);
 	}
 
-	public Formation(String libelle, String libelleCourt, AnneeScolaire anneeScolaire, LocalDate dateDebut, LocalDate dateFin, LocalDate dateFinSemestre1) {
+	public Formation(String libelle, String libelleCourt, AnneeScolaire anneeScolaire, LocalDate dateDebut,
+			LocalDate dateFin, LocalDate dateFinSemestre1) {
 		this.libelle = libelle;
 		this.libelleCourt = libelleCourt;
 		this.anneeScolaire = anneeScolaire;
+		this.dateDebut = dateDebut;
+		this.dateFin = dateFin;
 		this.dateFinSemestre1 = dateFinSemestre1;
 	}
 
